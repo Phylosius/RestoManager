@@ -44,7 +44,7 @@ public class DishDAO implements DataProvider<Dish, String> {
         List<Dish> dishs = new ArrayList<>();
 
         String sql = "SELECT * FROM dish ORDER BY id ASC LIMIT ? OFFSET ?";
-        List<Object> params = List.of(pageSize, page * (pageSize - 1));
+        List<Object> params = List.of(pageSize, pageSize * (page - 1));
 
         BaseDAO.executeQuery(conn, sql, params, (r) -> {
             while (r.next()) {

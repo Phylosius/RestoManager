@@ -46,7 +46,7 @@ public class IngredientDAO implements DataProvider<Ingredient, String> {
         List<Ingredient> ingredients = new ArrayList<>();
 
         String sql = "SELECT * FROM ingredient ORDER BY id ASC LIMIT ? OFFSET ?";
-        List<Object> params = List.of(pageSize, page * (pageSize - 1));
+        List<Object> params = List.of(pageSize, pageSize * (page - 1));
 
         BaseDAO.executeQuery(conn, sql, params, (r) -> {
             while (r.next()) {
