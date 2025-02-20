@@ -12,15 +12,14 @@ import java.sql.SQLException;
 public class DataSource {
     private final Connection connection;
     private final String username;
-    private final String host;
+    private final String url;
     private final String password;
 
-    public DataSource(String username, String password, String host) {
+    public DataSource(String username, String password, String url) {
         this.username = username;
         this.password = password;
-        this.host = host;
+        this.url = url;
 
-        String url = "jdbc:postgres://" + host;
         try {
             this.connection = DriverManager.getConnection(url, username, password);
         } catch (SQLException e) {
