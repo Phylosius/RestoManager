@@ -1,0 +1,1 @@
+- [ ] use environment variables in db's scripts
