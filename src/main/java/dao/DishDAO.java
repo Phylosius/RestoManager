@@ -2,6 +2,7 @@ package dao;
 
 import model.Dish;
 import model.Dish;
+import model.MakeUp;
 import model.Unit;
 
 import java.sql.Connection;
@@ -52,6 +53,9 @@ public class DishDAO implements DataProvider<Dish, String> {
                 dish.setId(r.getString("id"));
                 dish.setName(r.getString("name"));
                 dish.setUnitPrice(r.getDouble("unit_price"));
+                dish.setIngredients(
+                        MakeUpDAO.getAllByDishID(conn, dish.getId())
+                );
 
                 dishs.add(dish);
             }
@@ -72,6 +76,9 @@ public class DishDAO implements DataProvider<Dish, String> {
                 dish.setId(r.getString("id"));
                 dish.setName(r.getString("name"));
                 dish.setUnitPrice(r.getDouble("unit_price"));
+                dish.setIngredients(
+                        MakeUpDAO.getAllByDishID(conn, dish.getId())
+                );
             }
         });
 
@@ -88,12 +95,13 @@ public class DishDAO implements DataProvider<Dish, String> {
         );
 
         BaseDAO.executeUpdate(conn, sql, params);
+        MakeUpDAO.saveAll(conn, entity.getIngredients());
 
     }
 
     public static void update(Connection conn, String id,  Dish entity) {
 
-        String sql = "UPDATE dish SET name = ?, unit_price = ?WHERE id = ?";
+        String sql = "UPDATE dish SET name = ?, unit_price = ? WHERE id = ?";
         List<Object> params = List.of(
                 entity.getName(),
                 entity.getUnitPrice(),
@@ -101,6 +109,8 @@ public class DishDAO implements DataProvider<Dish, String> {
         );
 
         BaseDAO.executeUpdate(conn, sql, params);
+        MakeUpDAO.deleteByDishID(conn, id);
+        MakeUpDAO.saveAll(conn, entity.getIngredients());
 
     }
 
