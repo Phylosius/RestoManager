@@ -1,22 +1,29 @@
--- DB CONNECTION
-\c resto_db;
+\c resto_db
 
--- TYPE CREATION
-CREATE TYPE ingredient_unit AS ENUM ('L', 'G', 'U');
+CREATE OR REPLACE FUNCTION generate_simple_varchar_id(table_name TEXT)
+RETURNS TEXT AS $$
+DECLARE
+    sequence_name TEXT;
+    new_id INT;
+    sequence_exists BOOLEAN;
+BEGIN
+    -- Build the sequence name dynamically
+    sequence_name := table_name || '_simple_id_sequence';
 
--- TABLE CREATION
--- dish
-CREATE TABLE dish(
-    id VARCHAR(100) PRIMARY KEY DEFAULT generate_simple_varchar_id(),
-    name VARCHAR(100),
-    unit_price FLOAT
-);
+    -- Check if the sequence exists
+    SELECT EXISTS (
+        SELECT 1 FROM pg_class WHERE relname = sequence_name
+    ) INTO sequence_exists;
 
--- ingredient
-CREATE TABLE ingredient(
-    id VARCHAR(100) PRIMARY KEY DEFAULT generate_simple_varchar_id(),
-    name VARCHAR(100),
-    modification_date TIMESTAMP,
-    unit_price FLOAT,
-    unit ingredient_unit
-);
+    -- If the sequence does not exist, create it
+    IF NOT sequence_exists THEN
+        EXECUTE format('CREATE SEQUENCE %I START WITH 1 INCREMENT BY 1', sequence_name);
+    END IF;
+
+    -- Get the next number from the sequence
+    EXECUTE format('SELECT NEXTVAL(%I)', sequence_name) INTO new_id;
+
+    -- Return the ID as a string format "n"
+    RETURN new_id::TEXT;
+END;
+$$ LANGUAGE plpgsql;
