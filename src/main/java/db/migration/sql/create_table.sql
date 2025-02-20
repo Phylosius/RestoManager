@@ -7,14 +7,14 @@ CREATE TYPE ingredient_unit AS ENUM ('L', 'G', 'U');
 -- TABLE CREATION
 -- dish
 CREATE TABLE dish(
-    id VARCHAR(100) PRIMARY KEY,
+    id VARCHAR(100) PRIMARY KEY DEFAULT generate_simple_varchar_id(),
     name VARCHAR(100),
     unit_price FLOAT
 );
 
 -- ingredient
 CREATE TABLE ingredient(
-    id VARCHAR(100) PRIMARY KEY,
+    id VARCHAR(100) PRIMARY KEY DEFAULT generate_simple_varchar_id(),
     name VARCHAR(100),
     modification_date TIMESTAMP,
     unit_price FLOAT,
