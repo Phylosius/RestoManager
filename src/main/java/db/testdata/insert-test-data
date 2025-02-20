@@ -1,0 +1,3 @@
+#!/bin/bash
+
+psql -U resto_db_user -d resto_db -f ./sql/insert_test_data.sql
