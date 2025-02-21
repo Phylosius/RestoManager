@@ -30,7 +30,7 @@ public class MakeUpDAO{
     public static List<MakeUp> getAllByDishID(Connection conn, String dishID){
         List<MakeUp> makeUps = new ArrayList<>();
 
-        String sql = "SELECT ingredient_id, ingredient_quantity FROM makeup WHERE dish_id = ?";
+        String sql = "SELECT ingredient_id, ingredient_quantity FROM make_up WHERE dish_id = ?";
         List<Object> params = List.of(dishID);
 
         BaseDAO.executeQuery(conn, sql, params, (res) -> {
@@ -53,7 +53,7 @@ public class MakeUpDAO{
         int saved = 0;
 
         String sql = "";
-        StringBuilder sqlBuilder = new StringBuilder("INSERT INTO makeup (ingredient_id, ingredient_quantity) VALUES ");
+        StringBuilder sqlBuilder = new StringBuilder("INSERT INTO make_up (ingredient_id, ingredient_quantity) VALUES ");
         List<Object> params = new ArrayList<>();
 
         for (int i = 0; i < makeUps.size(); i++) {
@@ -72,7 +72,7 @@ public class MakeUpDAO{
     public static int deleteByDishID(Connection conn, String dishID){
         int deleted = 0;
 
-        String sql = "DELETE FROM makeup WHERE dish_id = ?";
+        String sql = "DELETE FROM make_up WHERE dish_id = ?";
         List<Object> params = List.of(dishID);
 
         deleted = BaseDAO.executeUpdate(conn, sql, params);
