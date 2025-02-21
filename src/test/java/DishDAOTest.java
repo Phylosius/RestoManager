@@ -97,9 +97,7 @@ public class DishDAOTest {
     public void check_total_recipe_price_ok() {
 
         Dish retrievedDish = subject.getById("1");
-        Double totalIngredientCost = retrievedDish.getIngredients().stream()
-                .map(m -> m.getIngredient().getUnitPrice() * m.getQuantity())
-                .reduce(0d, Double::sum);
+        Double totalIngredientCost = retrievedDish.getProductionCost();
 
         assertEquals(5500d, totalIngredientCost);
     }
