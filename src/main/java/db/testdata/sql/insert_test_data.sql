@@ -6,7 +6,7 @@ INSERT INTO dish(name, unit_price) VALUES
 
 -- INGREDIENT INSERTION
 INSERT INTO ingredient(name, modification_date, unit_price, unit) VALUES
-    ('Saucisse', '2025-01-01 00:00', 15000.0, 'G'),
+    ('Saucisse', '2025-01-01 00:00', 20.0, 'G'),
     ('Huile', '2025-01-01 00:00', 10000.0, 'L'),
     ('Oeuf', '2025-01-01 00:00', 1000.0, 'U'),
     ('Pain', '2025-01-01 00:00', 1000.0, 'U');
