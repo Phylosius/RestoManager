@@ -13,7 +13,11 @@ import java.util.List;
 
 public class DishDAO implements DataProvider<Dish, String> {
 
-    private DataSource dataSource;
+    private final DataSource dataSource;
+
+    public DishDAO(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Override
     public List<Dish> getAll(int page, int pageSize) {
