@@ -87,7 +87,7 @@ public class IngredientDAO implements DataProvider<Ingredient, String> {
 
     public static void add(Connection conn, Ingredient entity) {
 
-        String sql = "INSERT INTO ingredient(id, name, modification_date, unit_price, unit) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO ingredient(id, name, modification_date, unit_price, unit) VALUES (?, ?, ?, ?, ?::ingredient_unit)";
         List<Object> params = List.of(
                 entity.getId(),
                 entity.getName(),
@@ -102,7 +102,7 @@ public class IngredientDAO implements DataProvider<Ingredient, String> {
 
     public static void update(Connection conn, String id,  Ingredient entity) {
 
-        String sql = "UPDATE ingredient SET name = ?, unit_price = ?, unit = ?, modification_date = ? WHERE id = ?";
+        String sql = "UPDATE ingredient SET name = ?, unit_price = ?, unit = ?::ingredient_unit, modification_date = ? WHERE id = ?";
         List<Object> params = List.of(
                 entity.getName(),
                 entity.getUnitPrice(),
