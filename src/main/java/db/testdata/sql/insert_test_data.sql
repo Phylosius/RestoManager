@@ -14,6 +14,6 @@ INSERT INTO ingredient(name, modification_date, unit_price, unit) VALUES
 -- MAKE UP
 INSERT INTO make_up(dish_id, ingredient_id, ingredient_quantity) VALUES
     ('1', '1', 100.0),
-    ('1', '2', 0.5),
+    ('1', '2', 0.15),
     ('1', '3', 1.0),
     ('1', '4', 1.0);
