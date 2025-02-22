@@ -25,3 +25,9 @@ ALTER TABLE make_up
 ADD CONSTRAINT fk_make_up_ingredient_id
     FOREIGN KEY (ingredient_id) REFERENCES ingredient(id)
         ON DELETE CASCADE;
+
+-- ingredient ingredient_price fk
+ALTER TABLE ingredient_price
+ADD CONSTRAINT fk_ingredient_price_ingredient_id
+    FOREIGN KEY (ingredient_id) REFERENCES ingredient(id)
+        ON DELETE CASCADE;
