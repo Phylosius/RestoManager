@@ -1,13 +1,8 @@
 package dao;
 
 import model.Dish;
-import model.Dish;
-import model.MakeUp;
-import model.Unit;
 
 import java.sql.Connection;
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,8 +25,8 @@ public class DishDAO implements DataProvider<Dish, String> {
     }
 
     @Override
-    public void add(Dish entity) {
-        add(dataSource.getConnection(), entity);
+    public void save(Dish entity) {
+        save(dataSource.getConnection(), entity);
     }
 
     @Override
@@ -57,7 +52,7 @@ public class DishDAO implements DataProvider<Dish, String> {
                 dish.setId(r.getString("id"));
                 dish.setName(r.getString("name"));
                 dish.setUnitPrice(r.getDouble("unit_price"));
-                dish.setIngredients(
+                dish.setMakeUps(
                         MakeUpDAO.getAllByDishID(conn, dish.getId())
                 );
 
@@ -80,7 +75,7 @@ public class DishDAO implements DataProvider<Dish, String> {
                 dish.setId(r.getString("id"));
                 dish.setName(r.getString("name"));
                 dish.setUnitPrice(r.getDouble("unit_price"));
-                dish.setIngredients(
+                dish.setMakeUps(
                         MakeUpDAO.getAllByDishID(conn, dish.getId())
                 );
             }
@@ -89,7 +84,7 @@ public class DishDAO implements DataProvider<Dish, String> {
         return dish;
     }
 
-    public static void add(Connection conn, Dish entity) {
+    public static void save(Connection conn, Dish entity) {
 
         String sql = "INSERT INTO dish(id, name, unit_price) VALUES (?, ?, ?)";
         List<Object> params = List.of(
@@ -99,7 +94,7 @@ public class DishDAO implements DataProvider<Dish, String> {
         );
 
         BaseDAO.executeUpdate(conn, sql, params);
-        MakeUpDAO.saveAll(conn, entity.getIngredients());
+        MakeUpDAO.saveAll(conn, entity.getMakeUps());
 
     }
 
@@ -114,7 +109,7 @@ public class DishDAO implements DataProvider<Dish, String> {
 
         BaseDAO.executeUpdate(conn, sql, params);
         MakeUpDAO.deleteByDishID(conn, id);
-        MakeUpDAO.saveAll(conn, entity.getIngredients());
+        MakeUpDAO.saveAll(conn, entity.getMakeUps());
 
     }
 
