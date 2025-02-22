@@ -17,6 +17,12 @@ CREATE TABLE ingredient(
     id VARCHAR(100) PRIMARY KEY DEFAULT generate_simple_varchar_id('ingredient'),
     name VARCHAR(100),
     modification_date TIMESTAMP,
-    unit_price FLOAT,
     unit ingredient_unit
+);
+
+-- ingredient_price
+CREATE TABLE ingredient_price(
+    ingredient_id VARCHAR(100),
+    unit_price FLOAT,
+    date TIMESTAMP
 );
