@@ -28,7 +28,7 @@ public class IngredientDAO implements DataProvider<Ingredient, String> {
     }
 
     @Override
-    public void add(Ingredient entity) {
+    public void save(Ingredient entity) {
         add(dataSource.getConnection(), entity);
     }
 

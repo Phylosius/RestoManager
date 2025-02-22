@@ -4,14 +4,12 @@ import dao.IngredientDAO;
 import model.Dish;
 import model.Ingredient;
 import model.MakeUp;
-import model.Unit;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -56,7 +54,7 @@ public class DishDAOTest {
     @Order(2)
     public void create_dish_ok() {
 
-        subject.add(testDish);
+        subject.save(testDish);
 
         Dish retrievedDish = subject.getById(testDish.getId());
         assertEquals(testDish, retrievedDish);

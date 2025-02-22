@@ -50,7 +50,7 @@ public class IngredientDAOTest {
     @Order(2)
     public void create_ingredient_ok() {
 
-        subject.add(testIngredient);
+        subject.save(testIngredient);
 
         Ingredient retrievedIngredient = subject.getById(testIngredient.getId());
         assertEquals(testIngredient, retrievedIngredient);

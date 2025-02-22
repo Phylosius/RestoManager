@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class BaseDAO<entityType> {
+public class BaseDAO {
 
     public static void executeQuery(Connection connection, String sql, List<Object> params, ResultSetHandler resultSetHandler) {
 
