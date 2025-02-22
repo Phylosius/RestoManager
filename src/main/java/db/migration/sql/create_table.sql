@@ -24,5 +24,7 @@ CREATE TABLE ingredient(
 CREATE TABLE ingredient_price(
     ingredient_id VARCHAR(100),
     unit_price FLOAT,
-    date TIMESTAMP
+    date TIMESTAMP,
+
+    PRIMARY KEY (ingredient_id, date)
 );
