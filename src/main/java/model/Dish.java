@@ -21,4 +21,8 @@ public class Dish {
                 .map(m-> m.getIngredient().getPrice().getValue() * m.getQuantity())
                 .reduce(0.0, Double::sum);
     }
+
+    public Double getGrossMargin() {
+        return getUnitPrice() - getProductionCost();
+    }
 }
