@@ -19,8 +19,8 @@ public class MakeUpDAO{
         return getAllByDishID(dataSource.getConnection(), dishID);
     }
 
-    public int saveAll(List<MakeUp> makeUpList){
-        return saveAll(dataSource.getConnection(), makeUpList);
+    public int saveAll(String dishID, List<MakeUp> makeUpList){
+        return saveAll(dataSource.getConnection(),dishID, makeUpList);
     }
 
     public int deleteByDishID(String dishID){
@@ -49,17 +49,17 @@ public class MakeUpDAO{
         return makeUps;
     }
 
-    public static int saveAll(Connection conn, List<MakeUp> makeUps){
+    public static int saveAll(Connection conn, String dishID, List<MakeUp> makeUps){
         int saved = 0;
 
         String sql = "";
-        StringBuilder sqlBuilder = new StringBuilder("INSERT INTO make_up (ingredient_id, ingredient_quantity) VALUES ");
+        StringBuilder sqlBuilder = new StringBuilder("INSERT INTO make_up (dish_id, ingredient_id, ingredient_quantity) VALUES ");
         List<Object> params = new ArrayList<>();
 
         for (int i = 0; i < makeUps.size(); i++) {
             MakeUp makeUp = makeUps.get(i);
-            String formater = i == makeUps.size() - 1 ? "(%s, %s)" : "(%s, %s),";
-            sqlBuilder.append(String.format(formater, makeUp.getIngredient().getId(), makeUp.getQuantity()));
+            String formater = i == makeUps.size() - 1 ? "(%s, %s, %s)" : "(%s, %s, %s),";
+            sqlBuilder.append(String.format(formater, dishID, makeUp.getIngredient().getId(), makeUp.getQuantity()));
         }
 
         sql = sqlBuilder.toString();

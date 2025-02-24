@@ -14,6 +14,6 @@ public class Ingredient {
     private String id;
     private String name;
     private LocalDate modificationDate;
-    private Double unitPrice;
+    private Price price;
     private Unit unit;
 }

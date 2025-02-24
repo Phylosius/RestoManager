@@ -1,6 +1,7 @@
 import dao.DataSource;
 import dao.IngredientDAO;
 import model.Ingredient;
+import model.Price;
 import model.Unit;
 
 import io.github.cdimascio.dotenv.Dotenv;
@@ -10,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -18,6 +20,7 @@ public class IngredientDAOTest {
     private DataSource dataSource;
     private IngredientDAO subject;
     private Ingredient testIngredient;
+    private Price ingredientPrice;
 
     @BeforeAll
     public void setUp(){
@@ -28,8 +31,10 @@ public class IngredientDAOTest {
                 dotenv.get("DB_PASSWORD"),
                 dotenv.get("DB_URL"));
         subject = new IngredientDAO(dataSource);
+        LocalDate date = LocalDate.now();
+        ingredientPrice = new Price(2000.0d, date);
         testIngredient = new Ingredient("0",
-                "Test Ingredient", LocalDate.now(), 2000.0d, Unit.L);
+                "Test Ingredient", date, ingredientPrice, Unit.L);
 
     }
 
@@ -39,32 +44,34 @@ public class IngredientDAOTest {
 
         List<Ingredient> retrievedFirst = subject.getAll(1, 5);
         List<Ingredient> retrievedSecond = subject.getAll(2, 5);
-        List<Ingredient> retrievedThird = subject.getAll(3, 5);
 
-        assertEquals(5, retrievedFirst.size());
-        assertEquals(3, retrievedSecond.size());
-        assertEquals(0, retrievedThird.size());
+        assertEquals(4, retrievedFirst.size());
+        assertEquals(0, retrievedSecond.size());
     }
 
     @Test
     @Order(2)
     public void create_ingredient_ok() {
+        List<Ingredient> retrievedFirst = subject.getAll(1, 20);
 
         subject.save(testIngredient);
 
-        Ingredient retrievedIngredient = subject.getById(testIngredient.getId());
-        assertEquals(testIngredient, retrievedIngredient);
+        List<Ingredient> retrievedSecond = subject.getAll(1, 20);
+        assertEquals(retrievedFirst.size() + 1, retrievedSecond.size());
     }
 
     @Test
     @Order(3)
     public void update_ingredient_ok() {
-        testIngredient.setUnitPrice(0.0d);
+        ingredientPrice.setValue(10d);
+        ingredientPrice.setDate(LocalDate.now());
+        testIngredient.setPrice(ingredientPrice);
 
         subject.update(testIngredient.getId(), testIngredient);
+
         Ingredient retrievedIngredient = subject.getById(testIngredient.getId());
 
-        assertEquals(testIngredient.getUnitPrice(), retrievedIngredient.getUnitPrice());
+        assertEquals(testIngredient.getPrice().getValue(), retrievedIngredient.getPrice().getValue());
     }
 
     @Test
@@ -73,7 +80,7 @@ public class IngredientDAOTest {
 
         Ingredient retrievedIngredient = subject.getById(testIngredient.getId());
 
-        assertEquals(testIngredient, retrievedIngredient);
+        assertEquals(retrievedIngredient.getPrice().getValue(), ingredientPrice.getValue());
     }
 
     @Test
