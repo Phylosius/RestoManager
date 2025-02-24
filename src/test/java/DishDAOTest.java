@@ -16,7 +16,6 @@ import java.util.List;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class DishDAOTest {
 
-    private DataSource dataSource;
     private DishDAO subject;
     private Dish testDish;
 
@@ -24,10 +23,11 @@ public class DishDAOTest {
     public void setUp(){
         Dotenv dotenv = Dotenv.load();
 
-        dataSource = new DataSource(
+        DataSource dataSource = new DataSource(
                 dotenv.get("DB_USERNAME"),
                 dotenv.get("DB_PASSWORD"),
                 dotenv.get("DB_URL"));
+
         subject = new DishDAO(dataSource);
 
         List<Ingredient> testIngredients = IngredientDAO.getAll(dataSource.getConnection(), 1, 3);

@@ -18,7 +18,7 @@ public class Dish {
 
     public Double getProductionCost(){
         return makeUps.stream()
-                .map(m-> m.getIngredient().getUnitPrice() * m.getQuantity())
+                .map(m-> m.getIngredient().getPrice().getValue() * m.getQuantity())
                 .reduce(0.0, Double::sum);
     }
 }

@@ -1,6 +1,7 @@
 package dao;
 
 import model.Ingredient;
+import model.Price;
 import model.Unit;
 
 import java.sql.Connection;
@@ -45,7 +46,20 @@ public class IngredientDAO implements DataProvider<Ingredient, String> {
     public static List<Ingredient> getAll(Connection conn, int page, int pageSize) {
         List<Ingredient> ingredients = new ArrayList<>();
 
-        String sql = "SELECT * FROM ingredient ORDER BY id ASC LIMIT ? OFFSET ?";
+        String sql = """
+                SELECT i.id, i.name, i.unit, p.unit_price, i.modification_date
+                FROM ingredient i
+                JOIN (
+                    SELECT ingredient_id, unit_price, date
+                    FROM ingredient_price p1
+                    WHERE date = (
+                        SELECT MAX(date)
+                        FROM ingredient_price p2
+                        WHERE p1.ingredient_id = p2.ingredient_id
+                    )
+                ) p ON i.id = p.ingredient_id
+                ORDER BY id ASC LIMIT ? OFFSET ?""";
+
         List<Object> params = List.of(pageSize, pageSize * (page - 1));
 
         BaseDAO.executeQuery(conn, sql, params, (r) -> {
@@ -55,7 +69,7 @@ public class IngredientDAO implements DataProvider<Ingredient, String> {
                 ingredient.setId(r.getString("id"));
                 ingredient.setName(r.getString("name"));
                 ingredient.setModificationDate(r.getDate("modification_date").toLocalDate());
-                ingredient.setUnitPrice(r.getDouble("unit_price"));
+                ingredient.setPrice(IngredientPriceDAO.getLatestByIngredientID(conn, ingredient.getId()));
                 ingredient.setUnit(Unit.valueOf(r.getString("unit")));
 
                 ingredients.add(ingredient);
@@ -69,7 +83,20 @@ public class IngredientDAO implements DataProvider<Ingredient, String> {
     public static Ingredient getById(Connection conn, String id) {
         Ingredient ingredient = new Ingredient();
 
-        String sql = "SELECT * FROM ingredient WHERE id = ?";
+        String sql = """
+                SELECT i.id, i.name, i.unit, p.unit_price, i.modification_date
+                FROM ingredient i
+                JOIN (
+                    SELECT ingredient_id, unit_price, date
+                    FROM ingredient_price p1
+                    WHERE date = (
+                        SELECT MAX(date)
+                        FROM ingredient_price p2
+                        WHERE p1.ingredient_id = p2.ingredient_id
+                    )
+                ) p ON i.id = p.ingredient_id
+                WHERE i.id = ?
+                """;
         List<Object> params = List.of(id);
 
         BaseDAO.executeQuery(conn, sql, params, (r) -> {
@@ -77,7 +104,7 @@ public class IngredientDAO implements DataProvider<Ingredient, String> {
                 ingredient.setId(r.getString("id"));
                 ingredient.setName(r.getString("name"));
                 ingredient.setModificationDate(r.getDate("modification_date").toLocalDate());
-                ingredient.setUnitPrice(r.getDouble("unit_price"));
+                ingredient.setPrice(IngredientPriceDAO.getLatestByIngredientID(conn, ingredient.getId()));
                 ingredient.setUnit(Unit.valueOf(r.getString("unit")));
             }
         });
@@ -87,31 +114,30 @@ public class IngredientDAO implements DataProvider<Ingredient, String> {
 
     public static void add(Connection conn, Ingredient entity) {
 
-        String sql = "INSERT INTO ingredient(id, name, modification_date, unit_price, unit) VALUES (?, ?, ?, ?, ?::ingredient_unit)";
+        String sql = "INSERT INTO ingredient(id, name, modification_date, unit) VALUES (?, ?, ?, ?::ingredient_unit)";
         List<Object> params = List.of(
                 entity.getId(),
                 entity.getName(),
                 entity.getModificationDate(),
-                entity.getUnitPrice(),
                 entity.getUnit().toString()
         );
 
         BaseDAO.executeUpdate(conn, sql, params);
-
+        IngredientPriceDAO.saveByIngredientID(conn, entity.getId(), entity.getPrice());
     }
 
     public static void update(Connection conn, String id,  Ingredient entity) {
 
-        String sql = "UPDATE ingredient SET name = ?, unit_price = ?, unit = ?::ingredient_unit, modification_date = ? WHERE id = ?";
+        String sql = "UPDATE ingredient SET name = ?, unit = ?::ingredient_unit, modification_date = ? WHERE id = ?";
         List<Object> params = List.of(
                 entity.getName(),
-                entity.getUnitPrice(),
                 entity.getUnit().toString(),
                 Date.valueOf(LocalDate.now()),
                 id
         );
 
         BaseDAO.executeUpdate(conn, sql, params);
+        IngredientPriceDAO.saveByIngredientID(conn, entity.getId(), entity.getPrice());
 
     }
 
