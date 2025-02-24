@@ -2,7 +2,7 @@ package model;
 
 import lombok.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -12,5 +12,5 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class Price {
     private Double value;
-    private LocalDate date;
+    private LocalDateTime date;
 }

@@ -2,7 +2,7 @@ package model;
 
 import lombok.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -13,7 +13,7 @@ import java.time.LocalDate;
 public class Ingredient {
     private String id;
     private String name;
-    private LocalDate modificationDate;
+    private LocalDateTime modificationDate;
     private Price price;
     private Unit unit;
 }

@@ -4,7 +4,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 import model.Price;
 
 import java.sql.Connection;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -32,7 +32,7 @@ public class IngredientPriceDAO {
             while (resultSet.next()) {
                 Price price = new Price();
 
-                price.setDate(resultSet.getDate("date").toLocalDate());
+                price.setDate(resultSet.getTimestamp("date").toLocalDateTime());
                 price.setValue(resultSet.getDouble("unit_price"));
 
                 prices.add(price);
@@ -60,14 +60,14 @@ public class IngredientPriceDAO {
         BaseDAO.executeQuery(conn, sql, params, (resultSet -> {
             if (resultSet.next()) {
                 price.setValue(resultSet.getDouble("unit_price"));
-                price.setDate(resultSet.getDate("date").toLocalDate());
+                price.setDate(resultSet.getTimestamp("date").toLocalDateTime());
             }
         }));
 
         return price;
     }
 
-    public static Price getByDateAndIngredientID(Connection conn, String ingredientID, LocalDate date) {
+    public static Price getByDateAndIngredientID(Connection conn, String ingredientID, LocalDateTime date) {
         Price price = new Price();
 
         String sql = "SELECT unit_price, date FROM ingredient_price WHERE date = ? AND ingredient_id = ?";
@@ -76,7 +76,7 @@ public class IngredientPriceDAO {
         BaseDAO.executeQuery(conn, sql, params, (resultSet -> {
             if (resultSet.next()) {
                 price.setValue(resultSet.getDouble("unit_price"));
-                price.setDate(resultSet.getDate("date").toLocalDate());
+                price.setDate(resultSet.getTimestamp("date").toLocalDateTime());
             }
         }));
 

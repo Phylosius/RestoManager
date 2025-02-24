@@ -6,7 +6,7 @@ import model.Unit;
 
 import java.sql.Connection;
 import java.sql.Date;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,7 +68,7 @@ public class IngredientDAO implements DataProvider<Ingredient, String> {
 
                 ingredient.setId(r.getString("id"));
                 ingredient.setName(r.getString("name"));
-                ingredient.setModificationDate(r.getDate("modification_date").toLocalDate());
+                ingredient.setModificationDate(r.getTimestamp("modification_date").toLocalDateTime());
                 ingredient.setPrice(IngredientPriceDAO.getLatestByIngredientID(conn, ingredient.getId()));
                 ingredient.setUnit(Unit.valueOf(r.getString("unit")));
 
@@ -103,7 +103,7 @@ public class IngredientDAO implements DataProvider<Ingredient, String> {
             if (r.next()) {
                 ingredient.setId(r.getString("id"));
                 ingredient.setName(r.getString("name"));
-                ingredient.setModificationDate(r.getDate("modification_date").toLocalDate());
+                ingredient.setModificationDate(r.getTimestamp("modification_date").toLocalDateTime());
                 ingredient.setPrice(IngredientPriceDAO.getLatestByIngredientID(conn, ingredient.getId()));
                 ingredient.setUnit(Unit.valueOf(r.getString("unit")));
             }
@@ -132,7 +132,7 @@ public class IngredientDAO implements DataProvider<Ingredient, String> {
         List<Object> params = List.of(
                 entity.getName(),
                 entity.getUnit().toString(),
-                Date.valueOf(LocalDate.now()),
+                LocalDateTime.now(),
                 id
         );
 

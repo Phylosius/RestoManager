@@ -9,7 +9,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -30,7 +30,7 @@ public class IngredientDAOTest {
                 dotenv.get("DB_URL"));
 
         subject = new IngredientDAO(dataSource);
-        LocalDate date = LocalDate.now();
+        LocalDateTime date = LocalDateTime.now();
         ingredientPrice = new Price(2000.0d, date);
         testIngredient = new Ingredient("0",
                 "Test Ingredient", date, ingredientPrice, Unit.L);
@@ -63,7 +63,7 @@ public class IngredientDAOTest {
     @Order(3)
     public void update_ingredient_ok() {
         ingredientPrice.setValue(10d);
-        ingredientPrice.setDate(LocalDate.now());
+        ingredientPrice.setDate(LocalDateTime.now());
         testIngredient.setPrice(ingredientPrice);
 
         subject.update(testIngredient.getId(), testIngredient);
