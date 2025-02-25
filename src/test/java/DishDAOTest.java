@@ -99,4 +99,14 @@ public class DishDAOTest {
 
         assertEquals(5500d, totalIngredientCost);
     }
+
+    @Test
+    @Order(7)
+    public void check_gross_margin_ok() {
+
+        Dish retrievedDish = subject.getById("1");
+        Double grossMargin = retrievedDish.getGrossMargin();
+
+        assertEquals(9500d, grossMargin);
+    }
 }
