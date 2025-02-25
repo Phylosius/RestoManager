@@ -46,14 +46,12 @@ public class IngredientPriceDAO {
         Price price = new Price();
 
         String sql = """
-                select unit_price, date from (
-                                    select unit_price, date
-                                    from ingredient_price p
-                                    where date = (
-                                        select max(date) from ingredient_price pp
-                                        where p.ingredient_id = ?
-                                    )
-                                )
+                select unit_price, date
+                from ingredient_price p
+                where date = (
+                    select max(date) from ingredient_price pp
+                    where p.ingredient_id = ?
+                )
                 """;
         List<Object> params = List.of(ingredientID);
 
