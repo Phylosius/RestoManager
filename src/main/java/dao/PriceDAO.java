@@ -3,6 +3,7 @@ package dao;
 import io.github.cdimascio.dotenv.Dotenv;
 import model.Price;
 
+import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -11,21 +12,51 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class PriceDAO {
 
-    public static void main(String[] args) {
+    private final DataSource dataSource;
+
+    public PriceDAO() {
         Dotenv dotenv = Dotenv.load();
-        DataSource dataSource = new DataSource(
+        dataSource = new DataSource(
                 dotenv.get("DB_USERNAME"),
                 dotenv.get("DB_PASSWORD"),
                 dotenv.get("DB_URL"));
 
-        Price price = getLatestByIngredientID(dataSource.getConnection(), "1");
-        System.out.println(price);
+    }
+
+    public PriceDAO(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    public Price getNearbyByDateAndIngredientID(LocalDateTime date, String ingredientID) {
+        return getNearbyByDateAndIngredientID(dataSource.getConnection(), date, ingredientID);
+    }
+
+    public static Price getNearbyByDateAndIngredientID(Connection conn, LocalDateTime date, String ingredientID) {
+        Price price = new Price();
+
+        String sql = """
+                SELECT ingredient_id, unit_price, date FROM ingredient_price
+                WHERE ingredient_id = ?
+                ORDER BY ABS(EXTRACT(DAY FROM (date - '2020-01-01'::TIMESTAMP)))
+                ASC
+                LIMIT 1;
+                """;
+        List<Object> params = List.of(ingredientID);
+
+        BaseDAO.executeQuery(conn, sql, params, resultSet -> {
+            if (resultSet.next()) {
+                price.setValue(resultSet.getDouble("unit_price"));
+                price.setDate((resultSet.getTimestamp("date").toLocalDateTime()));
+            }
+        });
+
+        return price;
     }
 
     public static List<Price> getAllByIngredientID(Connection conn, String ingredientID, int page, int pageSize) {
         List<Price> prices = new ArrayList<>();
 
-        String sql = "select unit_price, date from ingredientPrice where ingredient_id = ? LIMIT ? OFFSET ?";
+        String sql = "select unit_price, date from ingredient_price where ingredient_id = ? LIMIT ? OFFSET ?";
         List<Object> params = List.of(ingredientID, page, pageSize * (page - 1));
 
         BaseDAO.executeQuery(conn, sql, params, (resultSet -> {
