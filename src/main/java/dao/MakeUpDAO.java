@@ -1,7 +1,6 @@
 package dao;
 
 import model.MakeUp;
-import service.StringModifier;
 
 import java.sql.Connection;
 import java.util.ArrayList;
