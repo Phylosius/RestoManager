@@ -67,7 +67,7 @@ public class IngredientDAO implements DataProvider<Ingredient, String> {
                 ingredient.setId(r.getString("id"));
                 ingredient.setName(r.getString("name"));
                 ingredient.setModificationDate(r.getTimestamp("modification_date").toLocalDateTime());
-                ingredient.setPrice(IngredientPriceDAO.getLatestByIngredientID(conn, ingredient.getId()));
+                ingredient.setPrice(PriceDAO.getLatestByIngredientID(conn, ingredient.getId()));
                 ingredient.setUnit(Unit.valueOf(r.getString("unit")));
 
                 ingredients.add(ingredient);
@@ -102,7 +102,7 @@ public class IngredientDAO implements DataProvider<Ingredient, String> {
                 ingredient.setId(r.getString("id"));
                 ingredient.setName(r.getString("name"));
                 ingredient.setModificationDate(r.getTimestamp("modification_date").toLocalDateTime());
-                ingredient.setPrice(IngredientPriceDAO.getLatestByIngredientID(conn, ingredient.getId()));
+                ingredient.setPrice(PriceDAO.getLatestByIngredientID(conn, ingredient.getId()));
                 ingredient.setUnit(Unit.valueOf(r.getString("unit")));
             }
         });
@@ -121,7 +121,7 @@ public class IngredientDAO implements DataProvider<Ingredient, String> {
         );
 
         BaseDAO.executeUpdate(conn, sql, params);
-        IngredientPriceDAO.saveByIngredientID(conn, entity.getId(), entity.getPrice());
+        PriceDAO.saveByIngredientID(conn, entity.getId(), entity.getPrice());
     }
 
     public static void update(Connection conn, String id,  Ingredient entity) {
@@ -135,7 +135,7 @@ public class IngredientDAO implements DataProvider<Ingredient, String> {
         );
 
         BaseDAO.executeUpdate(conn, sql, params);
-        IngredientPriceDAO.saveByIngredientID(conn, entity.getId(), entity.getPrice());
+        PriceDAO.saveByIngredientID(conn, entity.getId(), entity.getPrice());
 
     }
 

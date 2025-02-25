@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class IngredientPriceDAO {
+public class PriceDAO {
 
     public static void main(String[] args) {
         Dotenv dotenv = Dotenv.load();
