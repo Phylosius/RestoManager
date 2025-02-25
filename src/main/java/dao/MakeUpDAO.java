@@ -49,9 +49,9 @@ public class MakeUpDAO{
     }
 
     public static int saveAll(Connection conn, String dishID, List<MakeUp> makeUps){
-        int saved = 0;
+        int saved;
 
-        String sql = "";
+        String sql;
         StringBuilder sqlBuilder = new StringBuilder("INSERT INTO make_up (dish_id, ingredient_id, ingredient_quantity) VALUES ");
         List<Object> params = new ArrayList<>();
 
@@ -69,7 +69,7 @@ public class MakeUpDAO{
     }
 
     public static int deleteByDishID(Connection conn, String dishID){
-        int deleted = 0;
+        int deleted;
 
         String sql = "DELETE FROM make_up WHERE dish_id = ?";
         List<Object> params = List.of(dishID);

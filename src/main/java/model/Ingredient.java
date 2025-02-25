@@ -1,6 +1,5 @@
 package model;
 
-import dao.DataSource;
 import dao.PriceDAO;
 import lombok.*;
 
