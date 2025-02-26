@@ -37,11 +37,11 @@ public class PriceDAO {
         String sql = """
                 SELECT ingredient_id, unit_price, date FROM ingredient_price
                 WHERE ingredient_id = ?
-                ORDER BY ABS(EXTRACT(DAY FROM (date - '2020-01-01'::TIMESTAMP)))
+                ORDER BY ABS(EXTRACT(DAY FROM (date - ?::TIMESTAMP)))
                 ASC
                 LIMIT 1;
                 """;
-        List<Object> params = List.of(ingredientID);
+        List<Object> params = List.of(ingredientID, date);
 
         BaseDAO.executeQuery(conn, sql, params, resultSet -> {
             if (resultSet.next()) {
