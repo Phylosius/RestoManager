@@ -1,2 +1,3 @@
 - [ ] use environment variables in db's scripts
 - [ ] add filter on DataProvider.getAll()
+- [ ] ? change the name of ingredient_price into price in the database
