@@ -28,3 +28,13 @@ CREATE TABLE ingredient_price(
 
     PRIMARY KEY (ingredient_id, date)
 );
+
+-- stock_movement
+CREATE TYPE stock_movement_type AS ENUM ('OUT', 'IN');
+
+CREATE TABLE stock_movement(
+    ingredient_id VARCHAR(100),
+    type stock_movement_type,
+    quantity FLOAT,
+    date TIMESTAMP
+);

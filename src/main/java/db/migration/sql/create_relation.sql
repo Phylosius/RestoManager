@@ -31,3 +31,9 @@ ALTER TABLE ingredient_price
 ADD CONSTRAINT fk_ingredient_price_ingredient_id
     FOREIGN KEY (ingredient_id) REFERENCES ingredient(id)
         ON DELETE CASCADE;
+
+-- stock_movement
+ALTER TABLE stock_movement
+ADD CONSTRAINT fk_stock_movement_ingredient_id
+    FOREIGN KEY (ingredient_id) REFERENCES  ingredient(id)
+        ON DELETE CASCADE;
