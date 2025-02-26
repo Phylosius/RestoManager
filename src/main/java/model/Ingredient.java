@@ -18,6 +18,10 @@ public class Ingredient {
     private Price price;
     private Unit unit;
 
+    public Price getPrice() {
+        return getPrice(LocalDateTime.now());
+    }
+
     public Price getPrice(LocalDateTime localDateTime) {
         PriceDAO priceDAO = new PriceDAO();
         return priceDAO.getNearbyByDateAndIngredientID(localDateTime, id);
