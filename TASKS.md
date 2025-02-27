@@ -1,3 +1,4 @@
 - [ ] use environment variables in db's scripts
-- [ ] add filter on DataProvider.getAll()
+- [x] add filter on DataProvider.getAll()
+- [ ] test filter of DataProvider::getAllByCriteria
 - [ ] ? change the name of ingredient_price into price in the database
