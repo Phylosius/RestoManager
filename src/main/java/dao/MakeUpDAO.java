@@ -1,6 +1,8 @@
 package dao;
 
+import model.Criteria;
 import model.MakeUp;
+import model.Price;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -16,6 +18,10 @@ public class MakeUpDAO{
 
     public List<MakeUp> getAllByDishID(String dishID){
         return getAllByDishID(dataSource.getConnection(), dishID);
+    }
+
+    public List<MakeUp> getAllByCriteria(List<Criteria> criteria, int page, int pageSize) {
+        return getAllByCriteria(dataSource.getConnection(), criteria, page, pageSize);
     }
 
     public int saveAll(String dishID, List<MakeUp> makeUpList){
@@ -40,6 +46,27 @@ public class MakeUpDAO{
                         IngredientDAO.getById(conn, res.getString("ingredient_id")));
                 makeUp.setQuantity(
                         res.getDouble("ingredient_quantity"));
+
+                makeUps.add(makeUp);
+            }
+        });
+
+        return makeUps;
+    }
+
+    public static List<MakeUp> getAllByCriteria(Connection conn, List<Criteria> criteria, int page, int pageSize){
+        List<MakeUp> makeUps = new ArrayList<>();
+
+        String sql = "SELECT ingredient_id, ingredient_quantity FROM make_up WHERE 1=1";
+
+        BaseDAO.getAllByCriteria(conn, criteria, page, pageSize, sql, res -> {
+            while(res.next()){
+                MakeUp makeUp = new MakeUp();
+
+                makeUp.setIngredient(
+                        IngredientDAO.getById(conn, res.getString("ingredient_id"))
+                );
+                makeUp.setQuantity(res.getDouble("ingredient_quantity"));
 
                 makeUps.add(makeUp);
             }

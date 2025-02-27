@@ -1,6 +1,9 @@
 package dao;
 
+import model.Criteria;
 import model.Dish;
+import model.Ingredient;
+import model.Price;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -12,6 +15,10 @@ public class DishDAO implements DataProvider<Dish, String> {
 
     public DishDAO(DataSource dataSource) {
         this.dataSource = dataSource;
+    }
+
+    public List<Dish> getAllByCriteria(List<Criteria> criteria, int page, int pageSize) {
+        return getAllByCriteria(dataSource.getConnection(), criteria, page, pageSize);
     }
 
     @Override
@@ -42,7 +49,7 @@ public class DishDAO implements DataProvider<Dish, String> {
     public static List<Dish> getAll(Connection conn, int page, int pageSize) {
         List<Dish> dishs = new ArrayList<>();
 
-        String sql = "SELECT * FROM dish ORDER BY id ASC LIMIT ? OFFSET ?";
+        String sql = "SELECT id, name, unit_price FROM dish ORDER BY id ASC LIMIT ? OFFSET ?";
         List<Object> params = List.of(pageSize, pageSize * (page - 1));
 
         BaseDAO.executeQuery(conn, sql, params, (r) -> {
@@ -64,10 +71,28 @@ public class DishDAO implements DataProvider<Dish, String> {
         return dishs;
     }
 
+    public static List<Dish> getAllByCriteria(Connection conn, List<Criteria> criteria, int page, int pageSize) {
+        List<Dish> dishs = new ArrayList<>();
+
+        String sql = "SELECT id, name, unit_price FROM dish WHERE 1=1 ";
+
+        BaseDAO.getAllByCriteria(conn, criteria, page, pageSize, sql, (r) -> {
+            Dish dish = new Dish();
+
+            dish.setId(r.getString("id"));
+            dish.setName(r.getString("name"));
+            dish.setUnitPrice(r.getDouble("unit_price"));
+
+            dishs.add(dish);
+        });
+
+        return dishs;
+    }
+
     public static Dish getById(Connection conn, String id) {
         Dish dish = new Dish();
 
-        String sql = "SELECT * FROM dish WHERE id = ?";
+        String sql = "SELECT id, name, unit_price FROM dish WHERE id = ?";
         List<Object> params = List.of(id);
 
         BaseDAO.executeQuery(conn, sql, params, (r) -> {

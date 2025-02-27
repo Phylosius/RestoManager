@@ -1,9 +1,9 @@
 package dao;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import model.Criteria;
 import model.Price;
 
-import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -20,7 +20,6 @@ public class PriceDAO {
                 dotenv.get("DB_USERNAME"),
                 dotenv.get("DB_PASSWORD"),
                 dotenv.get("DB_URL"));
-
     }
 
     public PriceDAO(DataSource dataSource) {
@@ -29,6 +28,10 @@ public class PriceDAO {
 
     public Price getNearbyByDateAndIngredientID(LocalDateTime date, String ingredientID) {
         return getNearbyByDateAndIngredientID(dataSource.getConnection(), date, ingredientID);
+    }
+
+    public List<Price> getAllByCriteria(List<Criteria> criteria, int page, int pageSize) {
+        return getAllByCriteria(dataSource.getConnection(), criteria, page, pageSize);
     }
 
     public static Price getNearbyByDateAndIngredientID(Connection conn, LocalDateTime date, String ingredientID) {
@@ -51,6 +54,25 @@ public class PriceDAO {
         });
 
         return price;
+    }
+
+    public static List<Price> getAllByCriteria(Connection conn, List<Criteria> criteria, int page, int pageSize) {
+        List<Price> result = new ArrayList<>();
+
+        String sql = "SELECT unit_price, date from ingredient_price WHERE 1=1 ";
+
+        BaseDAO.getAllByCriteria(conn, criteria, page, pageSize, sql, resultSet -> {
+            while (resultSet.next()) {
+                Price price = new Price();
+
+                price.setValue(resultSet.getDouble("unit_price"));
+                price.setDate(resultSet.getTimestamp("date").toLocalDateTime());
+
+                result.add(price);
+            }
+        });
+
+        return result;
     }
 
     public static List<Price> getAllByIngredientID(Connection conn, String ingredientID, int page, int pageSize) {
