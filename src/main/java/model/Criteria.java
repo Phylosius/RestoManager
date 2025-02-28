@@ -60,9 +60,9 @@ public class Criteria {
         String sql;
         String finalValue = value.toString();
 
-        if (value instanceof String || value instanceof  LocalDateTime) {
-            value = value instanceof  LocalDateTime ? Timestamp.valueOf( (LocalDateTime) value) : value;
-            finalValue = String.format("'%s'", value);
+        if (value instanceof String || value instanceof  LocalDateTime || value instanceof MovementType) {
+            Object _value = value instanceof  LocalDateTime ? Timestamp.valueOf( (LocalDateTime) value) : value;
+            finalValue = String.format("'%s'", _value);
         }
 
         if (operator != CriteriaOperator.ORDER_BY) {
