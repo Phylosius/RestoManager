@@ -8,4 +8,5 @@ public enum CriteriaOperator {
     GREATER_THAN,
     LESS_THAN,
     NEAR,
+    ORDER_BY
 }
