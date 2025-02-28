@@ -17,6 +17,14 @@ public class StockMovementDAO{
         return getAll(dataSource.getConnection(), page, pageSize);
     }
 
+    public List<StockMovement> getByIngredientID(String ingredientID, int page, int pageSize){
+        return getByIngredientID(dataSource.getConnection(), ingredientID, page, pageSize);
+    }
+
+    public List<StockMovement> getAllByCriteria(List<Criteria> criteria, int page, int pageSize){
+        return getAllByCriteria(dataSource.getConnection(), criteria, page, pageSize);
+    }
+
     public int saveAll(List<StockMovement> stockMovements){
         return saveAll(dataSource.getConnection(), stockMovements);
     }
