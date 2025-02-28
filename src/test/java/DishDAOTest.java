@@ -1,9 +1,7 @@
 import dao.DataSource;
 import dao.DishDAO;
 import dao.IngredientDAO;
-import model.Dish;
-import model.Ingredient;
-import model.MakeUp;
+import model.*;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import org.junit.jupiter.api.*;
@@ -108,5 +106,17 @@ public class DishDAOTest {
         Double grossMargin = retrievedDish.getGrossMargin();
 
         assertEquals(9500d, grossMargin);
+    }
+
+    @Test
+    @Order(8)
+    public void get_paginated_and_filtered_ok() {
+        Criteria nameCriteria = new Criteria(LogicalOperator.AND, "name", CriteriaOperator.NEAR, "hot");
+        Criteria priceCriteria1 = new Criteria(LogicalOperator.AND, "unit_price", CriteriaOperator.GREATER_THAN, 1000d);
+        Criteria priceCriteria2 = new Criteria(LogicalOperator.AND, "unit_price", CriteriaOperator.LESS_THAN, 20000d);
+
+        List<Dish> retrievedByName = subject.getAllByCriteria(List.of(nameCriteria, priceCriteria1, priceCriteria2), 1, 5);
+
+        assertEquals(1, retrievedByName.size());
     }
 }
