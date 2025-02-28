@@ -66,7 +66,7 @@ public class StockMovementDAO{
                     COALESCE(SUM(CASE WHEN type = 'OUT' THEN quantity END), 0) AS out_total,
                     COALESCE(SUM(CASE WHEN type = 'IN' THEN quantity END), 0) AS in_total
                 FROM stock_movement
-                WHERE ingredient_id = %s
+                WHERE ingredient_id = '%s'
                 """;
         sql = String.format(sql, ingredientID);
 

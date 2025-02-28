@@ -62,7 +62,8 @@ public class Criteria {
             if (value instanceof LocalDateTime || value instanceof Double) {
                 sql = String.format(" %s %s",
                         sqlLogicalOperator, String.format(sqlOperator, getFieldName(),
-                                getValue() instanceof LocalDateTime ? Timestamp.valueOf(getValue().toString()) : getValue(),
+                                getValue() instanceof LocalDateTime ?
+                                        "'" + Timestamp.valueOf((LocalDateTime) getValue()) + "'" : getValue(),
                                 getDistance()));
             } else {
                 sql = String.format(" %s %s",
