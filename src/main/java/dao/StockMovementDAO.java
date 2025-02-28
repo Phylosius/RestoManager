@@ -1,5 +1,6 @@
 package dao;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import model.*;
 
 import java.sql.Connection;
@@ -11,6 +12,15 @@ public class StockMovementDAO{
 
     public StockMovementDAO(DataSource dataSource){
         this.dataSource = dataSource;
+    }
+
+    public StockMovementDAO() {
+        Dotenv dotenv = Dotenv.load();
+        dataSource = new DataSource(
+                dotenv.get("DB_USERNAME"),
+                dotenv.get("DB_PASSWORD"),
+                dotenv.get("DB_URL")
+        );
     }
 
     public List<StockMovement> getAll(int page, int pageSize){

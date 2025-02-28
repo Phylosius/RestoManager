@@ -1,10 +1,12 @@
 package dao;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import model.Criteria;
 import model.Ingredient;
 import model.Price;
 import model.Unit;
 
+import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,6 +18,15 @@ public class IngredientDAO implements DataProvider<Ingredient, String> {
 
     public IngredientDAO(DataSource dataSource) {
         this.dataSource = dataSource;
+    }
+
+    public IngredientDAO() {
+        Dotenv dotenv = Dotenv.load();
+        dataSource = new DataSource(
+                dotenv.get("DB_USERNAME"),
+                dotenv.get("DB_PASSWORD"),
+                dotenv.get("DB_URL")
+        );
     }
 
     public List<Ingredient> getAllByCriteria(List<Criteria> criteria, int page, int pageSize) {
