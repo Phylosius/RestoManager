@@ -1,8 +1,6 @@
 import dao.DataSource;
 import dao.IngredientDAO;
-import model.Ingredient;
-import model.Price;
-import model.Unit;
+import model.*;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import org.junit.jupiter.api.*;
@@ -91,5 +89,17 @@ public class IngredientDAOTest {
         Ingredient retrievedIngredient = subject.getById(testIngredient.getId());
 
         assertNull(retrievedIngredient.getId());
+    }
+
+    @Test
+    @Order(6)
+    public void get_paginated_and_filtered_ok() {
+        Criteria unitCriteria = new Criteria(LogicalOperator.AND, "unit", CriteriaOperator.EQUAL, Unit.U);
+        int pageSize = 5;
+
+        List<Ingredient> retrievedByUnit = subject.getAllByCriteria(List.of(unitCriteria), 1, pageSize);
+
+        assertTrue(retrievedByUnit.size() <= pageSize);
+        assertEquals(2, retrievedByUnit.size());
     }
 }
