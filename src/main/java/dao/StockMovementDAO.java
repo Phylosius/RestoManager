@@ -25,6 +25,10 @@ public class StockMovementDAO{
         return getAllByCriteria(dataSource.getConnection(), criteria, page, pageSize);
     }
 
+    public int save(StockMovement stockMovement){
+        return save(dataSource.getConnection(), stockMovement);
+    }
+
     public int saveAll(List<StockMovement> stockMovements){
         return saveAll(dataSource.getConnection(), stockMovements);
     }
@@ -64,6 +68,10 @@ public class StockMovementDAO{
         });
 
         return stockMovements;
+    }
+
+    public static int save(Connection conn, StockMovement stockMovement){
+        return saveAll(conn, List.of(stockMovement));
     }
 
     public static int saveAll(Connection conn, List<StockMovement> stockMovements){
