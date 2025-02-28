@@ -17,6 +17,10 @@ public class StockMovementDAO{
         return getAll(dataSource.getConnection(), page, pageSize);
     }
 
+    public int saveAll(List<StockMovement> stockMovements){
+        return saveAll(dataSource.getConnection(), stockMovements);
+    }
+
     public static List<StockMovement> getAll(Connection conn, int page, int pageSize){
         return getAllByCriteria(conn, List.of(), page, pageSize);
     }
@@ -52,5 +56,31 @@ public class StockMovementDAO{
         });
 
         return stockMovements;
+    }
+
+    public static int saveAll(Connection conn, List<StockMovement> stockMovements){
+        int saved;
+
+        String sql = "INSERT INTO stock_movement (ingredient_id, type, quantity, date) VALUES ";
+        StringBuilder sqlBuilder = new StringBuilder(sql);
+        List<Object> params = new ArrayList<>();
+
+        for (int i = 0; i < stockMovements.size(); i++) {
+            StockMovement movement = stockMovements.get(i);
+
+            sqlBuilder.append(stockMovements.size() - i > 1 ? "(?, ?, ?, ?)," : "(?, ?, ?, ?)");
+            params.addAll(List.of(
+                    movement.getAffectedIngredient().getId(),
+                    movement.getType().toString(),
+                    movement.getQuantity(),
+                    movement.getDate()
+            ));
+        }
+
+        sql = sqlBuilder.toString();
+
+        saved = BaseDAO.executeUpdate(conn, sql, params);
+
+        return saved;
     }
 }
