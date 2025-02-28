@@ -27,7 +27,12 @@ INSERT INTO make_up(dish_id, ingredient_id, ingredient_quantity) VALUES
 
 -- MOVEMENT_STOCK
 INSERT INTO stock_movement(ingredient_id, type, quantity, date) VALUES
+    -- IN
     ('3', 'IN', 100.0, '2025-02-01 08:00'),
     ('4', 'IN', 50.0, '2025-02-01 08:00'),
     ('1', 'IN', 10000.0, '2025-02-01 08:00'),
-    ('2', 'IN', 20.0, '2025-02-01 08:00');
+    ('2', 'IN', 20.0, '2025-02-01 08:00'),
+    -- OUT
+    ('3', 'OUT', 10.0, '2025-02-02 10:00'),
+    ('3', 'OUT', 10.0, '2025-02-03 15:00'),
+    ('4', 'OUT', 20.0, '2025-02-04 16:00');
