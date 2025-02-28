@@ -4,6 +4,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 import model.*;
 
 import java.sql.Connection;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +44,10 @@ public class StockMovementDAO{
         return saveAll(dataSource.getConnection(), stockMovements);
     }
 
+    public StockInfo getStockInfo(String ingredientID, LocalDateTime date){
+        return getStockInfo(dataSource.getConnection(), ingredientID, date);
+    }
+
     public static List<StockMovement> getAll(Connection conn, int page, int pageSize){
         return getAllByCriteria(conn, List.of(), page, pageSize);
     }
@@ -51,6 +56,30 @@ public class StockMovementDAO{
         Criteria criteria = new Criteria(LogicalOperator.AND, "ingredient_id", CriteriaOperator.EQUAL, ingredientID);
 
         return getAllByCriteria(conn, List.of(criteria), page, pageSize);
+    }
+
+    public static StockInfo getStockInfo(Connection conn, String ingredientID, LocalDateTime date) {
+        StockInfo stockInfo = new StockInfo();
+
+        String sql = """
+                SELECT
+                    COALESCE(SUM(CASE WHEN type = 'OUT' THEN quantity END), 0) AS out_total,
+                    COALESCE(SUM(CASE WHEN type = 'IN' THEN quantity END), 0) AS in_total
+                FROM stock_movement
+                WHERE ingredient_id = %s
+                """;
+        sql = String.format(sql, ingredientID);
+
+        Criteria dateCriteria = new Criteria(LogicalOperator.AND, "date", CriteriaOperator.LESS_THAN, date);
+
+        BaseDAO.getAllByCriteria(conn, List.of(dateCriteria), 1, 1, sql, result -> {
+            if (result.next()) {
+                stockInfo.setTotalOutQuantity(result.getDouble("out_total"));
+                stockInfo.setTotalInQuantity(result.getDouble("in_total"));
+            }
+        });
+
+        return stockInfo;
     }
 
     public static List<StockMovement> getAllByCriteria(Connection conn, List<Criteria> criteria, int page, int pageSize){
