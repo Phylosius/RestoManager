@@ -16,7 +16,7 @@ public class StockMovementDAOTest {
     private StockMovementDAO subject;
     private DataSource dataSource;
 
-    private LocalDateTime now = LocalDateTime.of(2025, 02, 25, 05, 05);
+    private LocalDateTime now = LocalDateTime.of(2025, 2, 25, 5, 5);
 
     private Ingredient ingredient1;
     private Ingredient ingredient2;
@@ -63,7 +63,7 @@ public class StockMovementDAOTest {
         Criteria dateCriteria = new Criteria(LogicalOperator.AND, "date", CriteriaOperator.NEAR, now, 100d);
         List<StockMovement> retrieved = subject.getAllByCriteria(List.of(dateCriteria), 1, 5);
 
-        assertTrue(retrieved.size() > 0 && retrieved.size() <= 5);
+        assertTrue(!retrieved.isEmpty() && retrieved.size() <= 5);
         assertTrue(retrieved.contains(selMovement));
         assertTrue(retrieved.contains(rizMovement));
     }
@@ -71,7 +71,7 @@ public class StockMovementDAOTest {
     @Test
     @Order(3)
     void create_out_movements_ok() {
-        LocalDateTime then = LocalDateTime.of(2025, 02, 25, 15, 05);
+        LocalDateTime then = LocalDateTime.of(2025, 2, 25, 15, 5);
         StockMovement selMovement = new StockMovement(ingredient1, MovementType.OUT, 5000d, then);
         StockMovement rizMovement = new StockMovement(ingredient2, MovementType.OUT, 15000d, then);
 
