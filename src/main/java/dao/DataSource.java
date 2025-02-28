@@ -26,4 +26,12 @@ public class DataSource {
             throw new RuntimeException(e);
         }
     }
+
+    public void closeConnection() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
