@@ -1,8 +1,6 @@
 package dao;
 
-import model.Criteria;
-import model.MovementType;
-import model.StockMovement;
+import model.*;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -75,6 +73,8 @@ public class StockMovementDAO{
     }
 
     public static List<StockMovement> getByIngredientID(Connection conn, String ingredientID, int page, int pageSize){
-        throw new UnsupportedOperationException("Not implemented yet");
+        Criteria criteria = new Criteria(LogicalOperator.AND, "ingredient_id", CriteriaOperator.EQUAL, ingredientID);
+
+        return getAllByCriteria(conn, List.of(criteria), page, pageSize);
     }
 }
