@@ -1,10 +1,7 @@
 package dao;
 
 import io.github.cdimascio.dotenv.Dotenv;
-import model.Criteria;
-import model.Ingredient;
-import model.Price;
-import model.Unit;
+import model.*;
 
 import javax.xml.crypto.Data;
 import java.sql.Connection;
@@ -59,40 +56,12 @@ public class IngredientDAO implements DataProvider<Ingredient, String> {
     }
 
     public static List<Ingredient> getAll(Connection conn, int page, int pageSize) {
-        List<Ingredient> ingredients = new ArrayList<>();
+        return getAllByCriteria(conn, List.of(), page, pageSize);
+    }
 
-        String sql = """
-                SELECT i.id, i.name, i.unit, p.unit_price, i.modification_date
-                FROM ingredient i
-                JOIN (
-                    SELECT ingredient_id, unit_price, date
-                    FROM ingredient_price p1
-                    WHERE date = (
-                        SELECT MAX(date)
-                        FROM ingredient_price p2
-                        WHERE p1.ingredient_id = p2.ingredient_id
-                    )
-                ) p ON i.id = p.ingredient_id
-                ORDER BY id ASC LIMIT ? OFFSET ?""";
-
-        List<Object> params = List.of(pageSize, pageSize * (page - 1));
-
-        BaseDAO.executeQuery(conn, sql, params, (r) -> {
-            while (r.next()) {
-                Ingredient ingredient = new Ingredient();
-
-                ingredient.setId(r.getString("id"));
-                ingredient.setName(r.getString("name"));
-                ingredient.setModificationDate(r.getTimestamp("modification_date").toLocalDateTime());
-                ingredient.setPrice(PriceDAO.getLatestByIngredientID(conn, ingredient.getId()));
-                ingredient.setUnit(Unit.valueOf(r.getString("unit")));
-
-                ingredients.add(ingredient);
-            }
-
-        });
-
-        return ingredients;
+    public static Ingredient getById(Connection conn, String id) {
+        Criteria criteria = new Criteria(LogicalOperator.AND, "id", CriteriaOperator.EQUAL, id);
+        return getAllByCriteria(conn, List.of(criteria), 1, 1).get(0);
     }
 
     public static List<Ingredient> getAllByCriteria(Connection conn, List<Criteria> criteria, int page, int pageSize) {
@@ -128,38 +97,6 @@ public class IngredientDAO implements DataProvider<Ingredient, String> {
         });
 
         return ingredients;
-    }
-
-    public static Ingredient getById(Connection conn, String id) {
-        Ingredient ingredient = new Ingredient();
-
-        String sql = """
-                SELECT i.id, i.name, i.unit, p.unit_price, i.modification_date
-                FROM ingredient i
-                JOIN (
-                    SELECT ingredient_id, unit_price, date
-                    FROM ingredient_price p1
-                    WHERE date = (
-                        SELECT MAX(date)
-                        FROM ingredient_price p2
-                        WHERE p1.ingredient_id = p2.ingredient_id
-                    )
-                ) p ON i.id = p.ingredient_id
-                WHERE i.id = ?
-                """;
-        List<Object> params = List.of(id);
-
-        BaseDAO.executeQuery(conn, sql, params, (r) -> {
-            if (r.next()) {
-                ingredient.setId(r.getString("id"));
-                ingredient.setName(r.getString("name"));
-                ingredient.setModificationDate(r.getTimestamp("modification_date").toLocalDateTime());
-                ingredient.setPrice(PriceDAO.getLatestByIngredientID(conn, ingredient.getId()));
-                ingredient.setUnit(Unit.valueOf(r.getString("unit")));
-            }
-        });
-
-        return ingredient;
     }
 
     public static void add(Connection conn, Ingredient entity) {
