@@ -77,13 +77,15 @@ public class DishDAO implements DataProvider<Dish, String> {
         String sql = "SELECT id, name, unit_price FROM dish WHERE 1=1 ";
 
         BaseDAO.getAllByCriteria(conn, criteria, page, pageSize, sql, (r) -> {
-            Dish dish = new Dish();
+            while (r.next()) {
+                Dish dish = new Dish();
 
-            dish.setId(r.getString("id"));
-            dish.setName(r.getString("name"));
-            dish.setUnitPrice(r.getDouble("unit_price"));
+                dish.setId(r.getString("id"));
+                dish.setName(r.getString("name"));
+                dish.setUnitPrice(r.getDouble("unit_price"));
 
-            dishs.add(dish);
+                dishs.add(dish);
+            }
         });
 
         return dishs;

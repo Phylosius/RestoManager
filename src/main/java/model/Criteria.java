@@ -39,7 +39,7 @@ public class Criteria {
                 yield "%s < %s";
             case NEAR: {
                 if (value instanceof String) {
-                    yield "%s ILIKE %%%s%%";
+                    yield "%s ILIKE '%%%s%%'";
                 } else if (value instanceof Double) {
                     yield "ABS(%s::FLOAT - %s::FLOAT) <= %s::FLOAT";
                 } else if (value instanceof LocalDateTime) {
