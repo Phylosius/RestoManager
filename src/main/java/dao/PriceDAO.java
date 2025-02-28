@@ -99,19 +99,23 @@ public class PriceDAO {
         Price price = new Price();
 
         String sql = """
-                select unit_price, date
-                from ingredient_price p
-                where date = (
-                    select max(date) from ingredient_price pp
-                    where p.ingredient_id = ?
-                )
+                SELECT unit_price, date
+                FROM ingredient_price p
+                WHERE ingredient_id = ?
+                AND date = (
+                    SELECT MAX(date)
+                    FROM ingredient_price
+                    WHERE ingredient_id = ?
+                );
+                
                 """;
-        List<Object> params = List.of(ingredientID);
+        List<Object> params = List.of(ingredientID, ingredientID);
 
         BaseDAO.executeQuery(conn, sql, params, (resultSet -> {
             if (resultSet.next()) {
                 price.setValue(resultSet.getDouble("unit_price"));
                 price.setDate(resultSet.getTimestamp("date").toLocalDateTime());
+
             }
         }));
 
