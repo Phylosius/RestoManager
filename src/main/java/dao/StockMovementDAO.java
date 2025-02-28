@@ -1,5 +1,6 @@
 package dao;
 
+import model.Criteria;
 import model.MovementType;
 import model.StockMovement;
 
@@ -40,6 +41,33 @@ public class StockMovementDAO{
                 );
 
                 stockMovements.add(stockMovement);
+            }
+        });
+
+        return stockMovements;
+    }
+
+    public static List<StockMovement> getAllByCriteria(Connection conn, List<Criteria> criteria, int page, int pageSize){
+        List<StockMovement> stockMovements = new ArrayList<>();
+
+        String sql = "SELECT ingredient_id, type, quantity, date FROM stock_movement WHERE 1=1";
+
+        BaseDAO.getAllByCriteria(conn, criteria, page, pageSize, sql, result -> {
+            while(result.next()){
+                StockMovement movement = new StockMovement();
+
+                movement.setAffectedIngredient(
+                        IngredientDAO.getById(conn,
+                                result.getString("ingredient_id")));
+                movement.setType(
+                        MovementType.valueOf(
+                                result.getString("type")));
+                movement.setQuantity(
+                        result.getDouble("quantity"));
+                movement.setDate(
+                        result.getTimestamp("date").toLocalDateTime());
+
+                stockMovements.add(movement);
             }
         });
 
