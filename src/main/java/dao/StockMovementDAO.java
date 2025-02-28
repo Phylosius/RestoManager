@@ -18,31 +18,13 @@ public class StockMovementDAO{
     }
 
     public static List<StockMovement> getAll(Connection conn, int page, int pageSize){
-        List<StockMovement> stockMovements = new ArrayList<>();
+        return getAllByCriteria(conn, List.of(), page, pageSize);
+    }
 
-        String sql = """
-                SELECT ingredient_id, type, quantity, date
-                FROM stock_movement
-                LIMIT ? OFFSET ?
-                """;
-        List<Object> params = List.of(pageSize, pageSize * (page - 1));
+    public static List<StockMovement> getByIngredientID(Connection conn, String ingredientID, int page, int pageSize){
+        Criteria criteria = new Criteria(LogicalOperator.AND, "ingredient_id", CriteriaOperator.EQUAL, ingredientID);
 
-        BaseDAO.executeQuery(conn, sql, params, resultSet -> {
-            while(resultSet.next()){
-                StockMovement stockMovement = new StockMovement();
-
-                stockMovement.setDate(resultSet.getTimestamp("date").toLocalDateTime());
-                stockMovement.setType(MovementType.valueOf(resultSet.getString("type")));
-                stockMovement.setQuantity(resultSet.getDouble("quantity"));
-                stockMovement.setAffectedIngredient(
-                        IngredientDAO.getById(conn, resultSet.getString("ingredient_id"))
-                );
-
-                stockMovements.add(stockMovement);
-            }
-        });
-
-        return stockMovements;
+        return getAllByCriteria(conn, List.of(criteria), page, pageSize);
     }
 
     public static List<StockMovement> getAllByCriteria(Connection conn, List<Criteria> criteria, int page, int pageSize){
@@ -70,11 +52,5 @@ public class StockMovementDAO{
         });
 
         return stockMovements;
-    }
-
-    public static List<StockMovement> getByIngredientID(Connection conn, String ingredientID, int page, int pageSize){
-        Criteria criteria = new Criteria(LogicalOperator.AND, "ingredient_id", CriteriaOperator.EQUAL, ingredientID);
-
-        return getAllByCriteria(conn, List.of(criteria), page, pageSize);
     }
 }
