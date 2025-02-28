@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class IngredientDAO implements DataProvider<Ingredient, String> {
 
@@ -54,6 +55,14 @@ public class IngredientDAO implements DataProvider<Ingredient, String> {
         delete(dataSource.getConnection(), id);
     }
 
+    public static void save(Connection conn, Ingredient entity) {
+        if(isExist(conn, entity.getId())) {
+            update(conn, entity.getId(), entity);
+        } else {
+            add(conn, entity);
+        }
+    }
+
     public static List<Ingredient> getAll(Connection conn, int page, int pageSize) {
         return getAllByCriteria(conn, List.of(), page, pageSize);
     }
@@ -96,6 +105,20 @@ public class IngredientDAO implements DataProvider<Ingredient, String> {
         });
 
         return ingredients;
+    }
+
+    public static Boolean isExist(Connection conn, String id) {
+        AtomicBoolean truth = new AtomicBoolean(false);
+
+        String sql = "SELECT id FROM ingredient WHERE id = ?";
+
+        BaseDAO.executeQuery(conn, sql, List.of(id), resultSet -> {
+            if (resultSet.next()) {
+                truth.set(true);
+            }
+        });
+
+        return truth.get();
     }
 
     public static void add(Connection conn, Ingredient entity) {
