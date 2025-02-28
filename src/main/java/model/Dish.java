@@ -27,7 +27,7 @@ public class Dish {
 
     public Double getProductionCost(LocalDateTime date){
         return makeUps.stream()
-                .map(m-> m.getIngredient().getPrice(date).getValue() * m.getQuantity())
+                .map(m-> m.getIngredient().getRecentPrice(date).getValue() * m.getQuantity())
                 .reduce(0.0, Double::sum);
     }
 

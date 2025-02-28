@@ -1,12 +1,10 @@
 package model;
 
-import dao.IngredientDAO;
 import dao.PriceDAO;
 import dao.StockMovementDAO;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter
@@ -21,11 +19,11 @@ public class Ingredient {
     private Price price;
     private Unit unit;
 
-    public Price getPrice() {
-        return getPrice(LocalDateTime.now());
+    public Price getRecentPrice() {
+        return getRecentPrice(LocalDateTime.now());
     }
 
-    public Price getPrice(LocalDateTime localDateTime) {
+    public Price getRecentPrice(LocalDateTime localDateTime) {
         PriceDAO priceDAO = new PriceDAO();
         return priceDAO.getNearbyByDateAndIngredientID(localDateTime, id);
     }
