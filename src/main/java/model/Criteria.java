@@ -30,9 +30,9 @@ public class Criteria {
         String sqlLogicalOperator = logicalOperator.toString();
         String sqlOperator = switch (operator){
             case EQUAL:
-                yield "%s = '%s'";
+                yield "%s = %s";
             case NOT_EQUAL :
-                yield "%s != '%s'";
+                yield "%s != %s";
             case GREATER_THAN:
                 yield "%s > %s";
             case LESS_THAN:
@@ -58,20 +58,26 @@ public class Criteria {
         };
 
         String sql;
+        String finalValue = value.toString();
+
+        if (value instanceof String || value instanceof  LocalDateTime) {
+            value = value instanceof  LocalDateTime ? Timestamp.valueOf( (LocalDateTime) value) : value;
+            finalValue = String.format("'%s'", value);
+        }
+
         if (operator != CriteriaOperator.ORDER_BY) {
             if (value instanceof LocalDateTime || value instanceof Double) {
                 sql = String.format(" %s %s",
                         sqlLogicalOperator, String.format(sqlOperator, getFieldName(),
-                                getValue() instanceof LocalDateTime ?
-                                        "'" + Timestamp.valueOf((LocalDateTime) getValue()) + "'" : getValue(),
+                                finalValue,
                                 getDistance()));
             } else {
                 sql = String.format(" %s %s",
-                        sqlLogicalOperator, String.format(sqlOperator, getFieldName(), getValue()));
+                        sqlLogicalOperator, String.format(sqlOperator, getFieldName(), finalValue));
             }
         } else {
             sql = String.format(" %s %s",
-                    sqlLogicalOperator, String.format(getFieldName(), getValue()));
+                    sqlLogicalOperator, String.format(getFieldName(), finalValue));
         }
 
         return sql;
