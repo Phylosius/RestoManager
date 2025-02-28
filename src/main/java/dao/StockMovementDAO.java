@@ -123,7 +123,7 @@ public class StockMovementDAO{
         for (int i = 0; i < stockMovements.size(); i++) {
             StockMovement movement = stockMovements.get(i);
 
-            sqlBuilder.append(stockMovements.size() - i > 1 ? "(?, ?, ?, ?)," : "(?, ?, ?, ?)");
+            sqlBuilder.append(stockMovements.size() - i > 1 ? "(?, ?::stock_movement_type, ?, ?)," : "(?, ?::stock_movement_type, ?, ?)");
             params.addAll(List.of(
                     movement.getAffectedIngredient().getId(),
                     movement.getType().toString(),
