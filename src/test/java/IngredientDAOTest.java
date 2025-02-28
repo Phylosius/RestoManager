@@ -17,12 +17,13 @@ public class IngredientDAOTest {
     private IngredientDAO subject;
     private Ingredient testIngredient;
     private Price ingredientPrice;
+    private DataSource dataSource;
 
     @BeforeAll
     public void setUp(){
         Dotenv dotenv = Dotenv.load();
 
-        DataSource dataSource = new DataSource(
+        dataSource = new DataSource(
                 dotenv.get("DB_USERNAME"),
                 dotenv.get("DB_PASSWORD"),
                 dotenv.get("DB_URL"));
@@ -101,5 +102,10 @@ public class IngredientDAOTest {
 
         assertTrue(retrievedByUnit.size() <= pageSize);
         assertEquals(2, retrievedByUnit.size());
+    }
+
+    @AfterAll
+    public void tearDown(){
+        dataSource.closeConnection();
     }
 }

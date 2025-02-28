@@ -9,15 +9,15 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class StockMovementDAOTest {
     private StockMovementDAO subject;
+    private DataSource dataSource;
 
     @BeforeAll
     void setUp() {
         Dotenv dotenv = Dotenv.load();
 
-        DataSource dataSource = new DataSource(
+        dataSource = new DataSource(
                 dotenv.get("DB_USERNAME"),
                 dotenv.get("DB_PASSWORD"),
                 dotenv.get("DB_URL"));
@@ -34,5 +34,10 @@ public class StockMovementDAOTest {
 
         assertTrue(retrieved.size() <= pageSize);
         assertEquals(3, retrieved.size());
+    }
+
+    @AfterAll
+    public void tearDown(){
+        dataSource.closeConnection();
     }
 }

@@ -16,12 +16,13 @@ public class DishDAOTest {
 
     private DishDAO subject;
     private Dish testDish;
+    private DataSource dataSource;
 
     @BeforeAll
     public void setUp(){
         Dotenv dotenv = Dotenv.load();
 
-        DataSource dataSource = new DataSource(
+        dataSource = new DataSource(
                 dotenv.get("DB_USERNAME"),
                 dotenv.get("DB_PASSWORD"),
                 dotenv.get("DB_URL"));
@@ -118,5 +119,10 @@ public class DishDAOTest {
         List<Dish> retrievedByName = subject.getAllByCriteria(List.of(nameCriteria, priceCriteria1, priceCriteria2), 1, 5);
 
         assertEquals(1, retrievedByName.size());
+    }
+
+    @AfterAll
+    public void tearDown(){
+        dataSource.closeConnection();
     }
 }
