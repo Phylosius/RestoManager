@@ -11,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class DishTest {
-    private Dish subject;
     private DataSource dataSource;
     private DishDAO dishDAO;
 
@@ -34,7 +33,7 @@ public class DishTest {
 
     @Test
     void check_available_quantity() {
-        subject = dishDAO.getById("1");
+        Dish subject = dishDAO.getById("1");
         int expectedQuantity = 30;
 
         int actualQuantity = subject.getAvailableQuantity();
