@@ -2,6 +2,7 @@ import dao.DataSource;
 import dao.DishDAO;
 import io.github.cdimascio.dotenv.Dotenv;
 import model.Dish;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -24,6 +25,11 @@ public class DishTest {
                 dotenv.get("DB_URL")
         );
         dishDAO = new DishDAO(dataSource);
+    }
+
+    @AfterAll
+    void tearDown() {
+        dataSource.closeConnection();
     }
 
     @Test
