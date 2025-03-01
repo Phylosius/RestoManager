@@ -32,6 +32,10 @@ public class Ingredient {
         return getAvalaibleQuantity(LocalDateTime.now());
     }
 
+    public int getMakeableQuantity (Double quantityForMakeOne, LocalDateTime date) {
+        return (int) Math.floor(getAvalaibleQuantity(date) / quantityForMakeOne);
+    }
+
     public Double getAvalaibleQuantity(LocalDateTime date) {
         return getAvalaibleQuantity(getId(), date);
     }
