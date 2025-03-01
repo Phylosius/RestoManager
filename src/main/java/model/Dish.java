@@ -25,6 +25,29 @@ public class Dish {
         return getGrossMargin(LocalDateTime.now());
     }
 
+    public int getAvailableQuantity() {
+        return getAvailableQuantity(LocalDateTime.now());
+    }
+
+    public int getAvailableQuantity(LocalDateTime date) {
+        MakeUp firstMakeUp = makeUps.get(0);
+        int minimalMakeableQuantity = getMakeableQuantityByMakeUp(firstMakeUp, date);
+
+        for (int i = 1; i < makeUps.size(); i++) {
+            MakeUp makeUp = makeUps.get(i);
+            int makeableQuantity = getMakeableQuantityByMakeUp(makeUp, date);
+
+            minimalMakeableQuantity = Math.min(minimalMakeableQuantity, makeableQuantity);
+        }
+
+        return minimalMakeableQuantity;
+    }
+
+    public int getMakeableQuantityByMakeUp(MakeUp makeUp, LocalDateTime date) {
+        return makeUp.getIngredient()
+                .getMakeableQuantity(makeUp.getQuantity(), date);
+    }
+
     public Double getProductionCost(LocalDateTime date){
         return makeUps.stream()
                 .map(m-> m.getIngredient().getRecentPrice(date).getValue() * m.getQuantity())
