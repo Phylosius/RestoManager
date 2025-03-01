@@ -9,10 +9,10 @@ public class IngredientTest {
     @Test
     void check_available_quantities() {
 
-        Double ouefQuantity = Ingredient.getAvalaibleQuantity("3", LocalDateTime.now());
-        Double painQuantity = Ingredient.getAvalaibleQuantity("4", LocalDateTime.now());
-        Double saucisseQuantity = Ingredient.getAvalaibleQuantity("1", LocalDateTime.now());
-        Double huileQuantity = Ingredient.getAvalaibleQuantity("2", LocalDateTime.now());
+        Double ouefQuantity = Ingredient.getAvalaibleQuantity("3");
+        Double painQuantity = Ingredient.getAvalaibleQuantity("4");
+        Double saucisseQuantity = Ingredient.getAvalaibleQuantity("1");
+        Double huileQuantity = Ingredient.getAvalaibleQuantity("2");
 
         assertEquals(80d, ouefQuantity);
         assertEquals(30d, painQuantity);
