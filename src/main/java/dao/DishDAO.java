@@ -2,8 +2,6 @@ package dao;
 
 import model.Criteria;
 import model.Dish;
-import model.Ingredient;
-import model.Price;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -47,7 +45,7 @@ public class DishDAO implements DataProvider<Dish, String> {
     }
 
     public static List<Dish> getAll(Connection conn, int page, int pageSize) {
-        List<Dish> dishs = new ArrayList<>();
+        List<Dish> dishes = new ArrayList<>();
 
         String sql = "SELECT id, name, unit_price FROM dish ORDER BY id ASC LIMIT ? OFFSET ?";
         List<Object> params = List.of(pageSize, pageSize * (page - 1));
@@ -63,16 +61,16 @@ public class DishDAO implements DataProvider<Dish, String> {
                         MakeUpDAO.getAllByDishID(conn, dish.getId())
                 );
 
-                dishs.add(dish);
+                dishes.add(dish);
             }
 
         });
 
-        return dishs;
+        return dishes;
     }
 
     public static List<Dish> getAllByCriteria(Connection conn, List<Criteria> criteria, int page, int pageSize) {
-        List<Dish> dishs = new ArrayList<>();
+        List<Dish> dishes = new ArrayList<>();
 
         String sql = "SELECT id, name, unit_price FROM dish WHERE 1=1 ";
 
@@ -84,11 +82,11 @@ public class DishDAO implements DataProvider<Dish, String> {
                 dish.setName(r.getString("name"));
                 dish.setUnitPrice(r.getDouble("unit_price"));
 
-                dishs.add(dish);
+                dishes.add(dish);
             }
         });
 
-        return dishs;
+        return dishes;
     }
 
     public static Dish getById(Connection conn, String id) {

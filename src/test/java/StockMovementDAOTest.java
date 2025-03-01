@@ -16,7 +16,7 @@ public class StockMovementDAOTest {
     private StockMovementDAO subject;
     private DataSource dataSource;
 
-    private LocalDateTime now = LocalDateTime.of(2025, 2, 25, 5, 5);
+    private final LocalDateTime now = LocalDateTime.of(2025, 2, 25, 5, 5);
 
     private Ingredient ingredient1;
     private Ingredient ingredient2;
@@ -89,8 +89,8 @@ public class StockMovementDAOTest {
     @Order(4)
     void check_total_quantity_ok() {
 
-        Double selQuantity = Ingredient.getAvalaibleQuantity("-1", LocalDateTime.now());
-        Double rizQuantity = Ingredient.getAvalaibleQuantity("-2", LocalDateTime.now());
+        Double selQuantity = Ingredient.getAvailableQuantity("-1", LocalDateTime.now());
+        Double rizQuantity = Ingredient.getAvailableQuantity("-2", LocalDateTime.now());
 
         assertEquals(5000d, selQuantity);
         assertEquals(5000d, rizQuantity);

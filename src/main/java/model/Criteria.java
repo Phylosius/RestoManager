@@ -38,14 +38,18 @@ public class Criteria {
             case LESS_THAN:
                 yield "%s < %s";
             case NEAR: {
-                if (value instanceof String) {
-                    yield "%s ILIKE '%%%s%%'";
-                } else if (value instanceof Double) {
-                    yield "ABS(%s::FLOAT - %s::FLOAT) <= %s::FLOAT";
-                } else if (value instanceof LocalDateTime) {
-                    yield "ABS(EXTRACT(EPOCH FROM (%s - %s::TIMESTAMP))) <= %s";
-                } else {
-                    throw new IllegalArgumentException("NEAR operation of given value not supported");
+                switch (value) {
+                    case String s -> {
+                        yield "%s ILIKE '%%%s%%'";
+                    }
+                    case Double v -> {
+                        yield "ABS(%s::FLOAT - %s::FLOAT) <= %s::FLOAT";
+                    }
+                    case LocalDateTime localDateTime -> {
+                        yield "ABS(EXTRACT(EPOCH FROM (%s - %s::TIMESTAMP))) <= %s";
+                    }
+                    case null, default ->
+                            throw new IllegalArgumentException("NEAR operation of given value not supported");
                 }
             }
             case ORDER_BY: {

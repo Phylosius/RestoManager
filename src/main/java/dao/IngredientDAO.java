@@ -69,7 +69,7 @@ public class IngredientDAO implements DataProvider<Ingredient, String> {
 
     public static Ingredient getById(Connection conn, String id) {
         Criteria criteria = new Criteria(LogicalOperator.AND, "id", CriteriaOperator.EQUAL, id);
-        return getAllByCriteria(conn, List.of(criteria), 1, 1).get(0);
+        return getAllByCriteria(conn, List.of(criteria), 1, 1).getFirst();
     }
 
     public static List<Ingredient> getAllByCriteria(Connection conn, List<Criteria> criteria, int page, int pageSize) {

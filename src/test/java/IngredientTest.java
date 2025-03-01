@@ -38,10 +38,10 @@ public class IngredientTest {
         Ingredient saucisse = ingredientDAO.getById("1");
         Ingredient huile = ingredientDAO.getById("2");
 
-        Double oeufQuantity = oeuf.getAvalaibleQuantity();
-        Double painQuantity = pain.getAvalaibleQuantity();
-        Double saucisseQuantity = saucisse.getAvalaibleQuantity();
-        Double huileQuantity = huile.getAvalaibleQuantity();
+        Double oeufQuantity = oeuf.getAvailableQuantity();
+        Double painQuantity = pain.getAvailableQuantity();
+        Double saucisseQuantity = saucisse.getAvailableQuantity();
+        Double huileQuantity = huile.getAvailableQuantity();
 
         assertEquals(80d, oeufQuantity);
         assertEquals(30d, painQuantity);

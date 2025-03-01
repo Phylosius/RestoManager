@@ -40,8 +40,8 @@ public class StockMovementDAO{
         return save(dataSource.getConnection(), stockMovement);
     }
 
-    public int saveAll(List<StockMovement> stockMovements){
-        return saveAll(dataSource.getConnection(), stockMovements);
+    public void saveAll(List<StockMovement> stockMovements){
+        saveAll(dataSource.getConnection(), stockMovements);
     }
 
     public StockInfo getStockInfo(String ingredientID, LocalDateTime date){

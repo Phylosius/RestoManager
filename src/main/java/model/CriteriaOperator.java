@@ -1,7 +1,5 @@
 package model;
 
-import dao.DataProvider;
-
 public enum CriteriaOperator {
     EQUAL,
     NOT_EQUAL,

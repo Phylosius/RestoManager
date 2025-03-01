@@ -28,23 +28,23 @@ public class Ingredient {
         return priceDAO.getNearbyByDateAndIngredientID(localDateTime, id);
     }
 
-    public Double getAvalaibleQuantity() {
-        return getAvalaibleQuantity(LocalDateTime.now());
+    public Double getAvailableQuantity() {
+        return getAvailableQuantity(LocalDateTime.now());
     }
 
     public int getMakeableQuantity (Double quantityForMakeOne, LocalDateTime date) {
-        return (int) Math.floor(getAvalaibleQuantity(date) / quantityForMakeOne);
+        return (int) Math.floor(getAvailableQuantity(date) / quantityForMakeOne);
     }
 
-    public Double getAvalaibleQuantity(LocalDateTime date) {
-        return getAvalaibleQuantity(getId(), date);
+    public Double getAvailableQuantity(LocalDateTime date) {
+        return getAvailableQuantity(getId(), date);
     }
 
-    public static Double getAvalaibleQuantity(String ingredientId) {
+    public static Double getAvailableQuantity(String ingredientId) {
         return getStockInfo(ingredientId, LocalDateTime.now()).getQuantity();
     }
 
-    public static Double getAvalaibleQuantity(String ingredientId, LocalDateTime date) {
+    public static Double getAvailableQuantity(String ingredientId, LocalDateTime date) {
         return getStockInfo(ingredientId, date).getQuantity();
     }
 

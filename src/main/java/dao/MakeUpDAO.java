@@ -2,7 +2,6 @@ package dao;
 
 import model.Criteria;
 import model.MakeUp;
-import model.Price;
 
 import java.sql.Connection;
 import java.util.ArrayList;
