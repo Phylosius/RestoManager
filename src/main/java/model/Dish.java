@@ -30,7 +30,7 @@ public class Dish {
     }
 
     public int getAvailableQuantity(LocalDateTime date) {
-        MakeUp firstMakeUp = makeUps.get(0);
+        MakeUp firstMakeUp = makeUps.getFirst();
         int minimalMakeableQuantity = getMakeableQuantityByMakeUp(firstMakeUp, date);
 
         for (int i = 1; i < makeUps.size(); i++) {
