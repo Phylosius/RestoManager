@@ -71,8 +71,9 @@ public class StockMovementDAO{
         sql = String.format(sql, ingredientID);
 
         Criteria dateCriteria = new Criteria(LogicalOperator.AND, "date", CriteriaOperator.LESS_THAN, date);
+        Criteria equalDateCriteria = new Criteria(LogicalOperator.OR, "date", CriteriaOperator.EQUAL, date);
 
-        BaseDAO.getAllByCriteria(conn, List.of(dateCriteria), 1, 1, sql, result -> {
+        BaseDAO.getAllByCriteria(conn, List.of(dateCriteria, equalDateCriteria), 1, 1, sql, result -> {
             if (result.next()) {
                 stockInfo.setTotalOutQuantity(result.getDouble("out_total"));
                 stockInfo.setTotalInQuantity(result.getDouble("in_total"));
