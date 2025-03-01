@@ -36,6 +36,10 @@ public class Ingredient {
         return getAvalaibleQuantity(getId(), date);
     }
 
+    public static Double getAvalaibleQuantity(String ingredientId) {
+        return getStockInfo(ingredientId, LocalDateTime.now()).getQuantity();
+    }
+
     public static Double getAvalaibleQuantity(String ingredientId, LocalDateTime date) {
         return getStockInfo(ingredientId, date).getQuantity();
     }
