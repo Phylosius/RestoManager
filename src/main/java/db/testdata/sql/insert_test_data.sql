@@ -1,8 +1,8 @@
 \c resto_db
 
 -- DISH INSERTION
-INSERT INTO dish(name, unit_price) VALUES
-    ('Hot dog', 15000.0);
+INSERT INTO dish(id, name, unit_price) VALUES
+    ('1', 'Hot dog', 15000.0);
 
 -- INGREDIENT INSERTION
 INSERT INTO ingredient(id, name, modification_date, unit) VALUES

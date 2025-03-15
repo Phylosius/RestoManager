@@ -84,12 +84,11 @@ public class IngredientDAOTest {
     @Test
     @Order(5)
     public void delete_ingredient_ok() {
-
         subject.delete(testIngredient.getId());
 
         Ingredient retrievedIngredient = subject.getById(testIngredient.getId());
 
-        assertNull(retrievedIngredient.getId());
+        assertNull(retrievedIngredient);
     }
 
     @Test

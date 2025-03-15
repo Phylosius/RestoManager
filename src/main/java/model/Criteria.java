@@ -26,49 +26,60 @@ public class Criteria {
     }
 
     public String getSqlValue() {
-
         String sqlLogicalOperator = logicalOperator.toString();
-        String sqlOperator = switch (operator){
-            case EQUAL:
-                yield "%s = %s";
-            case NOT_EQUAL :
-                yield "%s != %s";
-            case GREATER_THAN:
-                yield "%s > %s";
-            case LESS_THAN:
-                yield "%s < %s";
-            case NEAR: {
-                switch (value) {
-                    case String s -> {
-                        yield "%s ILIKE '%%%s%%'";
-                    }
-                    case Double v -> {
-                        yield "ABS(%s::FLOAT - %s::FLOAT) <= %s::FLOAT";
-                    }
-                    case LocalDateTime localDateTime -> {
-                        yield "ABS(EXTRACT(EPOCH FROM (%s - %s::TIMESTAMP))) <= %s";
-                    }
-                    case null, default ->
-                            throw new IllegalArgumentException("NEAR operation of given value not supported");
-                }
-            }
-            case ORDER_BY: {
-                if (value instanceof OrderType){
-                    yield "ORDER BY %s %s";
-                } else {
-                    throw new IllegalArgumentException("value  on ORDER_BY operation must be a OrderType");
-                }
-            }
-        };
-
-        String sql;
+        String sqlOperator;
         String finalValue = value.toString();
 
-        if (value instanceof String || value instanceof  LocalDateTime || value instanceof MovementType) {
-            Object _value = value instanceof  LocalDateTime ? Timestamp.valueOf( (LocalDateTime) value) : value;
-            finalValue = String.format("'%s'", _value);
+        if (value instanceof String || value instanceof LocalDateTime || value instanceof MovementType || value instanceof Unit) {
+            Object _value = value instanceof LocalDateTime ? Timestamp.valueOf((LocalDateTime) value) : value;
+            if (_value instanceof String) {
+                String strValue = (String) _value;
+                strValue = strValue.replace("'", "''");
+                finalValue = String.format("'%s'", strValue);
+            } else {
+                finalValue = String.format("'%s'", _value);
+            }
         }
 
+        switch (operator) {
+            case EQUAL:
+                sqlOperator = "%s = %s";
+                break;
+            case NOT_EQUAL:
+                sqlOperator = "%s != %s";
+                break;
+            case GREATER_THAN:
+                sqlOperator = "%s > %s";
+                break;
+            case LESS_THAN:
+                sqlOperator = "%s < %s";
+                break;
+            case NEAR:
+                if (value instanceof String) {
+                    String strValue = (String) value;
+                    strValue = strValue.replace("'", "''");
+                    sqlOperator = "%s ILIKE '%%%s%%'";
+                    finalValue = strValue;
+                } else if (value instanceof Double) {
+                    sqlOperator = "ABS(%s::FLOAT - %s::FLOAT) <= %s::FLOAT";
+                } else if (value instanceof LocalDateTime) {
+                    sqlOperator = "ABS(EXTRACT(EPOCH FROM (%s - %s::TIMESTAMP))) <= %s";
+                } else {
+                    throw new IllegalArgumentException("NEAR operation of given value not supported");
+                }
+                break;
+            case ORDER_BY:
+                if (value instanceof OrderType) {
+                    sqlOperator = "ORDER BY %s %s";
+                } else {
+                    throw new IllegalArgumentException("value on ORDER_BY operation must be a OrderType");
+                }
+                break;
+            default:
+                throw new IllegalArgumentException("Unsupported operator: " + operator);
+        }
+
+        String sql;
         if (operator != CriteriaOperator.ORDER_BY) {
             if (value instanceof LocalDateTime || value instanceof Double) {
                 sql = String.format(" %s %s",
