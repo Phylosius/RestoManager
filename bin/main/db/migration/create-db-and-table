@@ -1,0 +1,6 @@
+#!/bin/bash
+
+psql -U postgres -d postgres -f ./sql/create_db.sql
+psql -U resto_db_user -d resto_db -f ./sql/create_simple_varchar_id_generator.sql
+psql -U resto_db_user -d resto_db -f ./sql/create_table.sql
+psql -U resto_db_user -d resto_db -f ./sql/create_relation.sql
