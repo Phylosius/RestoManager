@@ -1,6 +1,10 @@
-ALTER TABLE public.command DROP CONSTRAINT IF EXISTS fk_command_command_status_id CASCADE;
+ALTER TABLE public.command_status_history DROP CONSTRAINT IF EXISTS fk_command_status_history_command_status_id CASCADE;
 -- ddl-end --
-ALTER TABLE public.dish_command DROP CONSTRAINT IF EXISTS fk_dish_command_command_status_id CASCADE;
+ALTER TABLE public.command_status_history DROP CONSTRAINT IF EXISTS fk_command_history_command_id CASCADE;
+-- ddl-end --
+ALTER TABLE public.dish_command_status_history DROP CONSTRAINT IF EXISTS fk_dish_command_status_history_command_status_id CASCADE;
+-- ddl-end --
+ALTER TABLE public.dish_command_status_history DROP CONSTRAINT IF EXISTS fk_dish_command_history_dish_command_id CASCADE;
 -- ddl-end --
 ALTER TABLE public.dish_command DROP CONSTRAINT IF EXISTS fk_dish_command_command_id CASCADE;
 -- ddl-end --

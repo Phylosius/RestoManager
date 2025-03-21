@@ -1,3 +1,7 @@
+ALTER TABLE public.command_status_history DROP CONSTRAINT IF EXISTS command_status_history_pk CASCADE;
+-- ddl-end --
+ALTER TABLE public.dish_command_status_history DROP CONSTRAINT IF EXISTS dish_command_status_history_pk CASCADE;
+-- ddl-end --
 ALTER TABLE public.command_status DROP CONSTRAINT IF EXISTS command_status_pk CASCADE;
 -- ddl-end --
 ALTER TABLE public.command DROP CONSTRAINT IF EXISTS command_pk CASCADE;

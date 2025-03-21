@@ -40,16 +40,30 @@ REFERENCES public.command (id) MATCH SIMPLE
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
--- object: fk_dish_command_command_status_id | type: CONSTRAINT --
--- ALTER TABLE public.dish_command DROP CONSTRAINT IF EXISTS fk_dish_command_command_status_id CASCADE;
-ALTER TABLE public.dish_command ADD CONSTRAINT fk_dish_command_command_status_id FOREIGN KEY (status_id)
+-- object: fk_dish_command_history_dish_command_id | type: CONSTRAINT --
+-- ALTER TABLE public.dish_command_status_history DROP CONSTRAINT IF EXISTS fk_dish_command_history_dish_command_id CASCADE;
+ALTER TABLE public.dish_command_status_history ADD CONSTRAINT fk_dish_command_history_dish_command_id FOREIGN KEY (dish_command_id)
+REFERENCES public.dish_command (id) MATCH SIMPLE
+ON DELETE NO ACTION ON UPDATE NO ACTION;
+-- ddl-end --
+
+-- object: fk_dish_command_status_history_command_status_id | type: CONSTRAINT --
+-- ALTER TABLE public.dish_command_status_history DROP CONSTRAINT IF EXISTS fk_dish_command_status_history_command_status_id CASCADE;
+ALTER TABLE public.dish_command_status_history ADD CONSTRAINT fk_dish_command_status_history_command_status_id FOREIGN KEY (status_id)
 REFERENCES public.command_status (id) MATCH SIMPLE
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
--- object: fk_command_command_status_id | type: CONSTRAINT --
--- ALTER TABLE public.command DROP CONSTRAINT IF EXISTS fk_command_command_status_id CASCADE;
-ALTER TABLE public.command ADD CONSTRAINT fk_command_command_status_id FOREIGN KEY (status_id)
+-- object: fk_command_history_command_id | type: CONSTRAINT --
+-- ALTER TABLE public.command_status_history DROP CONSTRAINT IF EXISTS fk_command_history_command_id CASCADE;
+ALTER TABLE public.command_status_history ADD CONSTRAINT fk_command_history_command_id FOREIGN KEY (command_id)
+REFERENCES public.command (id) MATCH SIMPLE
+ON DELETE NO ACTION ON UPDATE NO ACTION;
+-- ddl-end --
+
+-- object: fk_command_status_history_command_status_id | type: CONSTRAINT --
+-- ALTER TABLE public.command_status_history DROP CONSTRAINT IF EXISTS fk_command_status_history_command_status_id CASCADE;
+ALTER TABLE public.command_status_history ADD CONSTRAINT fk_command_status_history_command_status_id FOREIGN KEY (status_id)
 REFERENCES public.command_status (id) MATCH SIMPLE
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --

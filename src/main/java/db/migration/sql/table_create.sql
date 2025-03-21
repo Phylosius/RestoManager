@@ -63,10 +63,9 @@ ALTER TABLE public.make_up OWNER TO resto_db_user;
 -- object: public.dish_command | type: TABLE --
 -- DROP TABLE IF EXISTS public.dish_command CASCADE;
 CREATE TABLE public.dish_command (
-	id varchar(100) NOT NULL,
-	status_id varchar(100),
-	dish_id varchar(100),
-	command_id varchar(100)
+	id character varying(100) NOT NULL,
+	dish_id character varying(100),
+	command_id character varying(100)
 
 );
 -- ddl-end --
@@ -76,9 +75,8 @@ ALTER TABLE public.dish_command OWNER TO resto_db_user;
 -- object: public.command | type: TABLE --
 -- DROP TABLE IF EXISTS public.command CASCADE;
 CREATE TABLE public.command (
-	id varchar(100) NOT NULL,
-	created_at timestamp DEFAULT CURRENT_DATE::TIMESTAMP,
-	status_id varchar(100)
+	id character varying(100) NOT NULL,
+	created_at timestamp DEFAULT (CURRENT_DATE)::timestamp without time zone
 
 );
 -- ddl-end --
@@ -88,12 +86,36 @@ ALTER TABLE public.command OWNER TO resto_db_user;
 -- object: public.command_status | type: TABLE --
 -- DROP TABLE IF EXISTS public.command_status CASCADE;
 CREATE TABLE public.command_status (
-	id varchar(100) NOT NULL DEFAULT uuid_generate_v4(),
+	id character varying(100) NOT NULL DEFAULT uuid_generate_v4(),
 	"order" smallint,
-	name varchar(100)
+	name character varying(100)
 
 );
 -- ddl-end --
 ALTER TABLE public.command_status OWNER TO resto_db_user;
+-- ddl-end --
+
+-- object: public.dish_command_status_history | type: TABLE --
+-- DROP TABLE IF EXISTS public.dish_command_status_history CASCADE;
+CREATE TABLE public.dish_command_status_history (
+	date timestamp NOT NULL DEFAULT CURRENT_DATE::TIMESTAMP,
+	dish_command_id varchar(100) NOT NULL,
+	status_id varchar(100) NOT NULL
+
+);
+-- ddl-end --
+ALTER TABLE public.dish_command_status_history OWNER TO resto_db_user;
+-- ddl-end --
+
+-- object: public.command_status_history | type: TABLE --
+-- DROP TABLE IF EXISTS public.command_status_history CASCADE;
+CREATE TABLE public.command_status_history (
+	date timestamp NOT NULL DEFAULT CURRENT_DATE::TIMESTAMP,
+	command_id varchar(100) NOT NULL,
+	status_id varchar(100) NOT NULL
+
+);
+-- ddl-end --
+ALTER TABLE public.command_status_history OWNER TO resto_db_user;
 -- ddl-end --
 

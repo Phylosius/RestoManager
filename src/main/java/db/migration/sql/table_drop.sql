@@ -1,3 +1,7 @@
+DROP TABLE IF EXISTS public.command_status_history CASCADE;
+-- ddl-end --
+DROP TABLE IF EXISTS public.dish_command_status_history CASCADE;
+-- ddl-end --
 DROP TABLE IF EXISTS public.command_status CASCADE;
 -- ddl-end --
 DROP TABLE IF EXISTS public.command CASCADE;
