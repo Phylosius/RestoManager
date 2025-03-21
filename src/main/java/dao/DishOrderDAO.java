@@ -7,6 +7,7 @@ import model.*;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Getter
 @AllArgsConstructor
@@ -15,6 +16,14 @@ public class DishOrderDAO {
 
     public List<DishOrder> getAllByCriteria(List<Criteria> criteria, int page, int pageSize) {
         return getAllByCriteria(dataSource.getConnection(), criteria, page, pageSize);
+    }
+
+    public void save(DishOrder dishOrder){
+        save(dataSource.getConnection(), dishOrder);
+    }
+
+    public void saveAll(List<DishOrder> dishOrders){
+        saveAll(dataSource.getConnection(), dishOrders);
     }
 
     public static List<DishOrder> getAllByOrderId(Connection conn, String orderId) {
@@ -68,5 +77,54 @@ public class DishOrderDAO {
         });
 
         return dishOrders;
+    }
+
+    public static void saveAll(Connection conn,  List<DishOrder> dishOrders) {
+        dishOrders.forEach(dishOrder -> save(conn, dishOrder));
+    }
+
+    public static void save(Connection conn,  DishOrder dishOrder){
+        if (!isExist(conn, dishOrder)) {
+            add(conn, dishOrder);
+        } else {
+            update(conn, dishOrder.getId(), dishOrder);
+        }
+    }
+
+    public static void add(Connection conn, DishOrder dishOrder){
+        String  sql = "INSERT INTO dish_order (id, quantity, order_id, dish_id) VALUES (?, ?, ?, ?)";
+
+        List<Object> params = List.of(dishOrder.getId(), dishOrder.getQuantity(), dishOrder.getOrderId(), dishOrder.getDish().getId());
+        BaseDAO.executeUpdate(conn, sql, params);
+        OrderStatusRecordDAO.saveAll(conn, dishOrder.getStatusHistory().getRecords());
+    }
+
+    public static void update(Connection conn, String id, DishOrder dishOrder){
+        String  sql = "UPDATE dish_order SET quantity = ?, order_id = ?, dish_id = ? WHERE id = ?";
+
+        List<Object> params = List.of(dishOrder.getQuantity(), dishOrder.getOrderId(), dishOrder.getDish().getId(), id);
+        BaseDAO.executeUpdate(conn, sql, params);
+        OrderStatusRecordDAO.saveAll(conn, dishOrder.getStatusHistory().getRecords());
+    }
+
+    public static Boolean isExist(Connection conn, DishOrder dishOrder){
+        AtomicReference<Boolean> exist = new AtomicReference<>(false);
+        String sql = "SELECT id FROM  dish_order WHERE dish_id = ? AND order_id = ?";
+
+        List<Object> params = List.of(dishOrder.getId(), dishOrder.getOrderId());
+        BaseDAO.executeQuery(conn, sql, params, resultSet -> {
+            if (resultSet.next()) {
+                exist.set(true);
+            }
+        });
+
+        return exist.get();
+    }
+
+    public static void deleteByOrderId(Connection conn, String orderId){
+        String sql = "DELETE FROM dish_order WHERE order_id = ?";
+
+        List<Object> params = List.of(orderId);
+        BaseDAO.executeUpdate(conn, sql, params);
     }
 }
