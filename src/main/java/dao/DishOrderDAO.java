@@ -17,9 +17,30 @@ public class DishOrderDAO {
         return getAllByCriteria(dataSource.getConnection(), criteria, page, pageSize);
     }
 
-    public static List<DishOrder> getAllByOrderId(Connection conn, String orderId, int page, int pageSize) {
-        Criteria criteria = new Criteria(LogicalOperator.AND, "order_id", CriteriaOperator.EQUAL, orderId);
-        return getAllByCriteria(conn, List.of(criteria), page, pageSize);
+    public static List<DishOrder> getAllByOrderId(Connection conn, String orderId) {
+        List<DishOrder> dishOrders = new ArrayList<>();
+
+        String sql = "SELECT id, dish_id, order_id, quantity FROM dish_order WHERE order_id = ?";
+        List<Object> params = List.of(orderId);
+        BaseDAO.executeQuery(conn, sql, params,  result -> {
+            while (result.next()) {
+                DishOrder dishOrder = new DishOrder();
+                String id = result.getString("id");
+
+                dishOrder.setId(id);
+                dishOrder.setOrderId(result.getString("order_id"));
+                dishOrder.setQuantity(result.getInt("quantity"));
+                dishOrder.setStatusHistory(
+                        new OrderStatusHistory(
+                                OrderStatusRecordDAO.getAllByDishOrderId(conn, id)
+                        )
+                );
+
+                dishOrders.add(dishOrder);
+            }
+        });
+
+        return dishOrders;
     }
 
     public static List<DishOrder> getAllByCriteria(Connection conn, List<Criteria> criteria, int page, int pageSize) {
