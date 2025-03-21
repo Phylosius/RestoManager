@@ -39,6 +39,24 @@ public class Order {
         dishOrders.add(dishOrder);
     }
 
+    public LocalDateTime getStatusDate(OrderStatus status) {
+        if (!status.isAfter(getActualStatus())) {
+            List<DishOrder> dishesWithStatus = dishOrders.stream().filter(dishOrder -> dishOrder.getStatus().equals(status)).toList();
+            LocalDateTime statusDate = dishesWithStatus.getFirst()
+                    .getLatestRecord()
+                    .getDate();
+            for (int i = 1; i < dishesWithStatus.size(); i++) {
+                LocalDateTime actualDate = dishesWithStatus.get(i).getLatestRecord().getDate();
+                if  (actualDate.isBefore(statusDate)) {
+                    statusDate = actualDate;
+                }
+            }
+            return statusDate;
+        }  else {
+            throw new IllegalArgumentException("The order don't have the given status");
+        }
+    }
+
     public OrderStatus getActualStatus(){
         OrderStatus status = OrderStatus.CREATED;
 
