@@ -1,9 +1,15 @@
 package model;
 
-public enum OrderStatus {
+import java.util.Comparator;
+
+public enum OrderStatus{
     CREATED,
     CONFIRMED,
     IN_PREPARATION,
     FINISHED,
-    SERVED
+    SERVED;
+
+    public Boolean isAfter(OrderStatus status) {
+        return this.ordinal() > status.ordinal();
+    }
 }
