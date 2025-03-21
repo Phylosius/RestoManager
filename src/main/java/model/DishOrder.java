@@ -13,12 +13,21 @@ import java.util.UUID;
 @AllArgsConstructor
 public class DishOrder {
     private String id;
+    private String orderId;
     private Dish dish;
     private int quantity;
     private OrderStatusHistory statusHistory;
 
     public DishOrder(Dish dish, int quantity){
         this.id = UUID.randomUUID().toString();
+        this.dish = dish;
+        this.quantity = quantity;
+        this.statusHistory = new OrderStatusHistory();
+    }
+
+    public DishOrder(String orderId, Dish dish, int quantity){
+        this.id = UUID.randomUUID().toString();
+        this.orderId = orderId;
         this.dish = dish;
         this.quantity = quantity;
         this.statusHistory = new OrderStatusHistory();
