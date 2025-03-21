@@ -11,3 +11,4 @@ psql -U resto_db_user -d resto_db -f ./sql/table_create.sql
 
 psql -U resto_db_user -d resto_db -f ./sql/constraint_pk_create.sql
 psql -U resto_db_user -d resto_db -f ./sql/constraint_fk_create.sql
+psql -U resto_db_user -d resto_db -f ./sql/functional_data_insert.sql
