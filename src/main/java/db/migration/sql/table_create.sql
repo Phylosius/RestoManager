@@ -99,7 +99,7 @@ ALTER TABLE public.order_status OWNER TO resto_db_user;
 -- object: public.dish_order_status_history | type: TABLE --
 -- DROP TABLE IF EXISTS public.dish_order_status_history CASCADE;
 CREATE TABLE public.dish_order_status_history (
-	date timestamp NOT NULL DEFAULT CURRENT_DATE::TIMESTAMP,
+	date timestamp DEFAULT CURRENT_DATE::TIMESTAMP,
 	dish_order_id varchar(100) NOT NULL,
 	status_id varchar(100) NOT NULL
 

@@ -40,6 +40,6 @@ ALTER TABLE public.order_status ADD CONSTRAINT order_status_pk PRIMARY KEY (id);
 
 -- object: dish_order_status_history_pk | type: CONSTRAINT --
 -- ALTER TABLE public.dish_order_status_history DROP CONSTRAINT IF EXISTS dish_order_status_history_pk CASCADE;
-ALTER TABLE public.dish_order_status_history ADD CONSTRAINT dish_order_status_history_pk PRIMARY KEY (date,dish_order_id,status_id);
+ALTER TABLE public.dish_order_status_history ADD CONSTRAINT dish_order_status_history_pk PRIMARY KEY (dish_order_id,status_id);
 -- ddl-end --
 

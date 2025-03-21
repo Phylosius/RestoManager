@@ -1,17 +1,3 @@
--- object: fk_make_up_dish_id | type: CONSTRAINT --
--- ALTER TABLE public.make_up DROP CONSTRAINT IF EXISTS fk_make_up_dish_id CASCADE;
-ALTER TABLE public.make_up ADD CONSTRAINT fk_make_up_dish_id FOREIGN KEY (dish_id)
-REFERENCES public.dish (id) MATCH SIMPLE
-ON DELETE CASCADE ON UPDATE NO ACTION;
--- ddl-end --
-
--- object: fk_make_up_ingredient_id | type: CONSTRAINT --
--- ALTER TABLE public.make_up DROP CONSTRAINT IF EXISTS fk_make_up_ingredient_id CASCADE;
-ALTER TABLE public.make_up ADD CONSTRAINT fk_make_up_ingredient_id FOREIGN KEY (ingredient_id)
-REFERENCES public.ingredient (id) MATCH SIMPLE
-ON DELETE CASCADE ON UPDATE NO ACTION;
--- ddl-end --
-
 -- object: fk_ingredient_price_ingredient_id | type: CONSTRAINT --
 -- ALTER TABLE public.ingredient_price DROP CONSTRAINT IF EXISTS fk_ingredient_price_ingredient_id CASCADE;
 ALTER TABLE public.ingredient_price ADD CONSTRAINT fk_ingredient_price_ingredient_id FOREIGN KEY (ingredient_id)
@@ -26,10 +12,24 @@ REFERENCES public.ingredient (id) MATCH SIMPLE
 ON DELETE CASCADE ON UPDATE NO ACTION;
 -- ddl-end --
 
+-- object: fk_make_up_dish_id | type: CONSTRAINT --
+-- ALTER TABLE public.make_up DROP CONSTRAINT IF EXISTS fk_make_up_dish_id CASCADE;
+ALTER TABLE public.make_up ADD CONSTRAINT fk_make_up_dish_id FOREIGN KEY (dish_id)
+REFERENCES public.dish (id) MATCH SIMPLE
+ON DELETE CASCADE ON UPDATE NO ACTION;
+-- ddl-end --
+
+-- object: fk_make_up_ingredient_id | type: CONSTRAINT --
+-- ALTER TABLE public.make_up DROP CONSTRAINT IF EXISTS fk_make_up_ingredient_id CASCADE;
+ALTER TABLE public.make_up ADD CONSTRAINT fk_make_up_ingredient_id FOREIGN KEY (ingredient_id)
+REFERENCES public.ingredient (id) MATCH SIMPLE
+ON DELETE CASCADE ON UPDATE NO ACTION;
+-- ddl-end --
+
 -- object: fk_dish_command_dish_id | type: CONSTRAINT --
 -- ALTER TABLE public.dish_order DROP CONSTRAINT IF EXISTS fk_dish_command_dish_id CASCADE;
 ALTER TABLE public.dish_order ADD CONSTRAINT fk_dish_command_dish_id FOREIGN KEY (dish_id)
-REFERENCES public.dish (id) MATCH SIMPLE
+REFERENCES public."dish" (id) MATCH SIMPLE
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
