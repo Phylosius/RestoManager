@@ -2,3 +2,4 @@
 - [x] add filter on DataProvider.getAll()
 - [ ] test filter of DataProvider::getAllByCriteria
 - [ ] ? change the name of ingredient_price into price in the database
+- [ ] DAO::save -> add || update
