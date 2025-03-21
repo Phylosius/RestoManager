@@ -65,7 +65,8 @@ ALTER TABLE public.make_up OWNER TO resto_db_user;
 CREATE TABLE public.dish_command (
 	id character varying(100) NOT NULL,
 	dish_id character varying(100),
-	command_id character varying(100)
+	command_id character varying(100),
+	quantity integer DEFAULT 1
 
 );
 -- ddl-end --
