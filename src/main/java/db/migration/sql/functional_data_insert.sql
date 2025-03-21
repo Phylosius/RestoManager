@@ -1,5 +1,5 @@
 -- command_status
-INSERT INTO command_status ("order", name) VALUES
+INSERT INTO order_status ("order", name) VALUES
     (1, 'CREATED'),
     (2, 'CONFIRMED'),
     (3, 'IN_PREPARATION'),
