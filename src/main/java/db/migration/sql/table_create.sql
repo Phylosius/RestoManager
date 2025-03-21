@@ -99,9 +99,9 @@ ALTER TABLE public.order_status OWNER TO resto_db_user;
 -- object: public.dish_order_status_history | type: TABLE --
 -- DROP TABLE IF EXISTS public.dish_order_status_history CASCADE;
 CREATE TABLE public.dish_order_status_history (
-	date timestamp DEFAULT CURRENT_DATE::TIMESTAMP,
-	dish_order_id varchar(100) NOT NULL,
-	status_id varchar(100) NOT NULL
+	date timestamp DEFAULT (CURRENT_DATE)::timestamp without time zone,
+	dish_order_id character varying(100) NOT NULL,
+	status_id character varying(100) NOT NULL
 
 );
 -- ddl-end --

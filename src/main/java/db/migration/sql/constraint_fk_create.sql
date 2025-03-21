@@ -29,7 +29,7 @@ ON DELETE CASCADE ON UPDATE NO ACTION;
 -- object: fk_dish_command_dish_id | type: CONSTRAINT --
 -- ALTER TABLE public.dish_order DROP CONSTRAINT IF EXISTS fk_dish_command_dish_id CASCADE;
 ALTER TABLE public.dish_order ADD CONSTRAINT fk_dish_command_dish_id FOREIGN KEY (dish_id)
-REFERENCES public."dish" (id) MATCH SIMPLE
+REFERENCES public.dish (id) MATCH SIMPLE
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
@@ -37,14 +37,14 @@ ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ALTER TABLE public.dish_order DROP CONSTRAINT IF EXISTS fk_dish_command_command_id CASCADE;
 ALTER TABLE public.dish_order ADD CONSTRAINT fk_dish_command_command_id FOREIGN KEY (order_id)
 REFERENCES public."order" (id) MATCH SIMPLE
-ON DELETE NO ACTION ON UPDATE NO ACTION;
+ON DELETE CASCADE ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_dish_order_history_dish_order_id | type: CONSTRAINT --
 -- ALTER TABLE public.dish_order_status_history DROP CONSTRAINT IF EXISTS fk_dish_order_history_dish_order_id CASCADE;
 ALTER TABLE public.dish_order_status_history ADD CONSTRAINT fk_dish_order_history_dish_order_id FOREIGN KEY (dish_order_id)
 REFERENCES public.dish_order (id) MATCH SIMPLE
-ON DELETE NO ACTION ON UPDATE NO ACTION;
+ON DELETE CASCADE ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_dish_order_status_history_order_status_id | type: CONSTRAINT --
