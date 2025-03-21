@@ -32,6 +32,10 @@ public class DishOrder {
         return statusHistory.getLatestRecord().getStatus();
     }
 
+    public OrderStatusRecord getLatestRecord(){
+        return statusHistory.getLatestRecord();
+    }
+
     public LocalDateTime getCreationDate(){
         return statusHistory.getCreationRecord().getDate();
     }
