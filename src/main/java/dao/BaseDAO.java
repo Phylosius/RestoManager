@@ -34,7 +34,7 @@ public class BaseDAO {
         sqlBuilder.append(" LIMIT ? OFFSET ?");
 
         sql = sqlBuilder.toString();
-        System.out.println("Generated SQL: " + sql);
+        //System.out.println("Generated SQL: " + sql);
 
         List<Object> params = List.of(pageSize, pageSize * (page - 1));
 
