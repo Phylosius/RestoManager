@@ -1,6 +1,6 @@
 package model;
 
-public enum OrderType {
+public enum FilterOrderType {
     ASC,
     DESC
 }

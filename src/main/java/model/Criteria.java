@@ -69,7 +69,7 @@ public class Criteria {
                 }
                 break;
             case ORDER_BY:
-                if (value instanceof OrderType) {
+                if (value instanceof FilterOrderType) {
                     sqlOperator = "ORDER BY %s %s";
                 } else {
                     throw new IllegalArgumentException("value on ORDER_BY operation must be a OrderType");
