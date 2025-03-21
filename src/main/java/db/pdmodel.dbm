@@ -3,8 +3,8 @@
 CAUTION: Do not modify this file unless you know what you are doing.
  Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="1.2.0-beta" use-changelog="false" max-obj-count="8"
-	 last-position="0,-95" last-zoom="0.5" scene-rect="-73.7045,-190,2281.29,1266.8"
+<dbmodel pgmodeler-ver="1.2.0-beta" use-changelog="false" max-obj-count="9"
+	 last-position="-8,-590" last-zoom="1" scene-rect="-8,-590,2215.58,1666.8"
 	 default-schema="public" default-owner="postgres"
 	 layers="Default layer"
 	 active-layers="0"
@@ -123,7 +123,7 @@ END;]]> </definition>
 <table name="dish" layers="0" collapse-mode="2" max-obj-count="3" z-value="0">
 	<schema name="public"/>
 	<role name="resto_db_user"/>
-	<position x="800" y="-100"/>
+	<position x="40" y="80"/>
 	<column name="id" not-null="true" default-value="generate_simple_varchar_id('dish'::text)">
 		<type name="character varying" length="100"/>
 	</column>
@@ -141,7 +141,7 @@ END;]]> </definition>
 <table name="ingredient" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
 	<schema name="public"/>
 	<role name="resto_db_user"/>
-	<position x="60" y="340"/>
+	<position x="40" y="320"/>
 	<column name="id" not-null="true" default-value="generate_simple_varchar_id('ingredient'::text)">
 		<type name="character varying" length="100"/>
 	</column>
@@ -162,7 +162,7 @@ END;]]> </definition>
 <table name="ingredient_price" layers="0" collapse-mode="2" max-obj-count="3" z-value="0">
 	<schema name="public"/>
 	<role name="resto_db_user"/>
-	<position x="60" y="760"/>
+	<position x="700" y="560"/>
 	<column name="ingredient_id" not-null="true">
 		<type name="character varying" length="100"/>
 	</column>
@@ -180,7 +180,7 @@ END;]]> </definition>
 <table name="stock_movement" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
 	<schema name="public"/>
 	<role name="resto_db_user"/>
-	<position x="760" y="340"/>
+	<position x="700" y="300"/>
 	<column name="ingredient_id" not-null="true">
 		<type name="character varying" length="100"/>
 	</column>
@@ -201,7 +201,7 @@ END;]]> </definition>
 <table name="make_up" layers="0" collapse-mode="2" max-obj-count="3" z-value="0">
 	<schema name="public"/>
 	<role name="resto_db_user"/>
-	<position x="60" y="-120"/>
+	<position x="680" y="60"/>
 	<column name="dish_id" not-null="true">
 		<type name="character varying" length="100"/>
 	</column>
@@ -216,51 +216,62 @@ END;]]> </definition>
 	</constraint>
 </table>
 
-<table name="command" layers="0" collapse-mode="2" max-obj-count="2" z-value="0">
+<table name="dish_command" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
 	<schema name="public"/>
-	<role name="tapakila_auth_app"/>
-	<position x="1440" y="380"/>
+	<role name="resto_db_user"/>
+	<position x="700" y="-220"/>
 	<column name="id" not-null="true">
-		<type name="varchar" length="0"/>
+		<type name="varchar" length="100"/>
+	</column>
+	<column name="status_id">
+		<type name="varchar" length="100"/>
+	</column>
+	<column name="dish_id">
+		<type name="varchar" length="100"/>
+	</column>
+	<column name="command_id">
+		<type name="varchar" length="100"/>
+	</column>
+	<constraint name="dish_command_pk" type="pk-constr" table="public.dish_command">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="command" layers="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="resto_db_user"/>
+	<position x="40" y="-180"/>
+	<column name="id" not-null="true">
+		<type name="varchar" length="100"/>
 	</column>
 	<column name="created_at" default-value="CURRENT_DATE::TIMESTAMP">
 		<type name="timestamp" length="0"/>
+	</column>
+	<column name="status_id">
+		<type name="varchar" length="100"/>
 	</column>
 	<constraint name="command_pk" type="pk-constr" table="public.command">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
 </table>
 
-<table name="commanded_dish" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
+<table name="command_status" layers="0" collapse-mode="2" max-obj-count="3" z-value="0">
 	<schema name="public"/>
-	<role name="postgres"/>
-	<position x="1360" y="-120"/>
+	<role name="resto_db_user"/>
+	<position x="760" y="-540"/>
 	<column name="id" not-null="true">
-		<type name="varchar" length="0"/>
+		<type name="varchar" length="100"/>
 	</column>
-	<column name="command_id" not-null="true">
-		<type name="varchar" length="0"/>
+	<column name="order" default-value="SERIAL" generated="true">
+		<type name="smallint" length="0"/>
 	</column>
-	<column name="dish_id" not-null="true">
-		<type name="varchar" length="0"/>
+	<column name="name">
+		<type name="varchar" length="100"/>
 	</column>
-	<column name="dish_quantity">
-		<type name="float" length="0"/>
-	</column>
-	<constraint name="commanded_dish_pk" type="pk-constr" table="public.commanded_dish">
+	<constraint name="command_status_pk" type="pk-constr" table="public.command_status">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
 </table>
-
-<usertype name="COMMAND_STATE" configuration="enumeration">
-	<schema name="public"/>
-	<role name="resto_db_user"/>
-	<enumeration label="CREATED"/>
-	<enumeration label="CONFIRMED"/>
-	<enumeration label="IN_PREPARATION"/>
-	<enumeration label="FINISHED"/>
-	<enumeration label="SERVED"/>
-</usertype>
 
 <constraint name="fk_ingredient_price_ingredient_id" type="fk-constr" comparison-type="MATCH SIMPLE"
 	 upd-action="NO ACTION" del-action="CASCADE" ref-table="public.ingredient" table="public.ingredient_price">
@@ -286,50 +297,72 @@ END;]]> </definition>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
-<constraint name="fk_commended_dish_command_id" type="fk-constr" comparison-type="MATCH SIMPLE"
-	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.command" table="public.commanded_dish">
-	<columns names="command_id" ref-type="src-columns"/>
-	<columns names="id" ref-type="dst-columns"/>
-</constraint>
-
-<constraint name="fk_commanded_dish_dish_id" type="fk-constr" comparison-type="MATCH SIMPLE"
-	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.dish" table="public.commanded_dish">
+<constraint name="fk_dish_command_dish_id" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.dish" table="public.dish_command">
 	<columns names="dish_id" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
+<constraint name="fk_dish_command_command_id" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.command" table="public.dish_command">
+	<columns names="command_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_dish_command_command_status_id" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.command_status" table="public.dish_command">
+	<columns names="status_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_command_command_status_id" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.command_status" table="public.command">
+	<columns names="status_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
 <relationship name="rel_ingredient_price_ingredient" type="relfk" layers="0"
-	 custom-color="#db777e"
+	 custom-color="#373a38"
 	 src-table="public.ingredient_price"
 	 dst-table="public.ingredient" reference-fk="fk_ingredient_price_ingredient_id"
 	 src-required="false" dst-required="true"/>
 
 <relationship name="rel_stock_movement_ingredient" type="relfk" layers="0"
-	 custom-color="#23c9a8"
+	 custom-color="#8a2453"
 	 src-table="public.stock_movement"
 	 dst-table="public.ingredient" reference-fk="fk_stock_movement_ingredient_id"
 	 src-required="false" dst-required="true"/>
 
 <relationship name="rel_make_up_dish" type="relfk" layers="0"
-	 custom-color="#3cea03"
+	 custom-color="#a3ff96"
 	 src-table="public.make_up"
 	 dst-table="public.dish" reference-fk="fk_make_up_dish_id"
 	 src-required="false" dst-required="true"/>
 
 <relationship name="rel_make_up_ingredient" type="relfk" layers="0"
-	 custom-color="#a28263"
+	 custom-color="#902fcd"
 	 src-table="public.make_up"
 	 dst-table="public.ingredient" reference-fk="fk_make_up_ingredient_id"
 	 src-required="false" dst-required="true"/>
 
-<relationship name="rel_commanded_dish_command" type="relfk" layers="0"
-	 src-table="public.commanded_dish"
-	 dst-table="public.command" reference-fk="fk_commended_dish_command_id"
-	 src-required="false" dst-required="true"/>
+<relationship name="rel_dish_command_dish" type="relfk" layers="0"
+	 src-table="public.dish_command"
+	 dst-table="public.dish" reference-fk="fk_dish_command_dish_id"
+	 src-required="false" dst-required="false"/>
 
-<relationship name="rel_commanded_dish_dish" type="relfk" layers="0"
-	 src-table="public.commanded_dish"
-	 dst-table="public.dish" reference-fk="fk_commanded_dish_dish_id"
-	 src-required="false" dst-required="true"/>
+<relationship name="rel_dish_command_command" type="relfk" layers="0"
+	 src-table="public.dish_command"
+	 dst-table="public.command" reference-fk="fk_dish_command_command_id"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_dish_command_command_status" type="relfk" layers="0"
+	 src-table="public.dish_command"
+	 dst-table="public.command_status" reference-fk="fk_dish_command_command_status_id"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_command_command_status" type="relfk" layers="0"
+	 src-table="public.command"
+	 dst-table="public.command_status" reference-fk="fk_command_command_status_id"
+	 src-required="false" dst-required="false"/>
 
 </dbmodel>

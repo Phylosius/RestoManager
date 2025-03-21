@@ -1,7 +1,14 @@
-\c resto_db
-
-CREATE OR REPLACE FUNCTION generate_simple_varchar_id(table_name TEXT)
-RETURNS TEXT AS $$
+-- object: public.generate_simple_varchar_id | type: FUNCTION --
+-- DROP FUNCTION IF EXISTS public.generate_simple_varchar_id(text) CASCADE;
+CREATE OR REPLACE FUNCTION public.generate_simple_varchar_id (table_name text)
+	RETURNS text
+	LANGUAGE plpgsql
+	VOLATILE 
+	CALLED ON NULL INPUT
+	SECURITY INVOKER
+	PARALLEL UNSAFE
+	COST 100
+	AS $$
 DECLARE
     sequence_name TEXT;
     new_id INT;
@@ -26,4 +33,8 @@ BEGIN
     -- Return the ID as a string format "n"
     RETURN new_id::TEXT;
 END;
-$$ LANGUAGE plpgsql;
+$$;
+-- ddl-end --
+ALTER FUNCTION public.generate_simple_varchar_id(text) OWNER TO resto_db_user;
+-- ddl-end --
+
