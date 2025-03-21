@@ -88,7 +88,7 @@ ALTER TABLE public.command OWNER TO resto_db_user;
 -- object: public.command_status | type: TABLE --
 -- DROP TABLE IF EXISTS public.command_status CASCADE;
 CREATE TABLE public.command_status (
-	id varchar(100) NOT NULL,
+	id varchar(100) NOT NULL DEFAULT uuid_generate_v4(),
 	"order" smallint,
 	name varchar(100)
 
