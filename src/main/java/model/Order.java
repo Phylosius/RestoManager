@@ -61,19 +61,10 @@ public class Order {
         OrderStatus status = OrderStatus.CREATED;
 
         if (!dishOrders.isEmpty()) {
-            List<OrderStatus> dishesStatuses = getDishOrders().stream().map(DishOrder::getStatus).toList();
-
-            Map<OrderStatus, Integer> frequencyMap = new HashMap<>();
-
-            for (OrderStatus dishStatus : dishesStatuses){
-                frequencyMap.put(dishStatus, frequencyMap.getOrDefault(dishStatus, 0) + 1);
-            }
-
-            int maxFrequency = -1;
-
-            for (Map.Entry<OrderStatus, Integer> entry : frequencyMap.entrySet()) {
-                if (entry.getValue() > maxFrequency){
-                    status = entry.getKey();
+            for (DishOrder dishOrder : dishOrders) {
+                OrderStatus dishStatus = dishOrder.getStatus();
+                if (!dishStatus.isAfter(status)) {
+                    status = dishStatus;
                 }
             }
         }
