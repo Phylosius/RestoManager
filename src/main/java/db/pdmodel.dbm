@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+ Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="1.2.0-beta" use-changelog="false" max-obj-count="8"
+	 last-position="0,-95" last-zoom="0.5" scene-rect="-73.7045,-190,2281.29,1266.8"
+	 default-schema="public" default-owner="postgres"
+	 layers="Default layer"
+	 active-layers="0"
+	 layer-name-colors="#000000"
+	 layer-rect-colors="#b4b4b4"
+	 show-layer-names="false" show-layer-rects="false">
+<role name="duduk"
+ createdb="true"
+ createrole="true"
+ inherit="true"
+ login="true"
+ password="********">
+</role>
+
+<role name="tapakila_auth_admin"
+ inherit="true"
+ login="true"
+ password="********">
+</role>
+
+<role name="tapakila_auth_app"
+ inherit="true"
+ login="true"
+ password="********">
+</role>
+
+<role name="resto_db_user"
+ inherit="true"
+ login="true"
+ password="********">
+</role>
+
+<role name="simple_file_server_db_user"
+ inherit="true"
+ login="true"
+ password="********">
+</role>
+
+<role name="life_tracking_app"
+ createdb="true"
+ replication="true"
+ createrole="true"
+ inherit="true"
+ login="true"
+ connlimit="5"
+ password="********">
+</role>
+
+<database name="resto_db" encoding="UTF8" lc-collate="en_US.UTF-8" lc-ctype="en_US.UTF-8" is-template="false" allow-conns="true">
+	<role name="resto_db_user"/>
+	<tablespace name="pg_default"/>
+</database>
+
+<schema name="public" layers="0" rect-visible="true" fill-color="#e1e1e1" name-color="#000000" sql-disabled="true">
+</schema>
+
+<function name="generate_simple_varchar_id"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="VOLATILE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL UNSAFE"
+		execution-cost="100"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="resto_db_user"/>
+	<language name="plpgsql"/>
+	<return-type>
+	<type name="text" length="0"/>
+	</return-type>
+	<parameter name="table_name">
+		<type name="text" length="0"/>
+	</parameter>
+	<definition> <![CDATA[DECLARE
+    sequence_name TEXT;
+    new_id INT;
+    sequence_exists BOOLEAN;
+BEGIN
+    -- Build the sequence name dynamically
+    sequence_name := table_name || '_simple_id_sequence';
+
+    -- Check if the sequence exists
+    SELECT EXISTS (
+        SELECT 1 FROM pg_class WHERE relname = sequence_name
+    ) INTO sequence_exists;
+
+    -- If the sequence does not exist, create it
+    IF NOT sequence_exists THEN
+        EXECUTE format('CREATE SEQUENCE %I START WITH 1 INCREMENT BY 1', sequence_name);
+    END IF;
+
+    -- Get the next number from the sequence
+    EXECUTE format('SELECT NEXTVAL(%I)', sequence_name) INTO new_id;
+
+    -- Return the ID as a string format "n"
+    RETURN new_id::TEXT;
+END;]]> </definition>
+</function>
+
+<usertype name="ingredient_unit" configuration="enumeration">
+	<schema name="public"/>
+	<role name="resto_db_user"/>
+	<enumeration label="L"/>
+	<enumeration label="G"/>
+	<enumeration label="U"/>
+</usertype>
+
+<usertype name="stock_movement_type" configuration="enumeration">
+	<schema name="public"/>
+	<role name="resto_db_user"/>
+	<enumeration label="OUT"/>
+	<enumeration label="IN"/>
+</usertype>
+
+<table name="dish" layers="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="resto_db_user"/>
+	<position x="800" y="-100"/>
+	<column name="id" not-null="true" default-value="generate_simple_varchar_id('dish'::text)">
+		<type name="character varying" length="100"/>
+	</column>
+	<column name="name">
+		<type name="character varying" length="100"/>
+	</column>
+	<column name="unit_price">
+		<type name="double precision" length="0"/>
+	</column>
+	<constraint name="dish_pkey" type="pk-constr" table="public.dish">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="ingredient" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<role name="resto_db_user"/>
+	<position x="60" y="340"/>
+	<column name="id" not-null="true" default-value="generate_simple_varchar_id('ingredient'::text)">
+		<type name="character varying" length="100"/>
+	</column>
+	<column name="name">
+		<type name="character varying" length="100"/>
+	</column>
+	<column name="modification_date">
+		<type name="timestamp" length="0"/>
+	</column>
+	<column name="unit">
+		<type name="public.ingredient_unit" length="0"/>
+	</column>
+	<constraint name="ingredient_pkey" type="pk-constr" table="public.ingredient">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="ingredient_price" layers="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="resto_db_user"/>
+	<position x="60" y="760"/>
+	<column name="ingredient_id" not-null="true">
+		<type name="character varying" length="100"/>
+	</column>
+	<column name="unit_price">
+		<type name="double precision" length="0"/>
+	</column>
+	<column name="date" not-null="true">
+		<type name="timestamp" length="0"/>
+	</column>
+	<constraint name="ingredient_price_pkey" type="pk-constr" table="public.ingredient_price">
+		<columns names="ingredient_id,date" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="stock_movement" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<role name="resto_db_user"/>
+	<position x="760" y="340"/>
+	<column name="ingredient_id" not-null="true">
+		<type name="character varying" length="100"/>
+	</column>
+	<column name="type">
+		<type name="public.stock_movement_type" length="0"/>
+	</column>
+	<column name="quantity">
+		<type name="double precision" length="0"/>
+	</column>
+	<column name="date" not-null="true">
+		<type name="timestamp" length="0"/>
+	</column>
+	<constraint name="stock_movement_pkey" type="pk-constr" table="public.stock_movement">
+		<columns names="ingredient_id,date" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="make_up" layers="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="resto_db_user"/>
+	<position x="60" y="-120"/>
+	<column name="dish_id" not-null="true">
+		<type name="character varying" length="100"/>
+	</column>
+	<column name="ingredient_id" not-null="true">
+		<type name="character varying" length="100"/>
+	</column>
+	<column name="ingredient_quantity">
+		<type name="double precision" length="0"/>
+	</column>
+	<constraint name="make_up_pk" type="pk-constr" table="public.make_up">
+		<columns names="dish_id,ingredient_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="command" layers="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="public"/>
+	<role name="tapakila_auth_app"/>
+	<position x="1440" y="380"/>
+	<column name="id" not-null="true">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="created_at" default-value="CURRENT_DATE::TIMESTAMP">
+		<type name="timestamp" length="0"/>
+	</column>
+	<constraint name="command_pk" type="pk-constr" table="public.command">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="commanded_dish" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1360" y="-120"/>
+	<column name="id" not-null="true">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="command_id" not-null="true">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="dish_id" not-null="true">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="dish_quantity">
+		<type name="float" length="0"/>
+	</column>
+	<constraint name="commanded_dish_pk" type="pk-constr" table="public.commanded_dish">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<usertype name="COMMAND_STATE" configuration="enumeration">
+	<schema name="public"/>
+	<role name="resto_db_user"/>
+	<enumeration label="CREATED"/>
+	<enumeration label="CONFIRMED"/>
+	<enumeration label="IN_PREPARATION"/>
+	<enumeration label="FINISHED"/>
+	<enumeration label="SERVED"/>
+</usertype>
+
+<constraint name="fk_ingredient_price_ingredient_id" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="CASCADE" ref-table="public.ingredient" table="public.ingredient_price">
+	<columns names="ingredient_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_stock_movement_ingredient_id" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="CASCADE" ref-table="public.ingredient" table="public.stock_movement">
+	<columns names="ingredient_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_make_up_dish_id" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="CASCADE" ref-table="public.dish" table="public.make_up">
+	<columns names="dish_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_make_up_ingredient_id" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="CASCADE" ref-table="public.ingredient" table="public.make_up">
+	<columns names="ingredient_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_commended_dish_command_id" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.command" table="public.commanded_dish">
+	<columns names="command_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_commanded_dish_dish_id" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.dish" table="public.commanded_dish">
+	<columns names="dish_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<relationship name="rel_ingredient_price_ingredient" type="relfk" layers="0"
+	 custom-color="#db777e"
+	 src-table="public.ingredient_price"
+	 dst-table="public.ingredient" reference-fk="fk_ingredient_price_ingredient_id"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_stock_movement_ingredient" type="relfk" layers="0"
+	 custom-color="#23c9a8"
+	 src-table="public.stock_movement"
+	 dst-table="public.ingredient" reference-fk="fk_stock_movement_ingredient_id"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_make_up_dish" type="relfk" layers="0"
+	 custom-color="#3cea03"
+	 src-table="public.make_up"
+	 dst-table="public.dish" reference-fk="fk_make_up_dish_id"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_make_up_ingredient" type="relfk" layers="0"
+	 custom-color="#a28263"
+	 src-table="public.make_up"
+	 dst-table="public.ingredient" reference-fk="fk_make_up_ingredient_id"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_commanded_dish_command" type="relfk" layers="0"
+	 src-table="public.commanded_dish"
+	 dst-table="public.command" reference-fk="fk_commended_dish_command_id"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_commanded_dish_dish" type="relfk" layers="0"
+	 src-table="public.commanded_dish"
+	 dst-table="public.dish" reference-fk="fk_commanded_dish_dish_id"
+	 src-required="false" dst-required="true"/>
+
+</dbmodel>

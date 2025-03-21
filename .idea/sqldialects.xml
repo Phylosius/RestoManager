@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
-    <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/022fc085-5aa3-4857-9a93-6bfb7db8b540/console.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/src/main/java/db/migration/sql/create_relation.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/src/main/java/db/migration/sql/create_simple_varchar_id_generator.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/src/main/java/db/migration/sql/create_table.sql" dialect="PostgreSQL" />

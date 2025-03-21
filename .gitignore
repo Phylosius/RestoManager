@@ -1,4 +1,6 @@
 **/*.env
+.gradle/
+bin/
 
 target/
 !.mvn/wrapper/maven-wrapper.jar
