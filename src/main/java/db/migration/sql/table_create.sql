@@ -108,15 +108,3 @@ CREATE TABLE public.dish_command_status_history (
 ALTER TABLE public.dish_command_status_history OWNER TO resto_db_user;
 -- ddl-end --
 
--- object: public.command_status_history | type: TABLE --
--- DROP TABLE IF EXISTS public.command_status_history CASCADE;
-CREATE TABLE public.command_status_history (
-	date timestamp NOT NULL DEFAULT CURRENT_DATE::TIMESTAMP,
-	command_id varchar(100) NOT NULL,
-	status_id varchar(100) NOT NULL
-
-);
--- ddl-end --
-ALTER TABLE public.command_status_history OWNER TO resto_db_user;
--- ddl-end --
-

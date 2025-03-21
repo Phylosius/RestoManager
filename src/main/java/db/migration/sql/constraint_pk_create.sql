@@ -43,8 +43,3 @@ ALTER TABLE public.command_status ADD CONSTRAINT command_status_pk PRIMARY KEY (
 ALTER TABLE public.dish_command_status_history ADD CONSTRAINT dish_command_status_history_pk PRIMARY KEY (date,dish_command_id,status_id);
 -- ddl-end --
 
--- object: command_status_history_pk | type: CONSTRAINT --
--- ALTER TABLE public.command_status_history DROP CONSTRAINT IF EXISTS command_status_history_pk CASCADE;
-ALTER TABLE public.command_status_history ADD CONSTRAINT command_status_history_pk PRIMARY KEY (date,command_id,status_id);
--- ddl-end --
-
