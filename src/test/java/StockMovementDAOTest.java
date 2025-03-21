@@ -2,7 +2,14 @@ import dao.DataSource;
 import dao.IngredientDAO;
 import dao.StockMovementDAO;
 import io.github.cdimascio.dotenv.Dotenv;
-import model.*;
+import model.StockMovement;
+import model.MovementType;
+import model.Price;
+import model.Ingredient;
+import model.Criteria;
+import model.Unit;
+import model.LogicalOperator;
+import model.CriteriaOperator;
 import org.junit.jupiter.api.*;
 
 import java.time.LocalDateTime;

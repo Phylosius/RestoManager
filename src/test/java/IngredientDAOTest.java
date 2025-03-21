@@ -1,9 +1,16 @@
 import dao.DataSource;
 import dao.IngredientDAO;
-import model.*;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import model.Price;
+import model.Ingredient;
+import model.Criteria;
+import model.Unit;
+import model.LogicalOperator;
+import model.CriteriaOperator;
+
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Order;
 
 import static org.junit.jupiter.api.Assertions.*;
 

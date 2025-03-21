@@ -1,10 +1,18 @@
 import dao.DataSource;
 import dao.DishDAO;
 import dao.IngredientDAO;
-import model.*;
+
 
 import io.github.cdimascio.dotenv.Dotenv;
+import model.Dish;
+import model.Ingredient;
+import model.MakeUp;
+import model.Criteria;
+import model.LogicalOperator;
+import model.CriteriaOperator;
+
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Order;
 
 import static org.junit.jupiter.api.Assertions.*;
 
