@@ -24,22 +24,22 @@ ALTER TABLE public.make_up ADD CONSTRAINT make_up_pk PRIMARY KEY (dish_id,ingred
 -- ddl-end --
 
 -- object: dish_command_pk | type: CONSTRAINT --
--- ALTER TABLE public.dish_command DROP CONSTRAINT IF EXISTS dish_command_pk CASCADE;
-ALTER TABLE public.dish_command ADD CONSTRAINT dish_command_pk PRIMARY KEY (id);
+-- ALTER TABLE public.dish_order DROP CONSTRAINT IF EXISTS dish_command_pk CASCADE;
+ALTER TABLE public.dish_order ADD CONSTRAINT dish_command_pk PRIMARY KEY (id);
 -- ddl-end --
 
--- object: command_pk | type: CONSTRAINT --
--- ALTER TABLE public.command DROP CONSTRAINT IF EXISTS command_pk CASCADE;
-ALTER TABLE public.command ADD CONSTRAINT command_pk PRIMARY KEY (id);
+-- object: order_pk | type: CONSTRAINT --
+-- ALTER TABLE public."order" DROP CONSTRAINT IF EXISTS order_pk CASCADE;
+ALTER TABLE public."order" ADD CONSTRAINT order_pk PRIMARY KEY (id);
 -- ddl-end --
 
--- object: command_status_pk | type: CONSTRAINT --
--- ALTER TABLE public.command_status DROP CONSTRAINT IF EXISTS command_status_pk CASCADE;
-ALTER TABLE public.command_status ADD CONSTRAINT command_status_pk PRIMARY KEY (id);
+-- object: order_status_pk | type: CONSTRAINT --
+-- ALTER TABLE public.order_status DROP CONSTRAINT IF EXISTS order_status_pk CASCADE;
+ALTER TABLE public.order_status ADD CONSTRAINT order_status_pk PRIMARY KEY (id);
 -- ddl-end --
 
--- object: dish_command_status_history_pk | type: CONSTRAINT --
--- ALTER TABLE public.dish_command_status_history DROP CONSTRAINT IF EXISTS dish_command_status_history_pk CASCADE;
-ALTER TABLE public.dish_command_status_history ADD CONSTRAINT dish_command_status_history_pk PRIMARY KEY (date,dish_command_id,status_id);
+-- object: dish_order_status_history_pk | type: CONSTRAINT --
+-- ALTER TABLE public.dish_order_status_history DROP CONSTRAINT IF EXISTS dish_order_status_history_pk CASCADE;
+ALTER TABLE public.dish_order_status_history ADD CONSTRAINT dish_order_status_history_pk PRIMARY KEY (date,dish_order_id,status_id);
 -- ddl-end --
 

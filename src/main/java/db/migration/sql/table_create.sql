@@ -60,51 +60,51 @@ CREATE TABLE public.make_up (
 ALTER TABLE public.make_up OWNER TO resto_db_user;
 -- ddl-end --
 
--- object: public.dish_command | type: TABLE --
--- DROP TABLE IF EXISTS public.dish_command CASCADE;
-CREATE TABLE public.dish_command (
+-- object: public.dish_order | type: TABLE --
+-- DROP TABLE IF EXISTS public.dish_order CASCADE;
+CREATE TABLE public.dish_order (
 	id character varying(100) NOT NULL,
 	dish_id character varying(100),
-	command_id character varying(100),
+	order_id character varying(100),
 	quantity integer DEFAULT 1
 
 );
 -- ddl-end --
-ALTER TABLE public.dish_command OWNER TO resto_db_user;
+ALTER TABLE public.dish_order OWNER TO resto_db_user;
 -- ddl-end --
 
--- object: public.command | type: TABLE --
--- DROP TABLE IF EXISTS public.command CASCADE;
-CREATE TABLE public.command (
+-- object: public."order" | type: TABLE --
+-- DROP TABLE IF EXISTS public."order" CASCADE;
+CREATE TABLE public."order" (
 	id character varying(100) NOT NULL,
 	created_at timestamp DEFAULT (CURRENT_DATE)::timestamp without time zone
 
 );
 -- ddl-end --
-ALTER TABLE public.command OWNER TO resto_db_user;
+ALTER TABLE public."order" OWNER TO resto_db_user;
 -- ddl-end --
 
--- object: public.command_status | type: TABLE --
--- DROP TABLE IF EXISTS public.command_status CASCADE;
-CREATE TABLE public.command_status (
+-- object: public.order_status | type: TABLE --
+-- DROP TABLE IF EXISTS public.order_status CASCADE;
+CREATE TABLE public.order_status (
 	id character varying(100) NOT NULL DEFAULT uuid_generate_v4(),
 	"order" smallint,
 	name character varying(100)
 
 );
 -- ddl-end --
-ALTER TABLE public.command_status OWNER TO resto_db_user;
+ALTER TABLE public.order_status OWNER TO resto_db_user;
 -- ddl-end --
 
--- object: public.dish_command_status_history | type: TABLE --
--- DROP TABLE IF EXISTS public.dish_command_status_history CASCADE;
-CREATE TABLE public.dish_command_status_history (
+-- object: public.dish_order_status_history | type: TABLE --
+-- DROP TABLE IF EXISTS public.dish_order_status_history CASCADE;
+CREATE TABLE public.dish_order_status_history (
 	date timestamp NOT NULL DEFAULT CURRENT_DATE::TIMESTAMP,
-	dish_command_id varchar(100) NOT NULL,
+	dish_order_id varchar(100) NOT NULL,
 	status_id varchar(100) NOT NULL
 
 );
 -- ddl-end --
-ALTER TABLE public.dish_command_status_history OWNER TO resto_db_user;
+ALTER TABLE public.dish_order_status_history OWNER TO resto_db_user;
 -- ddl-end --
 
