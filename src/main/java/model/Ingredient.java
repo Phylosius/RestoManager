@@ -36,6 +36,14 @@ public class Ingredient {
         return (int) Math.floor(getAvailableQuantity(date) / quantityForMakeOne);
     }
 
+    public Double getMissingQuantityForDish(Double quantityForMakingOne,  LocalDateTime date) {
+        if (getAvailableQuantity(date) > 0) {
+            return 0d;
+        } else {
+            return quantityForMakingOne - getAvailableQuantity(date);
+        }
+    }
+
     public Double getAvailableQuantity(LocalDateTime date) {
         return getAvailableQuantity(getId(), date);
     }
