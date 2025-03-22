@@ -15,6 +15,10 @@ import java.util.concurrent.atomic.AtomicReference;
 public class OrderDAO {
     private DataSource dataSource;
 
+    public List<Order> getAll(int page, int pageSize){
+        return getAllByCriteria(List.of(), page, pageSize);
+    }
+
     public List<Order> getAllByCriteria(List<Criteria> criteria, int page, int pageSize){
         return getAllByCriteria(dataSource.getConnection(), criteria, page, pageSize);
     }
