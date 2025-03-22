@@ -36,6 +36,9 @@ public class Order {
     }
 
     public void addDishOrder(DishOrder dishOrder){
+        if (dishOrder.getStatusHistory().expectedRecordStatus() == OrderStatus.CREATED){
+            dishOrder.addOrderStatusRecord(new OrderStatusRecord(id, LocalDateTime.now(), OrderStatus.CREATED));
+        }
         dishOrders.add(dishOrder);
     }
 
