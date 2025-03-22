@@ -6,6 +6,7 @@ import model.Dish;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class DishDAO implements DataProvider<Dish, String> {
 
@@ -110,6 +111,14 @@ public class DishDAO implements DataProvider<Dish, String> {
     }
 
     public static void save(Connection conn, Dish entity) {
+        if (!isExist(conn, entity.getId())) {
+            add(conn, entity);
+        } else {
+            update(conn, entity.getId(), entity);
+        }
+    }
+
+    public static void add(Connection conn, Dish entity) {
 
         String sql = "INSERT INTO dish(id, name, unit_price) VALUES (?, ?, ?)";
         List<Object> params = List.of(
@@ -136,6 +145,21 @@ public class DishDAO implements DataProvider<Dish, String> {
         MakeUpDAO.deleteByDishID(conn, id);
         MakeUpDAO.saveAll(conn, entity.getId(), entity.getMakeUps());
 
+    }
+
+    public static Boolean isExist(Connection conn, String id) {
+        AtomicReference<Boolean> exist = new AtomicReference<>(false);
+
+        String sql = "SELECT name FROM dish WHERE id = id";
+        List<Object> params = List.of(id);
+
+        BaseDAO.executeQuery(conn, sql, params, (r) -> {
+            if (r.next()) {
+                exist.set(true);
+            }
+        });
+
+        return exist.get();
     }
 
     public static void delete(Connection conn, String id) {
