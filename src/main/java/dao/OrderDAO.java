@@ -43,7 +43,9 @@ public class OrderDAO {
     public static List<Order> getAllByCriteria(Connection conn, List<Criteria> criteria, int page, int pageSize){
         List <Order> dishOrders = new ArrayList<>();
 
-        String sql = "SELECT id, created_at FROM order WHERE 1=1";
+        String sql = """
+                SELECT id, created_at FROM "order" WHERE 1=1
+                """;
         BaseDAO.getAllByCriteria(conn, criteria, page, pageSize, sql, resultSet -> {
             while(resultSet.next()){
                 Order order = new Order();
@@ -75,7 +77,9 @@ public class OrderDAO {
     }
 
     public static void add(Connection conn, Order order){
-        String sql = "INSERT INTO order(id,  created_at) VALUES (?, ?)";
+        String sql = """
+                INSERT INTO "order"(id,  created_at) VALUES (?, ?)
+                """;
 
         List<Object> params = List.of(order.getId(), order.getCreationDate());
         BaseDAO.executeUpdate(conn, sql, params);
@@ -85,7 +89,9 @@ public class OrderDAO {
     }
 
     public static void update(Connection conn,  Order order){
-        String sql = "UPDATE order SET created_at=? WHERE id=?";
+        String sql = """
+                UPDATE "order" SET created_at=? WHERE id=?
+                """;
 
         List<Object> params = List.of(order.getCreationDate(), order.getId());
         BaseDAO.executeUpdate(conn,  sql, params);
@@ -96,7 +102,9 @@ public class OrderDAO {
 
     public static Boolean isExist(Connection conn, Order order){
         AtomicReference<Boolean> exist = new AtomicReference<>(false);
-        String sql = "SELECT id FROM order WHERE id = ?";
+        String sql = """
+                SELECT id FROM "order" WHERE id = ?
+                """;
 
         List<Object> params = List.of(order.getId());
         BaseDAO.executeQuery(conn, sql, params, resultSet -> {

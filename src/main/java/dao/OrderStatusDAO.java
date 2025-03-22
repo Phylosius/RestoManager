@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class OrderStatusDAO {
     public static OrderStatus getOrderStatus(Connection conn, String statusId){
-        String sql = "SELECT name FROM command_status WHERE id = ?";
+        String sql = "SELECT name FROM order_status WHERE id = ?";
         List<Object> params = List.of(statusId);
         AtomicReference<OrderStatus> orderStatus = new AtomicReference<>();
 
