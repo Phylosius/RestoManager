@@ -2,6 +2,8 @@ package model;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @ToString
@@ -14,5 +16,9 @@ public class MakeUp {
 
     public Unit getUnit() {
         return ingredient.getUnit();
+    }
+
+    public Double getMissingIngredientQuantity(LocalDateTime date) {
+        return ingredient.getMissingQuantityForDish(quantity, date);
     }
 }
