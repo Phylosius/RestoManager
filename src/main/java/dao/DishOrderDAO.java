@@ -100,6 +100,7 @@ public class DishOrderDAO {
         List<Object> params = List.of(dishOrder.getId(), dishOrder.getQuantity(), dishOrder.getOrderId(), dishOrder.getDish().getId());
         BaseDAO.executeUpdate(conn, sql, params);
         OrderStatusRecordDAO.saveAll(conn, dishOrder.getStatusHistory().getRecords());
+        DishDAO.save(conn, dishOrder.getDish());
     }
 
     public static void update(Connection conn, String id, DishOrder dishOrder){
@@ -108,6 +109,7 @@ public class DishOrderDAO {
         List<Object> params = List.of(dishOrder.getQuantity(), dishOrder.getOrderId(), dishOrder.getDish().getId(), id);
         BaseDAO.executeUpdate(conn, sql, params);
         OrderStatusRecordDAO.saveAll(conn, dishOrder.getStatusHistory().getRecords());
+        DishDAO.save(conn, dishOrder.getDish());
     }
 
     public static Boolean isExist(Connection conn, DishOrder dishOrder){
