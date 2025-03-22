@@ -41,7 +41,7 @@ INSERT INTO stock_movement(ingredient_id, type, quantity, date) VALUES
     ('4', 'OUT', 20.0, '2025-02-04 16:00');
 
 -- ORDER
-INSERT INTO order(id, created_at) VALUES
+INSERT INTO "order"(id, created_at) VALUES
     ('-1o', '2025-01-02 19:32'),
     ('-2o', '2025-01-02 19:38');
 
