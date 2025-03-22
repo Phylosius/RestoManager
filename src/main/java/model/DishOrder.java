@@ -25,8 +25,8 @@ public class DishOrder {
         this.statusHistory = new OrderStatusHistory();
     }
 
-    public DishOrder(String orderId, Dish dish, int quantity){
-        this.id = UUID.randomUUID().toString();
+    public DishOrder(String id, String orderId, Dish dish, int quantity){
+        this.id = id;
         this.orderId = orderId;
         this.dish = dish;
         this.quantity = quantity;
