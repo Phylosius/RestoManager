@@ -39,6 +39,9 @@ public class DishOrderDAO {
                 dishOrder.setId(id);
                 dishOrder.setOrderId(result.getString("order_id"));
                 dishOrder.setQuantity(result.getInt("quantity"));
+                dishOrder.setDish(
+                        DishDAO.getById(conn, result.getString("dish_id"))
+                );
                 dishOrder.setStatusHistory(
                         new OrderStatusHistory(
                                 OrderStatusRecordDAO.getAllByDishOrderId(conn, id)
