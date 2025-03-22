@@ -45,7 +45,7 @@ public class Dish {
 
     public int getMakeableQuantityByMakeUp(MakeUp makeUp, LocalDateTime date) {
         return makeUp.getIngredient()
-                .getMakeableQuantity(makeUp.getQuantity(), date);
+                .getMakeableDishQuantity(makeUp.getQuantity(), date);
     }
 
     public Double getProductionCost(LocalDateTime date){
