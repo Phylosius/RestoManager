@@ -18,6 +18,10 @@ public class MakeUp {
         return ingredient.getUnit();
     }
 
+    public Boolean isMakeable(LocalDateTime date) {
+        return ingredient.getMakeableDishQuantity(quantity, date) >= 1;
+    }
+
     public Double getMissingIngredientQuantity(LocalDateTime date) {
         return ingredient.getMissingQuantityForDish(quantity, date);
     }

@@ -22,6 +22,12 @@ public class Order {
         this.dishOrders = new ArrayList<>();
     }
 
+    public Order(String id, LocalDateTime creationDate) {
+        this.id = id;
+        this.creationDate = creationDate;
+        this.dishOrders = new ArrayList<>();
+    }
+
     public void confirm(){
         LocalDateTime confirmationDate = LocalDateTime.now();
 
@@ -35,10 +41,26 @@ public class Order {
         });
     }
 
+    // don't work properly
     public void addDishOrder(DishOrder dishOrder){
+        List<MakeUp> missingMakeUps = dishOrder.getMissingIngredients(LocalDateTime.now());
+
+        if (!missingMakeUps.isEmpty()){
+            StringBuilder message = new StringBuilder("Missing Ingredients for " +  dishOrder.getDish().getName() + "\n");
+            missingMakeUps.forEach(makeUp -> {
+                message.append(String.format("\n%s : %s %s",
+                        makeUp.getIngredient().getName(),
+                        makeUp.getQuantity(),
+                        makeUp.getIngredient().getUnit()));
+            });
+
+            throw new IllegalArgumentException("Dish order have missing ingredients: \n" + message);
+        }
+
         if (dishOrder.getStatusHistory().expectedRecordStatus() == OrderStatus.CREATED){
             dishOrder.addOrderStatusRecord(new OrderStatusRecord(id, LocalDateTime.now(), OrderStatus.CREATED));
         }
+
         dishOrders.add(dishOrder);
     }
 

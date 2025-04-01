@@ -3,6 +3,7 @@ package model;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -23,6 +24,23 @@ public class Dish {
 
     public Double getGrossMargin() {
         return getGrossMargin(LocalDateTime.now());
+    }
+
+    public List<MakeUp> getMissingIngredients(LocalDateTime date) {
+        List<MakeUp> missingIngredients = new ArrayList<>();
+
+        makeUps.forEach(makeUp -> {
+            if  (makeUp.isMakeable(date)) {
+                MakeUp missingMakeUp = new MakeUp();
+
+                missingMakeUp.setIngredient(makeUp.getIngredient());
+                missingMakeUp.setQuantity(makeUp.getMissingIngredientQuantity(date));
+
+                missingIngredients.add(makeUp);
+            }
+        });
+
+        return missingIngredients;
     }
 
     public int getAvailableQuantity() {

@@ -3,6 +3,8 @@ package model;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -31,6 +33,41 @@ public class DishOrder {
         this.dish = dish;
         this.quantity = quantity;
         this.statusHistory = new OrderStatusHistory();
+    }
+
+    public List<MakeUp> getMissingIngredients(LocalDateTime date) {
+        List<MakeUp> missingMakeUps = new ArrayList<>();
+
+        List<MakeUp> additionalMissingMakeUps = dish.getMissingIngredients(date);
+
+        if (!additionalMissingMakeUps.isEmpty()){
+            missingMakeUps.addAll(additionalMissingMakeUps);
+
+            if (quantity > 1) {
+                List<Ingredient> missingIngredients = missingMakeUps.stream().map(MakeUp::getIngredient).toList();
+
+                List<MakeUp> makingMakeUps = dish.getMakeUps();
+                Double quantityMultiplier = quantity - 1d;
+
+                makingMakeUps.forEach(making -> {
+                    if (missingIngredients.contains(making.getIngredient())) {
+                        for (MakeUp missing:  missingMakeUps) {
+                            if (missing.getIngredient().equals(making.getIngredient())) {
+                                missing.setQuantity(
+                                        missing.getQuantity() + (making.getQuantity() * quantityMultiplier)
+                                );
+                            }
+                        }
+                    } else {
+                        making.setQuantity(making.getQuantity() * quantityMultiplier);
+
+                        missingMakeUps.add(making);
+                    }
+                });
+            }
+        }
+
+        return missingMakeUps;
     }
 
     public void addOrderStatusRecord(OrderStatusRecord record){
