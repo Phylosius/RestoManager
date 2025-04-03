@@ -39,6 +39,40 @@ public class IngredientDAO implements DataProvider<Ingredient, String> {
         return getAll(dataSource.getConnection(), page, pageSize);
     }
 
+    public List<Ingredient> getAll() {
+        List<Ingredient> ingredients = new ArrayList<>();
+
+        String sql = """
+                SELECT i.id, i.name, i.unit, p.unit_price, i.modification_date
+                FROM ingredient i
+                JOIN (
+                    SELECT ingredient_id, unit_price, date
+                    FROM ingredient_price p1
+                    WHERE date = (
+                        SELECT MAX(date)
+                        FROM ingredient_price p2
+                        WHERE p1.ingredient_id = p2.ingredient_id
+                    )
+                ) p ON i.id = p.ingredient_id
+                """;
+
+        BaseDAO.executeQuery(dataSource.getConnection(), sql, List.of(), result -> {
+            while (result.next()) {
+                Ingredient ingredient = new Ingredient();
+
+                ingredient.setId(result.getString("id"));
+                ingredient.setName(result.getString("name"));
+                ingredient.setModificationDate(result.getTimestamp("modification_date").toLocalDateTime());
+                ingredient.setPrice(PriceDAO.getLatestByIngredientID(dataSource.getConnection(), ingredient.getId()));
+                ingredient.setUnit(Unit.valueOf(result.getString("unit")));
+
+                ingredients.add(ingredient);
+            }
+        });
+
+        return ingredients;
+    }
+
     @Override
     public Ingredient getById(String id) {
         return getById(dataSource.getConnection(), id);
