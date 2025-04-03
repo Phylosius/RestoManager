@@ -37,6 +37,12 @@ public class IngredientRestController {
         List<Ingredient> ingredients = new ArrayList<>();
         List<Criteria> criteria = new ArrayList<>();
 
+        if (priceMinFilter != null && priceMaxFilter != null) {
+            if (priceMinFilter > priceMaxFilter) {
+                ResponseEntity.status(400).body("?priceMinFilter should be less or equal to ?priceMaxFilter");
+            }
+        }
+
         if (priceMinFilter != null) {
             if (priceMinFilter > -1d) {
                 Criteria minPriceCriteria = new Criteria(LogicalOperator.AND, "p.unit_price", CriteriaOperator.GREATER_OR_EQUAL, priceMinFilter);
