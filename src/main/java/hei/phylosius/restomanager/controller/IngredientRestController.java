@@ -8,10 +8,7 @@ import hei.phylosius.restomanager.model.CriteriaOperator;
 import hei.phylosius.restomanager.model.Ingredient;
 import hei.phylosius.restomanager.model.LogicalOperator;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,5 +71,14 @@ public class IngredientRestController {
         ingredientDTOSs = ingredients.stream().map(ingredientMapper::toDTO).toList();
 
         return ResponseEntity.ok(ingredientDTOSs);
+    }
+
+    @PostMapping
+    public ResponseEntity<?> createIngredients(@RequestBody List<IngredientDTO> ingredientDTOs) {
+        List<Ingredient> ingredients = ingredientDTOs.stream().map(ingredientMapper::toEntity).toList();
+
+        ingredientDAO.saveAll(ingredients);
+
+        return ResponseEntity.ok(ingredients);
     }
 }
