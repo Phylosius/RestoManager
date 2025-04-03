@@ -51,8 +51,14 @@ public class Criteria {
             case GREATER_THAN:
                 sqlOperator = "%s > %s";
                 break;
+            case GREATER_OR_EQUAL:
+                sqlOperator = "%s >= %s";
+                break;
             case LESS_THAN:
                 sqlOperator = "%s < %s";
+                break;
+            case LESS_OR_EQUAL:
+                sqlOperator = "%s <= %s";
                 break;
             case NEAR:
                 if (value instanceof String) {
