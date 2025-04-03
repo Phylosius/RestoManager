@@ -1,3 +1,0 @@
-#!/bin/bash
-
-psql -U resto_db_user -d resto_db -f ./sql/table_drop.sql
