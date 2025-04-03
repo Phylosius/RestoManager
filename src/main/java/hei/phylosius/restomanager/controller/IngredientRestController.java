@@ -26,7 +26,7 @@ public class IngredientRestController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getIngredients(IngredientMapper mapper, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer pageSize) {
+    public ResponseEntity<?> getIngredients(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer pageSize) {
         List<IngredientDTO> ingredientDTOSs;
         List<Ingredient> ingredients = new ArrayList<>();
 
