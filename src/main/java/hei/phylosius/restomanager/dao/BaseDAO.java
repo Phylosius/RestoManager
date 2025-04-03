@@ -24,6 +24,20 @@ public class BaseDAO {
         }
     }
 
+    public static void getAllByCriteria(Connection connection, List<Criteria> criteria, String sql, ResultSetHandler resultSetHandler) {
+        StringBuilder sqlBuilder = new StringBuilder(sql);
+
+        for (Criteria c : criteria) {
+            sqlBuilder.append(c.getSqlValue());
+        }
+
+        sql = sqlBuilder.toString();
+
+        List<Object> params = List.of();
+
+        executeQuery(connection, sql, params, resultSetHandler);
+    }
+
     public static void getAllByCriteria(Connection connection, List<Criteria> criteria, int page, int pageSize, String sql, ResultSetHandler resultSetHandler) {
         StringBuilder sqlBuilder = new StringBuilder(sql);
 
