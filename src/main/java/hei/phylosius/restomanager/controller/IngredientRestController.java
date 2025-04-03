@@ -39,7 +39,7 @@ public class IngredientRestController {
 
         if (priceMinFilter != null && priceMaxFilter != null) {
             if (priceMinFilter > priceMaxFilter) {
-                ResponseEntity.status(400).body("?priceMinFilter should be less or equal to ?priceMaxFilter");
+                return ResponseEntity.status(400).body("?priceMinFilter should be less or equal to ?priceMaxFilter");
             }
         }
 
@@ -48,7 +48,7 @@ public class IngredientRestController {
                 Criteria minPriceCriteria = new Criteria(LogicalOperator.AND, "p.unit_price", CriteriaOperator.GREATER_OR_EQUAL, priceMinFilter);
                 criteria.add(minPriceCriteria);
             } else {
-                ResponseEntity.status(400).body("?priceMinFilter should be greater or equal to 0");
+                return ResponseEntity.status(400).body("?priceMinFilter should be greater or equal to 0");
             }
         }
 
@@ -57,7 +57,7 @@ public class IngredientRestController {
                 Criteria minPriceCriteria = new Criteria(LogicalOperator.AND, "p.unit_price", CriteriaOperator.LESS_OR_EQUAL, priceMaxFilter);
                 criteria.add(minPriceCriteria);
             } else {
-                ResponseEntity.status(400).body("?priceMaxFilter should be greater or equal to 0");
+                return ResponseEntity.status(400).body("?priceMaxFilter should be greater or equal to 0");
             }
         }
 
@@ -65,7 +65,7 @@ public class IngredientRestController {
             if (pageSize != null) {
                 ingredients = ingredientDAO.getAllByCriteria(criteria, page, pageSize);
             } else {
-                ResponseEntity.status(400).body("?page should be given with ?pageSize");
+                return ResponseEntity.status(400).body("?page should be given with ?pageSize");
             }
         } else {
             ingredients = ingredientDAO.getAllByCriteria(criteria);
