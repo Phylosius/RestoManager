@@ -1,6 +1,5 @@
 package hei.phylosius.restomanager.mappers;
 
-import hei.phylosius.restomanager.dao.DataSource;
 import hei.phylosius.restomanager.dao.PriceDAO;
 import hei.phylosius.restomanager.dto.IngredientDTO;
 import hei.phylosius.restomanager.model.Ingredient;
