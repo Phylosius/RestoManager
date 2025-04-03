@@ -81,4 +81,13 @@ public class IngredientRestController {
 
         return ResponseEntity.ok(ingredients);
     }
+
+    @PutMapping
+    public ResponseEntity<?> updateIngredients(@RequestBody List<IngredientDTO> ingredientDTOs) {
+        List<Ingredient> ingredients = ingredientDTOs.stream().map(ingredientMapper::toEntity).toList();
+
+        ingredientDAO.saveAll(ingredients);
+
+        return ResponseEntity.ok(ingredients);
+    }
 }
