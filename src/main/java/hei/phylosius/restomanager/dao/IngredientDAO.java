@@ -205,7 +205,9 @@ public class IngredientDAO implements DataProvider<Ingredient, String> {
         );
 
         BaseDAO.executeUpdate(conn, sql, params);
-        PriceDAO.saveByIngredientID(conn, entity.getId(), entity.getPrice());
+        if (entity.getPrice() != null) {
+            PriceDAO.saveByIngredientID(conn, entity.getId(), entity.getPrice());
+        }
     }
 
     public static void update(Connection conn, String id,  Ingredient entity) {
@@ -219,7 +221,9 @@ public class IngredientDAO implements DataProvider<Ingredient, String> {
         );
 
         BaseDAO.executeUpdate(conn, sql, params);
-        PriceDAO.saveByIngredientID(conn, entity.getId(), entity.getPrice());
+        if (entity.getPrice() != null) {
+            PriceDAO.saveByIngredientID(conn, entity.getId(), entity.getPrice());
+        }
 
     }
 
