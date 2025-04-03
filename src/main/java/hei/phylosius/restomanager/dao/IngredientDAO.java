@@ -113,6 +113,10 @@ public class IngredientDAO implements DataProvider<Ingredient, String> {
         return getById(dataSource.getConnection(), id);
     }
 
+    public void saveAll(List<Ingredient> ingredients) {
+        ingredients.forEach(this::save);
+    }
+
     @Override
     public void save(Ingredient entity) {
         add(dataSource.getConnection(), entity);
