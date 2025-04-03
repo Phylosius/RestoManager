@@ -2,6 +2,8 @@ package hei.phylosius.restomanager.dao;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import hei.phylosius.restomanager.model.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.time.LocalDateTime;
@@ -9,10 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+@Repository
 public class IngredientDAO implements DataProvider<Ingredient, String> {
 
     private final DataSource dataSource;
 
+    @Autowired
     public IngredientDAO(DataSource dataSource) {
         this.dataSource = dataSource;
     }
