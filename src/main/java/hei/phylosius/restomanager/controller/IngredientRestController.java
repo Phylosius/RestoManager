@@ -25,6 +25,16 @@ public class IngredientRestController {
         this.ingredientMapper = ingredientMapper;
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getOneIngredient(@PathVariable String id) {
+        Ingredient ingredient = ingredientDAO.getById(id);
+        if (ingredient == null) {
+            return ResponseEntity.status(404).body(String.format("Ingredient=%s is not found", id));
+        }
+
+        return ResponseEntity.ok(ingredientMapper.toDTO(ingredient));
+    }
+
     @GetMapping
     public ResponseEntity<?> getIngredients(@RequestParam(required = false) Integer page,
                                             @RequestParam(required = false) Integer pageSize,
