@@ -3,6 +3,7 @@ package hei.phylosius.restomanager.dao;
 import io.github.cdimascio.dotenv.Dotenv;
 import hei.phylosius.restomanager.model.Criteria;
 import hei.phylosius.restomanager.model.Price;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.time.LocalDateTime;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
+@Repository
 public class PriceDAO {
 
     private final DataSource dataSource;
@@ -28,6 +30,10 @@ public class PriceDAO {
 
     public Price getNearbyByDateAndIngredientID(LocalDateTime date, String ingredientID) {
         return getNearbyByDateAndIngredientID(dataSource.getConnection(), date, ingredientID);
+    }
+
+    public Price getLatestByIngredientID(String ingredientID) {
+        return getLatestByIngredientID(dataSource.getConnection(), ingredientID);
     }
 
     public List<Price> getAllByCriteria(List<Criteria> criteria, int page, int pageSize) {
