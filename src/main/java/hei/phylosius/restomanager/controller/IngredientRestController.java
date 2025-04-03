@@ -18,7 +18,7 @@ import java.util.List;
 public class IngredientRestController {
 
     private final IngredientMapper ingredientMapper;
-    private IngredientDAO ingredientDAO;
+    private final IngredientDAO ingredientDAO;
 
     public IngredientRestController(IngredientDAO ingredientDAO, IngredientMapper ingredientMapper) {
         this.ingredientDAO = ingredientDAO;
