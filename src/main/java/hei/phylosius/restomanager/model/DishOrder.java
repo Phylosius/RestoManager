@@ -1,4 +1,4 @@
-package model;
+package hei.phylosius.restomanager.model;
 
 import lombok.*;
 

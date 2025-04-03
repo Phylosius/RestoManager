@@ -1,7 +1,7 @@
-package dao;
+package hei.phylosius.restomanager.dao;
 
-import model.Criteria;
-import model.Dish;
+import hei.phylosius.restomanager.model.Criteria;
+import hei.phylosius.restomanager.model.Dish;
 
 import java.sql.Connection;
 import java.util.ArrayList;

@@ -1,6 +1,6 @@
-package dao;
+package hei.phylosius.restomanager.dao;
 
-import model.Criteria;
+import hei.phylosius.restomanager.model.Criteria;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

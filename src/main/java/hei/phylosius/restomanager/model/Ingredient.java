@@ -1,7 +1,7 @@
-package model;
+package hei.phylosius.restomanager.model;
 
-import dao.PriceDAO;
-import dao.StockMovementDAO;
+import hei.phylosius.restomanager.dao.PriceDAO;
+import hei.phylosius.restomanager.dao.StockMovementDAO;
 import lombok.*;
 
 import java.time.LocalDateTime;

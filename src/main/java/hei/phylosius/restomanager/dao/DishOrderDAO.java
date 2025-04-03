@@ -1,8 +1,8 @@
-package dao;
+package hei.phylosius.restomanager.dao;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import model.*;
+import hei.phylosius.restomanager.model.*;
 
 import java.sql.Connection;
 import java.util.ArrayList;

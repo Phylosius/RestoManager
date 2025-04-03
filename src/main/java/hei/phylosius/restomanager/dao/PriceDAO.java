@@ -1,8 +1,8 @@
-package dao;
+package hei.phylosius.restomanager.dao;
 
 import io.github.cdimascio.dotenv.Dotenv;
-import model.Criteria;
-import model.Price;
+import hei.phylosius.restomanager.model.Criteria;
+import hei.phylosius.restomanager.model.Price;
 
 import java.sql.Connection;
 import java.time.LocalDateTime;

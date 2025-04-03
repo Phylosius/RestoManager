@@ -1,6 +1,6 @@
-package dao;
+package hei.phylosius.restomanager.dao;
 
-import model.OrderStatus;
+import hei.phylosius.restomanager.model.OrderStatus;
 
 import java.sql.Connection;
 import java.util.List;

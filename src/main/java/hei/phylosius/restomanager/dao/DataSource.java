@@ -1,4 +1,4 @@
-package dao;
+package hei.phylosius.restomanager.dao;
 
 import lombok.*;
 

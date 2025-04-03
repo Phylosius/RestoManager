@@ -1,13 +1,13 @@
-package dao;
+package hei.phylosius.restomanager.dao;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import model.Criteria;
-import model.CriteriaOperator;
-import model.LogicalOperator;
-import model.OrderStatusRecord;
+import hei.phylosius.restomanager.model.Criteria;
+import hei.phylosius.restomanager.model.CriteriaOperator;
+import hei.phylosius.restomanager.model.LogicalOperator;
+import hei.phylosius.restomanager.model.OrderStatusRecord;
 
 import java.sql.Connection;
 import java.util.ArrayList;
