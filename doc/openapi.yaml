@@ -102,7 +102,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/IngredientDTO"
+                  $ref: "#/components/schemas/IngredientDTODetailled"
         400:
           description: bad request
           content:
@@ -242,6 +242,31 @@ components:
             - "U"
             - "L"
             - "G"
+
+    IngredientDTODetailled:
+      allOf:
+        - $ref: "#/components/schemas/ObjectWithId"
+      properties:
+        name:
+          type: string
+          examples:
+            - "Oeuf"
+        availableQuantity:
+          type: number
+          example: 20.0
+        currentPrice:
+          type: number
+          examples:
+            - 1000.0
+        priceHistory:
+          type: array
+          items:
+            $ref: "#/components/schemas/IngredientPrice"
+        movementHistory:
+          type: array
+          items:
+            $ref: "#/components/schemas/StockMovementDTO"
+
 
     IngredientDTO:
       allOf:
