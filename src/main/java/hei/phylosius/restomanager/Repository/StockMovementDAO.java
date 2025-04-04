@@ -26,6 +26,34 @@ public class StockMovementDAO{
         );
     }
 
+    public List<StockMovement> getAllByIngredientID(String ingredientID) {
+        List<StockMovement> stockMovements = new ArrayList<>();
+
+        String sql = "SELECT ingredient_id, type, quantity, date FROM stock_movement";
+        List<Object> params = List.of(ingredientID);
+
+        BaseDAO.executeQuery(dataSource.getConnection(), sql, params, result -> {
+            while (result.next()) {
+                StockMovement movement = new StockMovement();
+
+                movement.setAffectedIngredient(
+                        IngredientDAO.getById(dataSource.getConnection(),
+                                result.getString("ingredient_id")));
+                movement.setType(
+                        MovementType.valueOf(
+                                result.getString("type")));
+                movement.setQuantity(
+                        result.getDouble("quantity"));
+                movement.setDate(
+                        result.getTimestamp("date").toLocalDateTime());
+
+                stockMovements.add(movement);
+            }
+        });
+
+        return stockMovements;
+    }
+
     public List<StockMovement> getAll(int page, int pageSize){
         return getAll(dataSource.getConnection(), page, pageSize);
     }
