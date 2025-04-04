@@ -3,7 +3,9 @@ package hei.phylosius.restomanager.controller;
 import hei.phylosius.restomanager.dao.IngredientDAO;
 import hei.phylosius.restomanager.dao.PriceDAO;
 import hei.phylosius.restomanager.dto.IngredientDTO;
+import hei.phylosius.restomanager.dto.StockMovementDTO;
 import hei.phylosius.restomanager.mappers.IngredientMapper;
+import hei.phylosius.restomanager.mappers.StockMovementMapper;
 import hei.phylosius.restomanager.model.*;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ public class IngredientRestController {
     private final IngredientMapper ingredientMapper;
     private final IngredientDAO ingredientDAO;
     private final PriceDAO priceDAO;
+    private final StockMovementMapper stockMovementMapper;
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getOneIngredient(@PathVariable String id) {
@@ -102,5 +105,14 @@ public class IngredientRestController {
         priceDAO.saveAllByIngredientId(ingredientId, prices);
 
         return ResponseEntity.ok(prices);
+    }
+
+    @PutMapping("/{ingredientId}/stockMovement")
+    public ResponseEntity<?> setStockMovement(@PathVariable String ingredientId, @RequestBody List<StockMovementDTO> dtos) {
+
+        Ingredient affectedIngredient = ingredientDAO.getById(ingredientId);
+        dtos.stream().map(dto -> stockMovementMapper.toEntity(affectedIngredient, dto)).toList();
+
+        return ResponseEntity.ok(dtos);
     }
 }
