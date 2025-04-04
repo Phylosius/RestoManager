@@ -1,29 +1,25 @@
 package hei.phylosius.restomanager.controller;
 
 import hei.phylosius.restomanager.dao.IngredientDAO;
+import hei.phylosius.restomanager.dao.PriceDAO;
 import hei.phylosius.restomanager.dto.IngredientDTO;
 import hei.phylosius.restomanager.mappers.IngredientMapper;
-import hei.phylosius.restomanager.model.Criteria;
-import hei.phylosius.restomanager.model.CriteriaOperator;
-import hei.phylosius.restomanager.model.Ingredient;
-import hei.phylosius.restomanager.model.LogicalOperator;
+import hei.phylosius.restomanager.model.*;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/ingredients")
 public class IngredientRestController {
 
     private final IngredientMapper ingredientMapper;
     private final IngredientDAO ingredientDAO;
-
-    public IngredientRestController(IngredientDAO ingredientDAO, IngredientMapper ingredientMapper) {
-        this.ingredientDAO = ingredientDAO;
-        this.ingredientMapper = ingredientMapper;
-    }
+    private final PriceDAO priceDAO;
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getOneIngredient(@PathVariable String id) {
@@ -99,5 +95,12 @@ public class IngredientRestController {
         ingredientDAO.saveAll(ingredients);
 
         return ResponseEntity.ok(ingredients);
+    }
+
+    @PutMapping("/{ingredientId}/prices")
+    public ResponseEntity<?> setPrices(@PathVariable String ingredientId, @RequestBody List<Price> prices) {
+        priceDAO.saveAllByIngredientId(ingredientId, prices);
+
+        return ResponseEntity.ok(prices);
     }
 }
