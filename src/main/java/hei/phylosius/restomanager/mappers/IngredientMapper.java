@@ -50,6 +50,7 @@ public class IngredientMapper {
         ingredient.setId(ingredientDTO.getId() != null ? ingredientDTO.getId() : UUID.randomUUID().toString());
         ingredient.setName(ingredientDTO.getName());
         ingredient.setPrice(new Price(ingredientDTO.getUnitPrice(), LocalDateTime.now()));
+        ingredient.setUnit(Unit.U);
         ingredient.setModificationDate(LocalDateTime.now());
 
         return ingredient;
@@ -61,6 +62,7 @@ public class IngredientMapper {
         ingredient.setId(UUID.randomUUID().toString());
         ingredient.setName(ingredientCreateDTO.getName());
         ingredient.setModificationDate(LocalDateTime.now());
+        ingredient.setUnit(Unit.U);
 
         return ingredient;
     }
