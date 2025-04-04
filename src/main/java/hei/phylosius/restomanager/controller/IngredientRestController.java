@@ -3,6 +3,7 @@ package hei.phylosius.restomanager.controller;
 import hei.phylosius.restomanager.dao.IngredientDAO;
 import hei.phylosius.restomanager.dao.PriceDAO;
 import hei.phylosius.restomanager.dto.IngredientDTO;
+import hei.phylosius.restomanager.dto.IngredientUpdateDTO;
 import hei.phylosius.restomanager.dto.StockMovementDTO;
 import hei.phylosius.restomanager.mappers.IngredientMapper;
 import hei.phylosius.restomanager.mappers.StockMovementMapper;
@@ -97,7 +98,7 @@ public class IngredientRestController {
     }
 
     @PutMapping
-    public ResponseEntity<?> updateIngredients(@RequestBody List<IngredientDTO> ingredientDTOs) {
+    public ResponseEntity<?> updateIngredients(@RequestBody List<IngredientUpdateDTO> ingredientDTOs) {
         List<Ingredient> ingredients = ingredientDTOs.stream().map(ingredientMapper::toEntity).toList();
 
         ingredientDAO.saveAll(ingredients);

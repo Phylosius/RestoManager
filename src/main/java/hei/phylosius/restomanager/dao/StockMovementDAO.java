@@ -2,12 +2,14 @@ package hei.phylosius.restomanager.dao;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import hei.phylosius.restomanager.model.*;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class StockMovementDAO{
     private final DataSource dataSource;
 

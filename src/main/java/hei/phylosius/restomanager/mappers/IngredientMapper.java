@@ -1,10 +1,13 @@
 package hei.phylosius.restomanager.mappers;
 
 import hei.phylosius.restomanager.dao.PriceDAO;
+import hei.phylosius.restomanager.dao.StockMovementDAO;
 import hei.phylosius.restomanager.dto.IngredientCreateDTO;
 import hei.phylosius.restomanager.dto.IngredientDTO;
+import hei.phylosius.restomanager.dto.IngredientUpdateDTO;
 import hei.phylosius.restomanager.model.Ingredient;
 import hei.phylosius.restomanager.model.Price;
+import hei.phylosius.restomanager.model.StockMovement;
 import hei.phylosius.restomanager.model.Unit;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -12,13 +15,16 @@ import org.springframework.stereotype.Component;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
 @Component
 public class IngredientMapper {
 
+    private final StockMovementMapper stockMovementMapper;
     private PriceDAO priceDAO;
+    private StockMovementDAO stockMovementDAO;
 
     public IngredientDTO toDTO(Ingredient ingredient) {
         return new IngredientDTO(
@@ -52,6 +58,22 @@ public class IngredientMapper {
         ingredient.setPrice(new Price(ingredientDTO.getUnitPrice(), LocalDateTime.now()));
         ingredient.setUnit(Unit.U);
         ingredient.setModificationDate(LocalDateTime.now());
+
+        return ingredient;
+    }
+
+    public Ingredient toEntity(IngredientUpdateDTO ingredientUpdateDTO) {
+        Ingredient ingredient = new Ingredient();
+
+        priceDAO.saveAllByIngredientId(ingredientUpdateDTO.getId(), ingredientUpdateDTO.getPrices());
+
+        ingredient.setId(ingredientUpdateDTO.getId());
+        ingredient.setName(ingredientUpdateDTO.getName());
+        ingredient.setModificationDate(LocalDateTime.now());
+        ingredient.setUnit(Unit.U);
+
+        List<StockMovement> moves = ingredientUpdateDTO.getStockMovements().stream().map(s -> stockMovementMapper.toEntity(ingredient, s)).toList();
+        moves.forEach(stockMovementDAO::save);
 
         return ingredient;
     }
