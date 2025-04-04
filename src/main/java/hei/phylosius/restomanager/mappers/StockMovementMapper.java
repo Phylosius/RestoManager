@@ -6,6 +6,8 @@ import hei.phylosius.restomanager.model.StockMovement;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @AllArgsConstructor
 @Component
 public class StockMovementMapper {
@@ -19,5 +21,19 @@ public class StockMovementMapper {
         stockMovement.setType(dto.getType());
 
         return stockMovement;
+    }
+
+    public List<StockMovementDTO> toDTOs(List<StockMovement> movs) {
+        return movs.stream().map(this::toDTO).toList();
+    }
+
+    public StockMovementDTO toDTO(StockMovement stockMovement) {
+        StockMovementDTO dto = new StockMovementDTO();
+
+        dto.setQuantity(stockMovement.getQuantity());
+        dto.setDate(stockMovement.getDate());
+        dto.setType(stockMovement.getType());
+
+        return dto;
     }
 }
