@@ -4,6 +4,7 @@ import hei.phylosius.restomanager.Repository.PriceDAO;
 import hei.phylosius.restomanager.Repository.StockMovementDAO;
 import hei.phylosius.restomanager.dto.IngredientCreateDTO;
 import hei.phylosius.restomanager.dto.IngredientDTO;
+import hei.phylosius.restomanager.dto.IngredientDTODetailled;
 import hei.phylosius.restomanager.dto.IngredientUpdateDTO;
 import hei.phylosius.restomanager.model.Ingredient;
 import hei.phylosius.restomanager.model.Price;
@@ -25,6 +26,22 @@ public class IngredientMapper {
     private final StockMovementMapper stockMovementMapper;
     private PriceDAO priceDAO;
     private StockMovementDAO stockMovementDAO;
+
+    public IngredientDTODetailled toDTODetailled(Ingredient ingredient) {
+        IngredientDTODetailled dto = new IngredientDTODetailled();
+        String id = ingredient.getId();
+
+        dto.setId(id);
+        dto.setName(ingredient.getName());
+        dto.setAvalaibleQuantity(ingredient.getAvailableQuantity());
+        dto.setCurrentPrice(ingredient.getRecentPrice().getValue());
+        dto.setPriceHistory(priceDAO.getAllByIngredientID(id));
+        dto.setMovementHistory(
+                stockMovementMapper.toDTOs(stockMovementDAO.getAllByIngredientID(id))
+        );
+
+        return dto;
+    }
 
     public IngredientDTO toDTO(Ingredient ingredient) {
         return new IngredientDTO(
