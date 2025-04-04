@@ -229,7 +229,6 @@ components:
             - "Oeuf"
             - "Huile"
         price:
-          type: object
           $ref: "#/components/schemas/IngredientPrice"
         updatedAt:
           type: string
