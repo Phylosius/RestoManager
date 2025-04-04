@@ -1,4 +1,4 @@
-package hei.phylosius.restomanager.dao;
+package hei.phylosius.restomanager.Repository;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import hei.phylosius.restomanager.model.*;

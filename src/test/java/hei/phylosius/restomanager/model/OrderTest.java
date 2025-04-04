@@ -1,18 +1,16 @@
 package hei.phylosius.restomanager.model;
 
-import hei.phylosius.restomanager.dao.DataSource;
-import hei.phylosius.restomanager.dao.DishDAO;
-import hei.phylosius.restomanager.dao.DishOrderDAO;
-import hei.phylosius.restomanager.dao.OrderDAO;
+import hei.phylosius.restomanager.Repository.DataSource;
+import hei.phylosius.restomanager.Repository.DishDAO;
+import hei.phylosius.restomanager.Repository.DishOrderDAO;
+import hei.phylosius.restomanager.Repository.OrderDAO;
 import io.github.cdimascio.dotenv.Dotenv;
-import hei.phylosius.restomanager.model.*;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 

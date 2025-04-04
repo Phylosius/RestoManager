@@ -1,8 +1,4 @@
-package hei.phylosius.restomanager.dao;
-
-import hei.phylosius.restomanager.dao.DataSource;
-import hei.phylosius.restomanager.dao.DishDAO;
-import hei.phylosius.restomanager.dao.IngredientDAO;
+package hei.phylosius.restomanager.Repository;
 
 
 import io.github.cdimascio.dotenv.Dotenv;

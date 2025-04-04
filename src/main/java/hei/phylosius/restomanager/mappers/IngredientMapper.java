@@ -1,7 +1,7 @@
 package hei.phylosius.restomanager.mappers;
 
-import hei.phylosius.restomanager.dao.PriceDAO;
-import hei.phylosius.restomanager.dao.StockMovementDAO;
+import hei.phylosius.restomanager.Repository.PriceDAO;
+import hei.phylosius.restomanager.Repository.StockMovementDAO;
 import hei.phylosius.restomanager.dto.IngredientCreateDTO;
 import hei.phylosius.restomanager.dto.IngredientDTO;
 import hei.phylosius.restomanager.dto.IngredientUpdateDTO;

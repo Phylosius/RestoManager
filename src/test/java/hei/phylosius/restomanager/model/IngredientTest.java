@@ -1,9 +1,8 @@
 package hei.phylosius.restomanager.model;
 
-import hei.phylosius.restomanager.dao.DataSource;
-import hei.phylosius.restomanager.dao.IngredientDAO;
+import hei.phylosius.restomanager.Repository.DataSource;
+import hei.phylosius.restomanager.Repository.IngredientDAO;
 import io.github.cdimascio.dotenv.Dotenv;
-import hei.phylosius.restomanager.model.Ingredient;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

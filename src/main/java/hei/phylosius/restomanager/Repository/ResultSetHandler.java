@@ -1,4 +1,4 @@
-package hei.phylosius.restomanager.dao;
+package hei.phylosius.restomanager.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

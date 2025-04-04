@@ -1,4 +1,4 @@
-package hei.phylosius.restomanager.dao;
+package hei.phylosius.restomanager.Repository;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

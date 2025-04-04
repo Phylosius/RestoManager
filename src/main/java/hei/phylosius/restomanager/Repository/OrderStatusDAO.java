@@ -1,4 +1,4 @@
-package hei.phylosius.restomanager.dao;
+package hei.phylosius.restomanager.Repository;
 
 import hei.phylosius.restomanager.model.OrderStatus;
 

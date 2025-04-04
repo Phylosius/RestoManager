@@ -1,4 +1,4 @@
-package hei.phylosius.restomanager.service;
+package hei.phylosius.restomanager.Service;
 
 public class StringModifier {
     public static String pascalCaseToSnakeCase(String input) {

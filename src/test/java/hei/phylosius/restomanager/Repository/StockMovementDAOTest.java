@@ -1,8 +1,5 @@
-package hei.phylosius.restomanager.dao;
+package hei.phylosius.restomanager.Repository;
 
-import hei.phylosius.restomanager.dao.DataSource;
-import hei.phylosius.restomanager.dao.IngredientDAO;
-import hei.phylosius.restomanager.dao.StockMovementDAO;
 import io.github.cdimascio.dotenv.Dotenv;
 import hei.phylosius.restomanager.model.StockMovement;
 import hei.phylosius.restomanager.model.MovementType;
