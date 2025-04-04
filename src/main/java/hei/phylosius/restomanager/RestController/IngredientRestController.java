@@ -3,6 +3,7 @@ package hei.phylosius.restomanager.RestController;
 import hei.phylosius.restomanager.Repository.IngredientDAO;
 import hei.phylosius.restomanager.Repository.PriceDAO;
 import hei.phylosius.restomanager.dto.IngredientDTO;
+import hei.phylosius.restomanager.dto.IngredientDTODetailled;
 import hei.phylosius.restomanager.dto.IngredientUpdateDTO;
 import hei.phylosius.restomanager.dto.StockMovementDTO;
 import hei.phylosius.restomanager.mappers.IngredientMapper;
@@ -40,8 +41,8 @@ public class IngredientRestController {
                                             @RequestParam(required = false) Integer pageSize,
                                             @RequestParam(required = false) Double priceMinFilter,
                                             @RequestParam(required = false) Double priceMaxFilter) {
-        List<IngredientDTO> ingredientDTOSs;
-        List<Ingredient> ingredients = new ArrayList<>();
+        List<IngredientDTODetailled> ingredientDTOSsDetailled;
+        List<Ingredient> ingredients;
         List<Criteria> criteria = new ArrayList<>();
 
         if (priceMinFilter != null && priceMaxFilter != null) {
@@ -78,9 +79,9 @@ public class IngredientRestController {
             ingredients = ingredientDAO.getAllByCriteria(criteria);
         }
 
-        ingredientDTOSs = ingredients.stream().map(ingredientMapper::toDTO).toList();
+        ingredientDTOSsDetailled = ingredients.stream().map(ingredientMapper::toDTODetailled).toList();
 
-        return ResponseEntity.ok(ingredientDTOSs);
+        return ResponseEntity.ok(ingredientDTOSsDetailled);
     }
 
     @PostMapping
