@@ -1,0 +1,275 @@
+openapi: 3.1.0
+info:
+  title: Resto Manager API
+  description: Resto Manager API
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:8080'
+paths:
+  /health/ping:
+    get:
+      description: Ping pong endpoint
+      tags:
+        - Health
+      responses:
+        200:
+          description: ping pong
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "pong"
+
+  /ingredients:
+    put:
+      description: Update ingredients
+      tags:
+        - Ingredient
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/IngredientDTO"
+      responses:
+        200:
+          description: list of saved ingredients
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Ingredient"
+
+    post:
+      description: Save ingredients
+      tags:
+        - Ingredient
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/IngredientDTO"
+      responses:
+        200:
+          description: list of saved ingredients
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Ingredient"
+
+    get:
+      parameters:
+        - in: query
+          name: priceMaxFilter
+          description: maximal ingredient price to query
+          required: false
+          schema:
+            type: integer
+            example: 10000
+        - in: query
+          name: priceMinFilter
+          description: minimal ingredient price to query
+          required: false
+          schema:
+            type: integer
+            example: 0
+        - in: query
+          name: pageSize
+          description: amount of ingredient to query
+          required: false
+          schema:
+            type: integer
+            example: 5
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+            example: 1
+
+      description: Get a list of ingredient
+      responses:
+        200:
+          description: list of ingredient
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/IngredientDTO"
+        400:
+          description: bad request
+          content:
+            applocation/json:
+              schema:
+                type: string
+                example: "bad request"
+
+  /ingredients/{id}:
+    get:
+      description: Get info about a specific ingredient
+      tags:
+        - Ingredient
+      responses:
+        200:
+          description: ingredient's info
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IngredientDTO"
+        404:
+          description: ingredient not found
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "the ingredient is not found"
+
+  /ingredients/{ingredientId}/prices:
+    put:
+      description: set ingredient's prices
+      tags:
+        - Ingredient
+        - Price
+      parameters:
+        - in: path
+          name: ingredientId
+          required: true
+          schema:
+            type: string
+            example: "1"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/IngredientPrice"
+      responses:
+        200:
+          description: prices saved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/IngredientPrice"
+
+  /ingredients/{ingredientId}/stockMovement:
+    put:
+      description: set ingredient's prices
+      tags:
+        - Ingredient
+        - Stock Movement
+      parameters:
+        - in: path
+          name: ingredientId
+          required: true
+          schema:
+            type: string
+            example: "1"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/StockMovementDTO"
+      responses:
+        200:
+          description: prices saved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/StockMovementDTO"
+
+components:
+  schemas:
+    StockMovementDTO:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - "IN"
+            - "OUT"
+        quantity:
+          type: number
+        date:
+          type: string
+          format: date
+          example: "2025-03-20T00:00:00Z"
+
+    IngredientPrice:
+      type: object
+      properties:
+        value:
+          type: number
+          example: 1000
+        date:
+          type: string
+          format: date
+          example: "2025-03-20T00:00:00Z"
+
+    Ingredient:
+      allOf:
+        - $ref: "#/components/schemas/ObjectWithId"
+      properties:
+        name:
+          type: string
+          examples:
+            - "Oeuf"
+            - "Huile"
+        price:
+          type: object
+          $ref: "#/components/schemas/IngredientPrice"
+        updatedAt:
+          type: string
+          format: date
+          examples:
+            - "2025-03-01T00:00:00Z"
+            - "2025-03-20T00:00:00Z"
+        unit:
+          type: string
+          enum:
+            - "U"
+            - "L"
+            - "G"
+
+    IngredientDTO:
+      allOf:
+        - $ref: "#/components/schemas/ObjectWithId"
+      properties:
+        name:
+          type: string
+          examples:
+            - "Oeuf"
+            - "Huile"
+        unitPrice:
+          type: number
+          examples:
+            - 1000.0
+            - 10000.0
+        updatedAt:
+          type: string
+          format: date
+          examples:
+            - "2025-03-01T00:00:00Z"
+            - "2025-03-20T00:00:00Z"
+
+    ObjectWithId:
+      type: object
+      properties:
+        id:
+          type: string
+          examples:
+            - "1"
+            - "2"
