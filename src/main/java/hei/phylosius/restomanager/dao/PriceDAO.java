@@ -28,6 +28,10 @@ public class PriceDAO {
         this.dataSource = dataSource;
     }
 
+    public void saveAllByIngredientId(String ingredientId, List<Price> prices) {
+        prices.forEach(price -> saveByIngredientID(dataSource.getConnection(), ingredientId, price));
+    }
+
     public Price getNearbyByDateAndIngredientID(LocalDateTime date, String ingredientID) {
         return getNearbyByDateAndIngredientID(dataSource.getConnection(), date, ingredientID);
     }
