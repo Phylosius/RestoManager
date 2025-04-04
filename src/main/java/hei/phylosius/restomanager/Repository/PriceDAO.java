@@ -40,6 +40,10 @@ public class PriceDAO {
         return getLatestByIngredientID(dataSource.getConnection(), ingredientID);
     }
 
+    public List<Price> getAllByIngredientID(String ingredientID) {
+        return getAllByIngredientID(dataSource.getConnection(), ingredientID);
+    }
+
     public List<Price> getAllByCriteria(List<Criteria> criteria, int page, int pageSize) {
         return getAllByCriteria(dataSource.getConnection(), criteria, page, pageSize);
     }
@@ -85,11 +89,15 @@ public class PriceDAO {
         return result;
     }
 
-    public static List<Price> getAllByIngredientID(Connection conn, String ingredientID, int page, int pageSize) {
-        List<Price> prices = new ArrayList<>();
+    public static List<Price> getAllByIngredientID(Connection conn, String ingredientID) {
+        String sql = "select unit_price, date from ingredient_price where ingredient_id = ?";
+        List<Object> params = List.of(ingredientID);
 
-        String sql = "select unit_price, date from ingredient_price where ingredient_id = ? LIMIT ? OFFSET ?";
-        List<Object> params = List.of(ingredientID, page, pageSize * (page - 1));
+        return getAll(conn, sql, params);
+    }
+
+    public static List<Price> getAll(Connection conn, String sql, List<Object> params) {
+        List<Price> prices = new ArrayList<>();
 
         BaseDAO.executeQuery(conn, sql, params, (resultSet -> {
             while (resultSet.next()) {
