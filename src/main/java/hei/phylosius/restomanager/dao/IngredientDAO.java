@@ -119,7 +119,19 @@ public class IngredientDAO implements DataProvider<Ingredient, String> {
 
     @Override
     public void save(Ingredient entity) {
-        add(dataSource.getConnection(), entity);
+        save(dataSource.getConnection(), entity);
+    }
+
+    public void addAll(List<Ingredient> ingredients) {
+        ingredients.forEach(this::add);
+    }
+
+    public void add(Ingredient entity) {
+        if (isExist(dataSource.getConnection(), entity.getId())) {
+            throw new IllegalArgumentException(String.format("Ingredient of id=%s already exists", entity.getId()));
+        } else {
+            add(dataSource.getConnection(), entity);
+        }
     }
 
     @Override

@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,7 +87,11 @@ public class IngredientRestController {
     public ResponseEntity<?> createIngredients(@RequestBody List<IngredientDTO> ingredientDTOs) {
         List<Ingredient> ingredients = ingredientDTOs.stream().map(ingredientMapper::toEntity).toList();
 
-        ingredientDAO.saveAll(ingredients);
+        try {
+            ingredientDAO.addAll(ingredients);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(400).body(e.getMessage());
+        }
 
         return ResponseEntity.ok(ingredients);
     }
