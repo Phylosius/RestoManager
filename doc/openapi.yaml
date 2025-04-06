@@ -251,8 +251,131 @@ paths:
                 type: string
                 example: "dish not found"
 
+  /orders/{reference}:
+    get:
+      description: Get order info
+      tags:
+        - Order
+      parameters:
+        - in: path
+          name: reference
+          required: true
+          schema:
+            type: string
+            example: "3"
+      responses:
+        200:
+          description: order info
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderRest"
+        404:
+          description: order not found
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Order not found"
+
+  /orders/{reference}/dishes:
+    put:
+      description: Update dishes of an order
+      tags:
+        - Order
+      parameters:
+        - in: path
+          name: reference
+          required: true
+          schema:
+            type: string
+            example: "3"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/DishOrderRestUpdate"
+
+  /orders/{reference}/dishes/{dishId}:
+    put:
+      description: Update an dish status for an order
+      tags:
+        - Order
+      parameters:
+        - in: path
+          name: reference
+          required: true
+          schema:
+            type: string
+            example: "3"
+        - in: path
+          name: dishId
+          required: true
+          schema:
+            type: string
+            example: "2"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ObjectWithStatus"
+      responses:
+        200:
+          description: Status updated
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Dish status updated"
+        404:
+          description: Order or dish not found
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Not found"
+
+
 components:
   schemas:
+
+    OrderRest:
+      allOf:
+        - $ref: "#/components/schemas/ObjectWithId"
+        - $ref: "#/components/schemas/ObjectWithStatus"
+      properties:
+        dishes:
+          type: array
+          items:
+            $ref: "#/components/schemas/DishOrderRest"
+
+    DishOrderRestUpdate:
+      allOf:
+        - $ref: "#/components/schemas/ObjectWithId"
+      properties:
+        quantity:
+          type: integer
+          example: 3
+
+    DishOrderRest:
+      allOf:
+        - $ref: "#/components/schemas/ObjectWithStatus"
+      properties:
+        name:
+          type: string
+          example: "Pizza"
+        unitPrice:
+          type: number
+          example: 1000
+        quantity:
+          type: integer
+          example: 1
+
+
     DishRest:
       allOf:
         - $ref: "#/components/schemas/ObjectWithId"
@@ -388,6 +511,19 @@ components:
           examples:
             - "2025-03-01T00:00:00Z"
             - "2025-03-20T00:00:00Z"
+
+    ObjectWithStatus:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - "CREATED"
+            - "CONFIRMED"
+            - "IN_PREPARATION"
+            - "FINISHED"
+            - "SERVED"
+          example: "IN_PREPARATION"
 
     ObjectWithId:
       type: object
