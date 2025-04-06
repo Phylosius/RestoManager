@@ -10,9 +10,9 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-public class IngredientUpdateDTO {
+public class IngredientUpdateRest {
     private String id;
     private String name;
     private List<Price> prices;
-    private List<StockMovementDTO> stockMovements;
+    private List<StockMovementRest> stockMovements;
 }

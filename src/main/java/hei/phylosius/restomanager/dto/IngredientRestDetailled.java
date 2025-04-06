@@ -12,11 +12,11 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class IngredientDTODetailled {
+public class IngredientRestDetailled {
     private String id;
     private String name;
     private Double avalaibleQuantity;
     private Double currentPrice;
     private List<Price> priceHistory;
-    private List<StockMovementDTO> movementHistory;
+    private List<StockMovementRest> movementHistory;
 }

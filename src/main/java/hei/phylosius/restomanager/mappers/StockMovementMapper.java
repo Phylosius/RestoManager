@@ -1,6 +1,6 @@
 package hei.phylosius.restomanager.mappers;
 
-import hei.phylosius.restomanager.dto.StockMovementDTO;
+import hei.phylosius.restomanager.dto.StockMovementRest;
 import hei.phylosius.restomanager.model.Ingredient;
 import hei.phylosius.restomanager.model.StockMovement;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import java.util.List;
 @Component
 public class StockMovementMapper {
 
-    public StockMovement toEntity(Ingredient affectedIngredient, StockMovementDTO dto) {
+    public StockMovement toEntity(Ingredient affectedIngredient, StockMovementRest dto) {
         StockMovement stockMovement = new StockMovement();
 
         stockMovement.setAffectedIngredient(affectedIngredient);
@@ -23,12 +23,12 @@ public class StockMovementMapper {
         return stockMovement;
     }
 
-    public List<StockMovementDTO> toDTOs(List<StockMovement> movs) {
+    public List<StockMovementRest> toDTOs(List<StockMovement> movs) {
         return movs.stream().map(this::toDTO).toList();
     }
 
-    public StockMovementDTO toDTO(StockMovement stockMovement) {
-        StockMovementDTO dto = new StockMovementDTO();
+    public StockMovementRest toDTO(StockMovement stockMovement) {
+        StockMovementRest dto = new StockMovementRest();
 
         dto.setQuantity(stockMovement.getQuantity());
         dto.setDate(stockMovement.getDate());

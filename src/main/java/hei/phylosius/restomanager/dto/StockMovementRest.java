@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class StockMovementDTO {
+public class StockMovementRest {
     private MovementType type;
     private Double quantity;
     private LocalDateTime date;

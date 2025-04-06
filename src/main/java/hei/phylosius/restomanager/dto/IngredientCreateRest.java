@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class IngredientCreateDTO {
+public class IngredientCreateRest {
     private String name;
     private Unit unit;
 }

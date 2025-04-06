@@ -2,10 +2,10 @@ package hei.phylosius.restomanager.RestController;
 
 import hei.phylosius.restomanager.Repository.IngredientDAO;
 import hei.phylosius.restomanager.Repository.PriceDAO;
-import hei.phylosius.restomanager.dto.IngredientDTO;
-import hei.phylosius.restomanager.dto.IngredientDTODetailled;
-import hei.phylosius.restomanager.dto.IngredientUpdateDTO;
-import hei.phylosius.restomanager.dto.StockMovementDTO;
+import hei.phylosius.restomanager.dto.IngredientRest;
+import hei.phylosius.restomanager.dto.IngredientRestDetailled;
+import hei.phylosius.restomanager.dto.IngredientUpdateRest;
+import hei.phylosius.restomanager.dto.StockMovementRest;
 import hei.phylosius.restomanager.mappers.IngredientMapper;
 import hei.phylosius.restomanager.mappers.StockMovementMapper;
 import hei.phylosius.restomanager.model.*;
@@ -41,7 +41,7 @@ public class IngredientRestController {
                                             @RequestParam(required = false) Integer pageSize,
                                             @RequestParam(required = false) Double priceMinFilter,
                                             @RequestParam(required = false) Double priceMaxFilter) {
-        List<IngredientDTODetailled> ingredientDTOSsDetailled;
+        List<IngredientRestDetailled> ingredientDTOSsDetailled;
         List<Ingredient> ingredients;
         List<Criteria> criteria = new ArrayList<>();
 
@@ -85,8 +85,8 @@ public class IngredientRestController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createIngredients(@RequestBody List<IngredientDTO> ingredientDTOs) {
-        List<Ingredient> ingredients = ingredientDTOs.stream().map(ingredientMapper::toEntity).toList();
+    public ResponseEntity<?> createIngredients(@RequestBody List<IngredientRest> ingredientRests) {
+        List<Ingredient> ingredients = ingredientRests.stream().map(ingredientMapper::toEntity).toList();
 
         try {
             ingredientDAO.addAll(ingredients);
@@ -98,7 +98,7 @@ public class IngredientRestController {
     }
 
     @PutMapping
-    public ResponseEntity<?> updateIngredients(@RequestBody List<IngredientUpdateDTO> ingredientDTOs) {
+    public ResponseEntity<?> updateIngredients(@RequestBody List<IngredientUpdateRest> ingredientDTOs) {
         List<Ingredient> ingredients = ingredientDTOs.stream().map(ingredientMapper::toEntity).toList();
 
         ingredientDAO.saveAll(ingredients);
@@ -114,7 +114,7 @@ public class IngredientRestController {
     }
 
     @PutMapping("/{ingredientId}/stockMovement")
-    public ResponseEntity<?> setStockMovement(@PathVariable String ingredientId, @RequestBody List<StockMovementDTO> dtos) {
+    public ResponseEntity<?> setStockMovement(@PathVariable String ingredientId, @RequestBody List<StockMovementRest> dtos) {
 
         Ingredient affectedIngredient = ingredientDAO.getById(ingredientId);
         dtos.stream().map(dto -> stockMovementMapper.toEntity(affectedIngredient, dto)).toList();

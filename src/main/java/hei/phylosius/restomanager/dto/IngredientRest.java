@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @AllArgsConstructor
-public class IngredientDTO {
+public class IngredientRest {
     private String id;
     private String name;
     private Double unitPrice;

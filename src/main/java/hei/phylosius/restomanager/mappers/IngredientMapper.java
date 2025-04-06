@@ -2,10 +2,10 @@ package hei.phylosius.restomanager.mappers;
 
 import hei.phylosius.restomanager.Repository.PriceDAO;
 import hei.phylosius.restomanager.Repository.StockMovementDAO;
-import hei.phylosius.restomanager.dto.IngredientCreateDTO;
-import hei.phylosius.restomanager.dto.IngredientDTO;
-import hei.phylosius.restomanager.dto.IngredientDTODetailled;
-import hei.phylosius.restomanager.dto.IngredientUpdateDTO;
+import hei.phylosius.restomanager.dto.IngredientCreateRest;
+import hei.phylosius.restomanager.dto.IngredientRest;
+import hei.phylosius.restomanager.dto.IngredientRestDetailled;
+import hei.phylosius.restomanager.dto.IngredientUpdateRest;
 import hei.phylosius.restomanager.model.Ingredient;
 import hei.phylosius.restomanager.model.Price;
 import hei.phylosius.restomanager.model.StockMovement;
@@ -27,8 +27,8 @@ public class IngredientMapper {
     private PriceDAO priceDAO;
     private StockMovementDAO stockMovementDAO;
 
-    public IngredientDTODetailled toDTODetailled(Ingredient ingredient) {
-        IngredientDTODetailled dto = new IngredientDTODetailled();
+    public IngredientRestDetailled toDTODetailled(Ingredient ingredient) {
+        IngredientRestDetailled dto = new IngredientRestDetailled();
         String id = ingredient.getId();
 
         dto.setId(id);
@@ -43,8 +43,8 @@ public class IngredientMapper {
         return dto;
     }
 
-    public IngredientDTO toDTO(Ingredient ingredient) {
-        return new IngredientDTO(
+    public IngredientRest toDTO(Ingredient ingredient) {
+        return new IngredientRest(
                 ingredient.getId(),
                 ingredient.getName(),
                 ingredient.getPrice().getValue(),
@@ -67,39 +67,39 @@ public class IngredientMapper {
         }
     }
 
-    public Ingredient toEntity(IngredientDTO ingredientDTO) {
+    public Ingredient toEntity(IngredientRest ingredientRest) {
         Ingredient ingredient = new Ingredient();
 
-        ingredient.setId(ingredientDTO.getId() != null ? ingredientDTO.getId() : UUID.randomUUID().toString());
-        ingredient.setName(ingredientDTO.getName());
-        ingredient.setPrice(new Price(ingredientDTO.getUnitPrice(), LocalDateTime.now()));
+        ingredient.setId(ingredientRest.getId() != null ? ingredientRest.getId() : UUID.randomUUID().toString());
+        ingredient.setName(ingredientRest.getName());
+        ingredient.setPrice(new Price(ingredientRest.getUnitPrice(), LocalDateTime.now()));
         ingredient.setUnit(Unit.U);
         ingredient.setModificationDate(LocalDateTime.now());
 
         return ingredient;
     }
 
-    public Ingredient toEntity(IngredientUpdateDTO ingredientUpdateDTO) {
+    public Ingredient toEntity(IngredientUpdateRest ingredientUpdateRest) {
         Ingredient ingredient = new Ingredient();
 
-        priceDAO.saveAllByIngredientId(ingredientUpdateDTO.getId(), ingredientUpdateDTO.getPrices());
+        priceDAO.saveAllByIngredientId(ingredientUpdateRest.getId(), ingredientUpdateRest.getPrices());
 
-        ingredient.setId(ingredientUpdateDTO.getId());
-        ingredient.setName(ingredientUpdateDTO.getName());
+        ingredient.setId(ingredientUpdateRest.getId());
+        ingredient.setName(ingredientUpdateRest.getName());
         ingredient.setModificationDate(LocalDateTime.now());
         ingredient.setUnit(Unit.U);
 
-        List<StockMovement> moves = ingredientUpdateDTO.getStockMovements().stream().map(s -> stockMovementMapper.toEntity(ingredient, s)).toList();
+        List<StockMovement> moves = ingredientUpdateRest.getStockMovements().stream().map(s -> stockMovementMapper.toEntity(ingredient, s)).toList();
         moves.forEach(stockMovementDAO::save);
 
         return ingredient;
     }
 
-    public Ingredient toEntity(IngredientCreateDTO ingredientCreateDTO) {
+    public Ingredient toEntity(IngredientCreateRest ingredientCreateRest) {
         Ingredient ingredient = new Ingredient();
 
         ingredient.setId(UUID.randomUUID().toString());
-        ingredient.setName(ingredientCreateDTO.getName());
+        ingredient.setName(ingredientCreateRest.getName());
         ingredient.setModificationDate(LocalDateTime.now());
         ingredient.setUnit(Unit.U);
 
