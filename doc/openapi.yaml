@@ -131,7 +131,7 @@ paths:
                 type: string
                 example: "the ingredient is not found"
 
-  /ingredients/{ingredientId}/prices:
+  /ingredients/{id}/prices:
     put:
       description: set ingredient's prices
       tags:
@@ -139,7 +139,7 @@ paths:
         - Price
       parameters:
         - in: path
-          name: ingredientId
+          name: id
           required: true
           schema:
             type: string
@@ -161,7 +161,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/IngredientPrice"
 
-  /ingredients/{ingredientId}/stockMovement:
+  /ingredients/{id}/stockMovement:
     put:
       description: set ingredient's prices
       tags:
@@ -169,7 +169,7 @@ paths:
         - Stock Movement
       parameters:
         - in: path
-          name: ingredientId
+          name: id
           required: true
           schema:
             type: string
