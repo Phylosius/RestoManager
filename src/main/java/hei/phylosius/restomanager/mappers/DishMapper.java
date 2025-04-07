@@ -2,7 +2,6 @@ package hei.phylosius.restomanager.mappers;
 
 import hei.phylosius.restomanager.Repository.MakeUpDAO;
 import hei.phylosius.restomanager.dto.DishRest;
-import hei.phylosius.restomanager.dto.MakeUpRest;
 import hei.phylosius.restomanager.model.Dish;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;

@@ -1,6 +1,5 @@
 package hei.phylosius.restomanager.model;
 
-import java.util.Comparator;
 
 public enum OrderStatus{
     CREATED,

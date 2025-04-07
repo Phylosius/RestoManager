@@ -7,7 +7,6 @@ import hei.phylosius.restomanager.dto.MakeUpRestCreation;
 import hei.phylosius.restomanager.mappers.DishMapper;
 import hei.phylosius.restomanager.mappers.MakeUpMapper;
 import hei.phylosius.restomanager.model.Dish;
-import hei.phylosius.restomanager.model.Ingredient;
 import hei.phylosius.restomanager.model.MakeUp;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
