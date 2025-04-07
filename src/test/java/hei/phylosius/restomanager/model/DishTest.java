@@ -24,7 +24,7 @@ public class DishTest {
                 dotenv.get("DB_PASSWORD"),
                 dotenv.get("DB_URL")
         );
-        dishDAO = new DishDAO(dataSource);
+        dishDAO = new DishDAO(dataSource, null);
     }
 
     @AfterAll

@@ -13,17 +13,11 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Repository
 public class DishDAO implements DataProvider<Dish, String> {
 
     private DataSource dataSource;
     private DishMapper dishMapper;
-
-    public DishDAO(DataSource dataSource){
-        this.dataSource = dataSource;
-        this.dishMapper = null;
-    }
 
     public List<Dish> getAllByCriteria(List<Criteria> criteria, int page, int pageSize) {
         return getAllByCriteria(dataSource.getConnection(), criteria, page, pageSize);
@@ -32,7 +26,7 @@ public class DishDAO implements DataProvider<Dish, String> {
     public List<Dish> getAll() {
         List<Dish> dishes = new ArrayList<>();
 
-        String sql = "SELECT id, name, unit_price FROM dishes";
+        String sql = "SELECT id, name, unit_price FROM dish";
         BaseDAO.executeQuery(dataSource.getConnection(), sql, List.of(), resultSet -> {
             while (resultSet.next()) {
                 dishes.add(dishMapper.toEntity(resultSet));

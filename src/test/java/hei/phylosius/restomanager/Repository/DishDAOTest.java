@@ -33,7 +33,7 @@ public class DishDAOTest {
                 dotenv.get("DB_PASSWORD"),
                 dotenv.get("DB_URL"));
 
-        subject = new DishDAO(dataSource);
+        subject = new DishDAO(dataSource, null);
 
         List<Ingredient> testIngredients = IngredientDAO.getAll(dataSource.getConnection(), 1, 3);
         List<MakeUp> makeUps = List.of(
