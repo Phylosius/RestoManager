@@ -2,10 +2,7 @@ package hei.phylosius.restomanager.mappers;
 
 import hei.phylosius.restomanager.Repository.PriceDAO;
 import hei.phylosius.restomanager.Repository.StockMovementDAO;
-import hei.phylosius.restomanager.dto.IngredientCreateRest;
-import hei.phylosius.restomanager.dto.IngredientRest;
-import hei.phylosius.restomanager.dto.IngredientRestDetailled;
-import hei.phylosius.restomanager.dto.IngredientUpdateRest;
+import hei.phylosius.restomanager.dto.*;
 import hei.phylosius.restomanager.model.Ingredient;
 import hei.phylosius.restomanager.model.Price;
 import hei.phylosius.restomanager.model.StockMovement;
@@ -42,6 +39,10 @@ public class IngredientMapper {
         );
 
         return dto;
+    }
+
+    public IngredientRestWithStock toDTOWithStock(Ingredient ingredient) {
+        return new IngredientRestWithStock(toDTO(ingredient), ingredient.getAvailableQuantity());
     }
 
     public IngredientRest toDTO(Ingredient ingredient) {
