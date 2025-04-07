@@ -1,18 +1,21 @@
 package hei.phylosius.restomanager.mappers;
 
 import hei.phylosius.restomanager.Repository.MakeUpDAO;
+import hei.phylosius.restomanager.dto.DishRest;
 import hei.phylosius.restomanager.model.Dish;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 @AllArgsConstructor
 @Component
 public class DishMapper {
 
     private MakeUpDAO makeUpDAO;
+    private MakeUpMapper makeUpMapper;
 
     public Dish toEntity(ResultSet resultSet) throws SQLException {
         Dish dish = new Dish();
@@ -26,5 +29,22 @@ public class DishMapper {
         );
 
         return dish;
+    }
+
+    public List<DishRest> toDTOs(List<Dish> dishes) {
+        return dishes.stream().map(this::toDTO).toList();
+    }
+
+    public DishRest toDTO(Dish dish) {
+        DishRest dishRest = new DishRest();
+        String dishId = dish.getId();
+
+        dishRest.setId(dishId);
+        dishRest.setIngredients(
+            makeUpMapper.toDTOs(dish.getMakeUps())
+        );
+        dishRest.setAvailableQuantity(dish.getAvailableQuantity());
+
+        return dishRest;
     }
 }
