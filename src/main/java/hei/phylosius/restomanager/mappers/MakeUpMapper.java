@@ -1,6 +1,8 @@
 package hei.phylosius.restomanager.mappers;
 
 import hei.phylosius.restomanager.dto.MakeUpRest;
+import hei.phylosius.restomanager.dto.MakeUpRestCreation;
+import hei.phylosius.restomanager.model.Ingredient;
 import hei.phylosius.restomanager.model.MakeUp;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -12,6 +14,20 @@ import java.util.List;
 public class MakeUpMapper {
 
     private IngredientMapper ingredientMapper;
+
+    public List<MakeUp> toEntitiesWithIdOnly(List<MakeUpRestCreation> dtos){
+        return dtos.stream().map(dto -> {
+            MakeUp makeUp = new MakeUp();
+
+            Ingredient ingredient = new Ingredient();
+            ingredient.setId(dto.getIngredientId());
+
+            makeUp.setIngredient(ingredient);
+            makeUp.setQuantity(dto.getQuantity());
+
+            return makeUp;
+        }).toList();
+    }
 
     public MakeUpRest toDTO(MakeUp makeUp) {
         MakeUpRest dto = new MakeUpRest();
