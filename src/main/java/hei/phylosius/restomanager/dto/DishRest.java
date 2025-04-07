@@ -14,6 +14,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class DishRest {
     private String id;
-    private List<DishIngredientRest> ingredients;
+    private List<MakeUpRest> ingredients;
     private int availableQuantity;
 }
