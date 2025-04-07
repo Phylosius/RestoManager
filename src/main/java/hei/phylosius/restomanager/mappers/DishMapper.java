@@ -2,6 +2,7 @@ package hei.phylosius.restomanager.mappers;
 
 import hei.phylosius.restomanager.Repository.MakeUpDAO;
 import hei.phylosius.restomanager.dto.DishRest;
+import hei.phylosius.restomanager.dto.MakeUpRest;
 import hei.phylosius.restomanager.model.Dish;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -29,6 +30,10 @@ public class DishMapper {
         );
 
         return dish;
+    }
+
+    public List<DishRest> toDTOsWithStock(List<Dish> dishes) {
+        return dishes.stream().map(this::toDTOWithStock).toList();
     }
 
     public List<DishRest> toDTOs(List<Dish> dishes) {
