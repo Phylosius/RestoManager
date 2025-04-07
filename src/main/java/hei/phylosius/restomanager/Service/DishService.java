@@ -26,7 +26,7 @@ public class DishService {
     public List<DishRest> getDishRests() {
         List<Dish> dishes = dishDAO.getAll();
 
-        return dishMapper.toDTOs(dishes);
+        return dishMapper.toDTOsWithStock(dishes);
     }
 
     public List<MakeUpRestCreation> addIngredients(String dishId, List<MakeUpRestCreation> makeUpRests) {
