@@ -10,7 +10,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MakeUpRest {
-    private String id;
     private IngredientRest ingredient;
     private Double quantity;
 

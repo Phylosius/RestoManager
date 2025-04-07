@@ -399,8 +399,7 @@ components:
           example: 4
 
     MakeUpRest:
-      allOf:
-        - $ref: "#/components/schemas/ObjectWithId"
+      type: object
       properties:
         ingredient:
           $ref: "#/components/schemas/IngredientRestWithStock"
