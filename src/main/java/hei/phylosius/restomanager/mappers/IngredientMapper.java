@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -49,6 +50,10 @@ public class IngredientMapper {
                 ingredient.getName(),
                 ingredient.getPrice().getValue(),
                 ingredient.getModificationDate());
+    }
+
+    public List<IngredientRest> toDTOs(List<Ingredient> ingredients) {
+        return ingredients.stream().map(this::toDTO).toList();
     }
 
     public Ingredient toEntity(ResultSet resultSet) {
