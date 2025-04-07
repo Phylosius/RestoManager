@@ -208,7 +208,7 @@ paths:
 
   /dishes/{id}/ingredients:
     put:
-      description: Add ingredients (DishIngredient) to a dish
+      description: Add ingredients (MakeUp) to a dish
       tags:
         - Dish
       parameters:
@@ -226,7 +226,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: "#/components/schemas/DishIngredientCreation"
+                $ref: "#/components/schemas/MakeUpCreation"
       responses:
         201:
           description: Ingredients added to dish
@@ -235,7 +235,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/DishIngredientCreation"
+                  $ref: "#/components/schemas/MakeUpCreation"
         401:
           description: Bad request
           content:
@@ -383,12 +383,12 @@ components:
         ingredients:
           type: array
           items:
-            $ref: "#/components/schemas/DishIngredientRest"
+            $ref: "#/components/schemas/MakeUpRest"
         availableQuantity:
           type: integer
           example: 12
 
-    DishIngredientCreation:
+    MakeUpCreation:
       type: object
       properties:
         ingredientId:
@@ -398,7 +398,7 @@ components:
           type: number
           example: 4
 
-    DishIngredientRest:
+    MakeUpRest:
       allOf:
         - $ref: "#/components/schemas/ObjectWithId"
       properties:
