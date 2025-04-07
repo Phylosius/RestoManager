@@ -1,19 +1,20 @@
 package hei.phylosius.restomanager.dto;
 
+import java.util.List;
+
+import hei.phylosius.restomanager.dto.DishIngredientRest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class IngredientRest {
+public class DishRest {
     private String id;
-    private String name;
-    private Double unitPrice;
-    private LocalDateTime updatedAt;
+    private List<DishIngredientRest> ingredients;
+    private int avalaibleQuantity;
 }
