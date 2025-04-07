@@ -35,6 +35,19 @@ public class DishMapper {
         return dishes.stream().map(this::toDTO).toList();
     }
 
+    public DishRest toDTOWithStock(Dish dish) {
+        DishRest dishRest = new DishRest();
+        String dishId = dish.getId();
+
+        dishRest.setId(dishId);
+        dishRest.setIngredients(
+                makeUpMapper.toDTOsWithStock(dish.getMakeUps())
+        );
+        dishRest.setAvailableQuantity(dish.getAvailableQuantity());
+
+        return dishRest;
+    }
+
     public DishRest toDTO(Dish dish) {
         DishRest dishRest = new DishRest();
         String dishId = dish.getId();

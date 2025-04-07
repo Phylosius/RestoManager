@@ -40,6 +40,21 @@ public class MakeUpMapper {
         return dto;
     }
 
+    public MakeUpRest toDTOWithStock(MakeUp makeUp) {
+        MakeUpRest dto = new MakeUpRest();
+
+        dto.setIngredient(
+                ingredientMapper.toDTOWithStock(makeUp.getIngredient())
+        );
+        dto.setQuantity(makeUp.getQuantity());
+
+        return dto;
+    }
+
+    public List<MakeUpRest> toDTOsWithStock(List<MakeUp> makeUps) {
+        return makeUps.stream().map(this::toDTOWithStock).toList();
+    }
+
     public List<MakeUpRest> toDTOs(List<MakeUp> makeUps) {
         return makeUps.stream().map(this::toDTO).toList();
     }
