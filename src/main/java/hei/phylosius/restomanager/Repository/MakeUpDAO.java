@@ -79,6 +79,16 @@ public class MakeUpDAO{
     public static int saveAll(Connection conn, String dishID, List<MakeUp> makeUps){
         int saved;
 
+        if (!DishDAO.isExist(conn, dishID)) {
+            throw new DishNotFoundException(String.format("Dish of id %s not found", dishID));
+        }
+
+        makeUps.forEach(makeUp -> {
+            if (IngredientDAO.isExist(conn, makeUp.getIngredient().getId())) {
+                throw new IngredientNotFoundException(String.format("Ingredient of id %s not found", makeUp.getIngredient().getId()));
+            }
+        });
+
         String sql;
         StringBuilder sqlBuilder = new StringBuilder("INSERT INTO make_up (dish_id, ingredient_id, ingredient_quantity) VALUES ");
         List<Object> params = new ArrayList<>();
