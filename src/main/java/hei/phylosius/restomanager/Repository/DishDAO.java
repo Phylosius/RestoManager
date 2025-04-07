@@ -1,23 +1,45 @@
 package hei.phylosius.restomanager.Repository;
 
+import hei.phylosius.restomanager.mappers.DishMapper;
 import hei.phylosius.restomanager.model.Criteria;
 import hei.phylosius.restomanager.model.Dish;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Repository
 public class DishDAO implements DataProvider<Dish, String> {
 
-    private final DataSource dataSource;
+    private DataSource dataSource;
+    private DishMapper dishMapper;
 
-    public DishDAO(DataSource dataSource) {
+    public DishDAO(DataSource dataSource){
         this.dataSource = dataSource;
+        this.dishMapper = null;
     }
 
     public List<Dish> getAllByCriteria(List<Criteria> criteria, int page, int pageSize) {
         return getAllByCriteria(dataSource.getConnection(), criteria, page, pageSize);
+    }
+
+    public List<Dish> getAll() {
+        List<Dish> dishes = new ArrayList<>();
+
+        String sql = "SELECT id, name, unit_price FROM dishes";
+        BaseDAO.executeQuery(dataSource.getConnection(), sql, List.of(), resultSet -> {
+            while (resultSet.next()) {
+                dishes.add(dishMapper.toEntity(resultSet));
+            }
+        });
+
+        return dishes;
     }
 
     @Override

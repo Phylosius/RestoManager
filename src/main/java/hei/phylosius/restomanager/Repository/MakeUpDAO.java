@@ -2,11 +2,13 @@ package hei.phylosius.restomanager.Repository;
 
 import hei.phylosius.restomanager.model.Criteria;
 import hei.phylosius.restomanager.model.MakeUp;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class MakeUpDAO{
 
     private final DataSource dataSource;
