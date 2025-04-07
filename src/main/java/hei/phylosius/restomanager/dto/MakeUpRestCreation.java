@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DishIngredientRestCreation {
+public class MakeUpRestCreation {
     private String ingredientId;
     private Double quantity;
 }
