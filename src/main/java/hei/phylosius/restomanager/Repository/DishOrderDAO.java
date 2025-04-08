@@ -3,6 +3,7 @@ package hei.phylosius.restomanager.Repository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import hei.phylosius.restomanager.model.*;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 @Getter
 @AllArgsConstructor
+@Repository
 public class DishOrderDAO {
     private DataSource dataSource;
 
