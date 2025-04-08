@@ -112,6 +112,10 @@ public class DishOrderDAO {
             throw new DishOrderNotFoundException(String.format("DishOrder of id %s not found", id));
         }
 
+        if (!DishDAO.isExist(conn, dishOrder.getDish().getId())) {
+            throw new DishNotFoundException(String.format("Dish of id %s not found", dishOrder.getDish().getId()));
+        }
+
         String  sql = "UPDATE dish_order SET quantity = ?, order_id = ?, dish_id = ? WHERE id = ?";
 
         List<Object> params = List.of(dishOrder.getQuantity(), dishOrder.getOrderId(), dishOrder.getDish().getId(), id);
