@@ -14,6 +14,20 @@ import java.util.concurrent.atomic.AtomicReference;
 public class DishOrderDAO {
     private DataSource dataSource;
 
+    public String getId(String orderId, String dishId) {
+        AtomicReference<String> id = new AtomicReference<>();
+        String sql = "SELECT id FROM dish_order WHERE order_id = ? AND dish_id = ?";
+        List<Object> params = List.of(orderId, dishId);
+
+        BaseDAO.executeQuery(dataSource.getConnection(), sql, params, resultSet -> {
+            if(resultSet.next()) {
+                id.set(resultSet.getString("id"));
+            }
+        });
+
+        return id.get();
+    }
+
     public List<DishOrder> getAllByCriteria(List<Criteria> criteria, int page, int pageSize) {
         return getAllByCriteria(dataSource.getConnection(), criteria, page, pageSize);
     }
