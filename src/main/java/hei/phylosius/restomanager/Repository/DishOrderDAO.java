@@ -26,6 +26,10 @@ public class DishOrderDAO {
         saveAll(dataSource.getConnection(), dishOrders);
     }
 
+    public void update(DishOrder dishOrder){
+        update(dataSource.getConnection(), dishOrder.getId(), dishOrder);
+    }
+
     public static List<DishOrder> getAllByOrderId(Connection conn, String orderId) {
         List<DishOrder> dishOrders = new ArrayList<>();
 
@@ -104,11 +108,17 @@ public class DishOrderDAO {
     }
 
     public static void update(Connection conn, String id, DishOrder dishOrder){
+        if (!isExist(conn, dishOrder)) {
+            throw new DishOrderNotFoundException(String.format("DishOrder of id %s not found", id));
+        }
+
         String  sql = "UPDATE dish_order SET quantity = ?, order_id = ?, dish_id = ? WHERE id = ?";
 
         List<Object> params = List.of(dishOrder.getQuantity(), dishOrder.getOrderId(), dishOrder.getDish().getId(), id);
         BaseDAO.executeUpdate(conn, sql, params);
-        OrderStatusRecordDAO.saveAll(conn, dishOrder.getStatusHistory().getRecords());
+        if (dishOrder.getStatusHistory() != null) {
+            OrderStatusRecordDAO.saveAll(conn, dishOrder.getStatusHistory().getRecords());
+        }
         DishDAO.save(conn, dishOrder.getDish());
     }
 
