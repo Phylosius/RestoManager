@@ -10,6 +10,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DishOrderRestUpdate {
-    private String id;
+    private String dishId;
     private int quantity;
 }

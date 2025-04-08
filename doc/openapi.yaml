@@ -354,9 +354,11 @@ components:
             $ref: "#/components/schemas/DishOrderRest"
 
     DishOrderRestUpdate:
-      allOf:
-        - $ref: "#/components/schemas/ObjectWithId"
+      type: object
       properties:
+        dishId:
+          type: string
+          example: "3"
         quantity:
           type: integer
           example: 3
