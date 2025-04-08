@@ -3,6 +3,7 @@ package hei.phylosius.restomanager.Repository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import hei.phylosius.restomanager.model.*;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 @Getter
 @AllArgsConstructor
+@Repository
 public class OrderDAO {
     private DataSource dataSource;
 
@@ -37,7 +39,14 @@ public class OrderDAO {
 
     public static Order getById(Connection conn, String id){
         Criteria criteria = new Criteria(LogicalOperator.AND, "id", CriteriaOperator.EQUAL, id);
-        return getAllByCriteria(conn, List.of(criteria), 1, 1).getFirst();
+
+        List<Order> retrieved = getAllByCriteria(conn, List.of(criteria), 1, 1);
+
+        if(retrieved.isEmpty()){
+            throw new OrderNotFoundException(String.format("Order with id %s not found", id));
+        }
+
+        return retrieved.getFirst();
     }
 
     public static List<Order> getAllByCriteria(Connection conn, List<Criteria> criteria, int page, int pageSize){
