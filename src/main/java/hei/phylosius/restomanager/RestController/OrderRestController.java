@@ -1,5 +1,6 @@
 package hei.phylosius.restomanager.RestController;
 
+import hei.phylosius.restomanager.Repository.DishNotFoundException;
 import hei.phylosius.restomanager.Repository.OrderNotFoundException;
 import hei.phylosius.restomanager.Service.OrderService;
 import hei.phylosius.restomanager.dto.DishOrderRestUpdate;
@@ -34,7 +35,15 @@ public class OrderRestController {
             @PathVariable String reference,
             @RequestBody List<DishOrderRestUpdate> dishes
     ) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        try {
+            return ResponseEntity.ok(orderService.updateDishes(reference, dishes));
+        } catch (OrderNotFoundException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        } catch (DishNotFoundException e) {
+            return ResponseEntity.status(401).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
     }
 
     @PutMapping("/{reference}/dishes/{dishId}")
@@ -43,6 +52,6 @@ public class OrderRestController {
             @PathVariable String dishId,
             @RequestBody DishOrderRestUpdate update
     ) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return ResponseEntity.status(403).body("Not implemented yet.");
     }
 }
