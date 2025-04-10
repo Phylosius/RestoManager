@@ -22,6 +22,10 @@ public class DashBoardDAO {
     private DishProcessingTimeMapper dishProcessingTimeMapper;
 
     public DishProcessingTimeRest getProcessingTime(String dishId, ProcessingTimeType processingTimeType, LocalDateTime startDate, LocalDateTime endDate) {
+        if (!DishDAO.isExist(dataSource.getConnection(), dishId)) {
+            throw new DishNotFoundException(String.format("Dish of id %s not found", dishId));
+        }
+
         AtomicReference<DishProcessingTimeRest> dishProcessingTimeRest = new AtomicReference<>();
 
         String processingTimeSQL = switch (processingTimeType) {
