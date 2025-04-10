@@ -83,7 +83,7 @@ public class Order {
     }
 
     public OrderStatus getActualStatus(){
-        OrderStatus status = OrderStatus.CREATED;
+        OrderStatus status = OrderStatus.SERVED;
 
         if (!dishOrders.isEmpty()) {
             for (DishOrder dishOrder : dishOrders) {
