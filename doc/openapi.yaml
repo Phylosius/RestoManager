@@ -251,6 +251,43 @@ paths:
                 type: string
                 example: "dish not found"
 
+  /dishes/{id}/processingTime:
+    get:
+      description: Get data about processing time of a dish
+      tags:
+        - Dish
+        - Dashboard
+      parameters:
+        - in: query
+          name: timeFormat
+          required: false
+          schema:
+            type: string
+            examples:
+              - "s"
+              - "m"
+              - "h"
+            default: "s"
+        - in: query
+          name: processingTimeType
+          required: false
+          schema:
+            type: string
+            enum:
+              - MAXIMUM
+              - AVERAGE
+              - MINIMUM
+            example: AVERAGE
+            default: AVERAGE
+      responses:
+        200:
+          description: Processing time info of the dish
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DishProcessingTime"
+
+
   /orders/{reference}:
     get:
       description: Get order info
@@ -339,9 +376,74 @@ paths:
                 type: string
                 example: "Not found"
 
+  /bestSales:
+    get:
+      description: Get X most sailed dishes
+      tags:
+        - Sale
+        - Dish
+        - Dashboard
+      parameters:
+        - in: query
+          name: X
+          required: true
+          schema:
+            type: integer
+            example: 3
+        - in: query
+          name: startDate
+          required: false
+          schema:
+            type: string
+            format: date
+        - in: query
+          name: endDate
+          required: false
+          schema:
+            type: string
+            format: date
+      responses:
+        200:
+          description: List of the most sailed dishes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DishSaleRest"
+
 
 components:
   schemas:
+
+    DishProcessingTime:
+      type: object
+      properties:
+        processingTime:
+          type: string
+          example: "12m"
+        processingTimeType:
+          type: string
+          enum:
+            - MAXIMUM
+            - AVERAGE
+            - MINIMUM
+          example: AVERAGE
+          default: AVERAGE
+
+
+    DishSaleRest:
+      type: object
+      properties:
+        dishName:
+          type: string
+          example: "Pizza"
+        sailedQuantity:
+          type: integer
+          example: 4
+        totalGain:
+          type: number
+          example: 60000
 
     OrderRest:
       allOf:
