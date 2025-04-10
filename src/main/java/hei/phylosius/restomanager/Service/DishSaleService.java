@@ -15,7 +15,7 @@ public class DishSaleService {
 
     private DishSaleDAO dishSaleDAO;
 
-    public List<DishSaleRest> getBestSales(int limit, LocalDateTime startDate, LocalDateTime endDate) {
+    public List<DishSaleRest> getBestSales(Integer limit, LocalDateTime startDate, LocalDateTime endDate) {
         return dishSaleDAO.getBestSales(limit, startDate, endDate);
     }
 }

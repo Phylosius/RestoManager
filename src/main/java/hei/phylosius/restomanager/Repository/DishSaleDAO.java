@@ -48,7 +48,7 @@ public class DishSaleDAO {
             params.add(endDate);
         }
 
-        if (limit > 0) {
+        if (limit != null && limit > 0) {
             limitCondition = """
                     LIMIT ?::INTEGER
                     """;
