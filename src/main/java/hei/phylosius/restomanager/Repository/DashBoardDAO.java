@@ -11,7 +11,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @Repository
-public class DishSaleDAO {
+public class DashBoardDAO {
 
     private DataSource dataSource;
     private DishSaleMapper dishSaleMapper;
