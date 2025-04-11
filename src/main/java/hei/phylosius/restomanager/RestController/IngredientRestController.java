@@ -33,7 +33,7 @@ public class IngredientRestController {
             return ResponseEntity.status(404).body(String.format("Ingredient=%s is not found", id));
         }
 
-        return ResponseEntity.ok(ingredientMapper.toDTO(ingredient));
+        return ResponseEntity.ok(ingredientMapper.toDTODetailled(ingredient));
     }
 
     @GetMapping
