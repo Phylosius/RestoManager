@@ -21,7 +21,7 @@ public class DashBoardDAO {
     private DishSaleMapper dishSaleMapper;
     private DishProcessingTimeMapper dishProcessingTimeMapper;
 
-    public DishProcessingTimeRest getProcessingTime(String dishId, ProcessingTimeType processingTimeType, LocalDateTime startDate, LocalDateTime endDate) {
+    public DishProcessingTimeRest getProcessingTime(String dishId, ProcessingTimeType processingTimeType, String processingTimeFormat, LocalDateTime startDate, LocalDateTime endDate) {
         if (!DishDAO.isExist(dataSource.getConnection(), dishId)) {
             throw new DishNotFoundException(String.format("Dish of id %s not found", dishId));
         }
@@ -91,7 +91,7 @@ public class DashBoardDAO {
 
         BaseDAO.executeQuery(dataSource.getConnection(), sql, params, resultSet -> {
             if (resultSet.next()) {
-                dishProcessingTimeRest.set(dishProcessingTimeMapper.toDTO(resultSet, processingTimeType));
+                dishProcessingTimeRest.set(dishProcessingTimeMapper.toDTO(resultSet, processingTimeType, processingTimeFormat));
             }
         });
 

@@ -165,7 +165,7 @@ public class DishDAO implements DataProvider<Dish, String> {
     public static Boolean isExist(Connection conn, String id) {
         AtomicReference<Boolean> exist = new AtomicReference<>(false);
 
-        String sql = "SELECT name FROM dish WHERE id = id";
+        String sql = "SELECT name FROM dish WHERE id = ?";
         List<Object> params = List.of(id);
 
         BaseDAO.executeQuery(conn, sql, params, (r) -> {

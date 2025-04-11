@@ -264,21 +264,33 @@ paths:
           schema:
             type: string
             examples:
-              - "s"
-              - "m"
-              - "h"
-            default: "s"
+              - "S"
+              - "M"
+              - "H"
+            default: "S"
         - in: query
           name: processingTimeType
           required: false
           schema:
             type: string
             enum:
-              - MAXIMUM
-              - AVERAGE
-              - MINIMUM
-            example: AVERAGE
-            default: AVERAGE
+              - "MAXIMUM"
+              - "AVERAGE"
+              - "MINIMUM"
+            example: "AVERAGE"
+            default: "AVERAGE"
+        - in: query
+          name: startDate
+          required: false
+          schema:
+            type: string
+            format: date
+        - in: query
+          name: endDate
+          required: false
+          schema:
+            type: string
+            format: date
       responses:
         200:
           description: Processing time info of the dish

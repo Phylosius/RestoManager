@@ -17,8 +17,8 @@ public class DashBoardService {
 
     private DashBoardDAO dashBoardDAO;
 
-    public DishProcessingTimeRest getProcessingTime(String dishId, ProcessingTimeType processingTimeType, LocalDateTime startDate, LocalDateTime endDate) {
-        return dashBoardDAO.getProcessingTime(dishId, processingTimeType, startDate, endDate);
+    public DishProcessingTimeRest getProcessingTime(String dishId, ProcessingTimeType processingTimeType, String processingTimeFormat, LocalDateTime startDate, LocalDateTime endDate) {
+        return dashBoardDAO.getProcessingTime(dishId, processingTimeType, processingTimeFormat, startDate, endDate);
     }
 
     public List<DishSaleRest> getBestSales(Integer limit, LocalDateTime startDate, LocalDateTime endDate) {
