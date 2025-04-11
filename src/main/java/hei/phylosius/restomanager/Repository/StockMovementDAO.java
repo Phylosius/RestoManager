@@ -29,7 +29,7 @@ public class StockMovementDAO{
     public List<StockMovement> getAllByIngredientID(String ingredientID) {
         List<StockMovement> stockMovements = new ArrayList<>();
 
-        String sql = "SELECT ingredient_id, type, quantity, date FROM stock_movement";
+        String sql = "SELECT ingredient_id, type, quantity, date FROM stock_movement WHERE ingredient_id=?";
         List<Object> params = List.of(ingredientID);
 
         BaseDAO.executeQuery(dataSource.getConnection(), sql, params, result -> {
