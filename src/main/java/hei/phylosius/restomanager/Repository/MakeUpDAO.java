@@ -84,7 +84,7 @@ public class MakeUpDAO{
         }
 
         makeUps.forEach(makeUp -> {
-            if (IngredientDAO.isExist(conn, makeUp.getIngredient().getId())) {
+            if (!IngredientDAO.isExist(conn, makeUp.getIngredient().getId())) {
                 throw new IngredientNotFoundException(String.format("Ingredient of id %s not found", makeUp.getIngredient().getId()));
             }
         });
