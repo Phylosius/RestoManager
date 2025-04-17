@@ -122,7 +122,10 @@ public class DishOrderDAO {
         if (dishOrder.getStatusHistory() != null) {
             OrderStatusRecordDAO.saveAll(conn, dishOrder.getStatusHistory().getRecords());
         }
-        DishDAO.save(conn, dishOrder.getDish());
+        Dish dish = dishOrder.getDish();
+        if (dish.getName() != null && dish.getUnitPrice() != null) {
+            DishDAO.save(conn, dish);
+        }
     }
 
     public static void update(Connection conn, String id, DishOrder dishOrder){
@@ -141,15 +144,18 @@ public class DishOrderDAO {
         if (dishOrder.getStatusHistory() != null) {
             OrderStatusRecordDAO.saveAll(conn, dishOrder.getStatusHistory().getRecords());
         }
-        DishDAO.save(conn, dishOrder.getDish());
+        Dish dish = dishOrder.getDish();
+        if (dish.getName() != null && dish.getUnitPrice() != null) {
+            DishDAO.save(conn, dish);
+        }
     }
 
     public static Boolean isExist(Connection conn, DishOrder dishOrder){
         AtomicReference<Boolean> exist = new AtomicReference<>(false);
         String sql = "SELECT id FROM  dish_order WHERE dish_id = ? AND order_id = ?";
 
-        if (dishOrder != null && dishOrder.getId() != null) {
-            List<Object> params = List.of(dishOrder.getId(), dishOrder.getOrderId());
+        if (dishOrder.getDish().getId() != null && dishOrder.getOrderId() != null) {
+            List<Object> params = List.of(dishOrder.getDish().getId(), dishOrder.getOrderId());
             BaseDAO.executeQuery(conn, sql, params, resultSet -> {
                 if (resultSet.next()) {
                     exist.set(true);
