@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 
 @AllArgsConstructor
 @Component
@@ -23,8 +24,9 @@ public class DishOrderMapper {
     public DishOrder toEntity(String orderId, DishOrderRestUpdate dishUpdate) {
         DishOrder dishOrder = new DishOrder();
 
+        String dishOrderId = dishOrderDAO.getId(orderId, dishUpdate.getDishId());
         dishOrder.setId(
-                dishOrderDAO.getId(orderId, dishUpdate.getDishId())
+                 dishOrderId != null ? dishOrderId : UUID.randomUUID().toString()
         );
         dishOrder.setQuantity(dishUpdate.getQuantity());
         dishOrder.setOrderId(orderId);
