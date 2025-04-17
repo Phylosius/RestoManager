@@ -23,7 +23,7 @@ public class OrderStatusDAO {
     }
 
     public static String getIdByOrderStatus(Connection conn, OrderStatus orderStatus){
-        String sql = "SELECT id FROM command_status WHERE name = ?";
+        String sql = "SELECT id FROM order_status WHERE name = ?";
         List<Object> params = List.of(orderStatus.toString());
         AtomicReference<String> orderId = new AtomicReference<>();
 
