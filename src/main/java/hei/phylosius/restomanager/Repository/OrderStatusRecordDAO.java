@@ -8,6 +8,8 @@ import hei.phylosius.restomanager.model.Criteria;
 import hei.phylosius.restomanager.model.CriteriaOperator;
 import hei.phylosius.restomanager.model.LogicalOperator;
 import hei.phylosius.restomanager.model.OrderStatusRecord;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -18,8 +20,10 @@ import java.util.concurrent.atomic.AtomicReference;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Repository
 public class OrderStatusRecordDAO{
 
+    @Autowired
     private DataSource dataSource;
 
     public List<OrderStatusRecord> getAllByCriteria(List<Criteria> criteria, int page, int pageSize) {
@@ -28,6 +32,10 @@ public class OrderStatusRecordDAO{
 
     public void save(OrderStatusRecord statusRecord){
         save(dataSource.getConnection(), statusRecord);
+    }
+
+    public List<OrderStatusRecord> getAllByDishOrderId(String dishOrderId) {
+        return getAllByDishOrderId(dataSource.getConnection(), dishOrderId);
     }
 
     public static List<OrderStatusRecord> getAllByDishOrderId(Connection conn, String dishOrderId) {
@@ -96,5 +104,12 @@ public class OrderStatusRecordDAO{
         });
 
         return result.get();
+    }
+
+    public static int deleteAllByDishOrderId(Connection conn, String dishOrderId) {
+        String sql = "DELETE FROM dish_order_status_history WHERE dish_order_id = ?";
+        List<Object> params = List.of(dishOrderId);
+
+        return BaseDAO.executeUpdate(conn, sql, params);
     }
 }

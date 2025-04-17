@@ -75,6 +75,9 @@ public class DishOrder {
     }
 
     public OrderStatus getStatus(){
+        if (statusHistory.getLatestRecord() == null){
+            return OrderStatus.CREATED;
+        }
         return statusHistory.getLatestRecord().getStatus();
     }
 

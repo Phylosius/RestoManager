@@ -6,6 +6,7 @@ import hei.phylosius.restomanager.model.*;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -119,8 +120,17 @@ public class DishOrderDAO {
 
         List<Object> params = List.of(dishOrder.getId(), dishOrder.getQuantity(), dishOrder.getOrderId(), dishOrder.getDish().getId());
         BaseDAO.executeUpdate(conn, sql, params);
-        if (dishOrder.getStatusHistory() != null) {
+        if (dishOrder.getStatusHistory().getRecords().isEmpty()) {
             OrderStatusRecordDAO.saveAll(conn, dishOrder.getStatusHistory().getRecords());
+        } else {
+            OrderStatusRecordDAO.deleteAllByDishOrderId(conn, dishOrder.getId());
+
+            OrderStatusRecord creation = new OrderStatusRecord();
+            creation.setDishOrderId(dishOrder.getId());
+            creation.setStatus(OrderStatus.CREATED);
+            creation.setDate(LocalDateTime.now());
+
+            OrderStatusRecordDAO.save(conn, creation);
         }
         Dish dish = dishOrder.getDish();
         if (dish.getName() != null && dish.getUnitPrice() != null) {
