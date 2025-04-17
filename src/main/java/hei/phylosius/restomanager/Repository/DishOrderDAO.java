@@ -119,7 +119,9 @@ public class DishOrderDAO {
 
         List<Object> params = List.of(dishOrder.getId(), dishOrder.getQuantity(), dishOrder.getOrderId(), dishOrder.getDish().getId());
         BaseDAO.executeUpdate(conn, sql, params);
-        OrderStatusRecordDAO.saveAll(conn, dishOrder.getStatusHistory().getRecords());
+        if (dishOrder.getStatusHistory() != null) {
+            OrderStatusRecordDAO.saveAll(conn, dishOrder.getStatusHistory().getRecords());
+        }
         DishDAO.save(conn, dishOrder.getDish());
     }
 
@@ -146,12 +148,14 @@ public class DishOrderDAO {
         AtomicReference<Boolean> exist = new AtomicReference<>(false);
         String sql = "SELECT id FROM  dish_order WHERE dish_id = ? AND order_id = ?";
 
-        List<Object> params = List.of(dishOrder.getId(), dishOrder.getOrderId());
-        BaseDAO.executeQuery(conn, sql, params, resultSet -> {
-            if (resultSet.next()) {
-                exist.set(true);
-            }
-        });
+        if (dishOrder != null && dishOrder.getId() != null) {
+            List<Object> params = List.of(dishOrder.getId(), dishOrder.getOrderId());
+            BaseDAO.executeQuery(conn, sql, params, resultSet -> {
+                if (resultSet.next()) {
+                    exist.set(true);
+                }
+            });
+        }
 
         return exist.get();
     }
