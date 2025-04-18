@@ -3,6 +3,8 @@ package hei.phylosius.restomanager.Repository;
 import io.github.cdimascio.dotenv.Dotenv;
 import hei.phylosius.restomanager.model.Criteria;
 import hei.phylosius.restomanager.model.Price;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
@@ -41,7 +43,14 @@ public class PriceDAO {
     }
 
     public List<Price> getAllByIngredientID(String ingredientID) {
-        return getAllByIngredientID(dataSource.getConnection(), ingredientID);
+        if (IngredientDAO.isExist(dataSource.getConnection(), ingredientID)) {
+            throw new IngredientNotFoundException("Ingredient with id " + ingredientID + " not found.");
+        }
+
+        String sql = "select unit_price, date from ingredient_price where ingredient_id = ?";
+        List<Object> params = List.of(ingredientID);
+
+        return getAll(dataSource.getConnection(), sql, params);
     }
 
     public List<Price> getAllByCriteria(List<Criteria> criteria, int page, int pageSize) {
@@ -87,13 +96,6 @@ public class PriceDAO {
         });
 
         return result;
-    }
-
-    public static List<Price> getAllByIngredientID(Connection conn, String ingredientID) {
-        String sql = "select unit_price, date from ingredient_price where ingredient_id = ?";
-        List<Object> params = List.of(ingredientID);
-
-        return getAll(conn, sql, params);
     }
 
     public static List<Price> getAll(Connection conn, String sql, List<Object> params) {
