@@ -2,6 +2,7 @@ package hei.phylosius.restomanager.mappers;
 
 import hei.phylosius.restomanager.Repository.PriceDAO;
 import hei.phylosius.restomanager.Repository.StockMovementDAO;
+import hei.phylosius.restomanager.dto.IngredientBasicPropertyRest;
 import hei.phylosius.restomanager.dto.IngredientRest;
 import hei.phylosius.restomanager.model.Ingredient;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,15 @@ public class IngredientMapper {
     private final StockMovementMapper stockMovementMapper;
     private final PriceMapper priceMapper;
     private final PriceDAO priceDAO;
+
+    public IngredientBasicPropertyRest toBasicPropertyDTO(Ingredient ingredient) {
+        IngredientBasicPropertyRest dto = new IngredientBasicPropertyRest();
+
+        dto.setId(Integer.valueOf(ingredient.getId()));
+        dto.setName(ingredient.getName());
+
+        return dto;
+    }
 
     public List<IngredientRest> toDTOs(List<Ingredient> ingredients) {
         return ingredients.stream().map(this::toDTO).toList();

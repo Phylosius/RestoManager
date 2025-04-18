@@ -60,7 +60,16 @@ public class DishDAO implements DataProvider<Dish, String> {
         delete(dataSource.getConnection(), id);
     }
 
-    public static List<Dish> getAll(Connection conn, int page, int pageSize) {
+    public static List<Dish> getAll(Connection conn, Integer page, Integer pageSize) {
+
+        if (page < 1) {
+            throw new IllegalPageValueException("The value of the parameter page should be greater than 0.");
+        }
+
+        if (pageSize < 1) {
+            throw new IllegalPageSizeValueException("The value of the parameter pageSize should be greater than 0.");
+        }
+
         List<Dish> dishes = new ArrayList<>();
 
         String sql = "SELECT id, name, unit_price FROM dish ORDER BY id ASC LIMIT ? OFFSET ?";
