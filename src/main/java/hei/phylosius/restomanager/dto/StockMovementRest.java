@@ -1,5 +1,6 @@
 package hei.phylosius.restomanager.dto;
 
+import hei.phylosius.restomanager.model.MovementType;
 import hei.phylosius.restomanager.model.Unit;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,6 +13,6 @@ public class StockMovementRest {
     private Integer id;
     private Double quantity;
     private Unit unit;
-    private StockMovementType type;
+    private MovementType type;
     private String creationDateTime;
 }

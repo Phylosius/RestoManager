@@ -38,3 +38,4 @@ out/
 
 ### dotenv
 .env
+/src/test/http_requests/

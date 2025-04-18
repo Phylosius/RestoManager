@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -30,6 +31,10 @@ public class PriceDAO {
         this.dataSource = dataSource;
     }
 
+    public void addAllByIngredientId(String ingredientId, List<Price> prices) {
+        prices.forEach(price -> saveByIngredientID(dataSource.getConnection(), ingredientId, price));
+    }
+
     public void saveAllByIngredientId(String ingredientId, List<Price> prices) {
         prices.forEach(price -> saveByIngredientID(dataSource.getConnection(), ingredientId, price));
     }
@@ -43,7 +48,7 @@ public class PriceDAO {
     }
 
     public List<Price> getAllByIngredientID(String ingredientID) {
-        if (IngredientDAO.isExist(dataSource.getConnection(), ingredientID)) {
+        if (!IngredientDAO.isExist(dataSource.getConnection(), ingredientID)) {
             throw new IngredientNotFoundException("Ingredient with id " + ingredientID + " not found.");
         }
 
@@ -185,6 +190,15 @@ public class PriceDAO {
     }
 
     public static void updateByIngredientID(Connection conn, String ingredientID, Price price) {
+
+        if (!isExist(conn, ingredientID, price)) {
+            throw new PriceNotFoundException(
+                    String.format("Not record for the Price of the Ingredient of id = %s at %s",
+                                    ingredientID, price.getDate().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+                    )
+            );
+        }
+
         String sql = """
                 UPDATE ingredient_price SET unit_price = ?
                 WHERE ingredient_id = ? AND date = ?::TIMESTAMP
@@ -195,6 +209,11 @@ public class PriceDAO {
     }
 
     public static void createByIngredientID(Connection conn, String ingredientID, Price price) {
+
+        if (!IngredientDAO.isExist(conn, ingredientID)){
+            throw new IngredientNotFoundException(String.format("Ingredient of id = %s does not exist", ingredientID));
+        }
+
         String sql = """
                 INSERT INTO ingredient_price (ingredient_id, unit_price, date) VALUES (?, ?, ?::TIMESTAMP)
                 """;
