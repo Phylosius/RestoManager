@@ -3,10 +3,13 @@ package hei.phylosius.restomanager.Service;
 import hei.phylosius.restomanager.Repository.IngredientDAO;
 import hei.phylosius.restomanager.Repository.IngredientNotFoundException;
 import hei.phylosius.restomanager.Repository.PriceDAO;
+import hei.phylosius.restomanager.Repository.StockMovementDAO;
 import hei.phylosius.restomanager.dto.IngredientRest;
 import hei.phylosius.restomanager.dto.PriceRest;
+import hei.phylosius.restomanager.dto.StockMovementRest;
 import hei.phylosius.restomanager.mappers.IngredientMapper;
 import hei.phylosius.restomanager.mappers.PriceMapper;
+import hei.phylosius.restomanager.mappers.StockMovementMapper;
 import hei.phylosius.restomanager.model.Ingredient;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,8 @@ import java.util.List;
 @Service
 public class IngredientService {
 
+    private final StockMovementDAO stockMovementDAO;
+    private final StockMovementMapper stockMovementMapper;
     private IngredientDAO ingredientDAO;
     private IngredientMapper ingredientMapper;
     private PriceDAO priceDAO;
@@ -59,6 +64,21 @@ public class IngredientService {
             priceDAO.addAllByIngredientId(
                     ingredientId.toString(),
                     priceMapper.toEntities(prices)
+            );
+        }
+
+        return getIngredientById(ingredientId);
+    }
+
+    public IngredientRest addStockMovements(Integer ingredientId, List<StockMovementRest> stockMovements) {
+
+        if (ingredientId == null) {
+            throw new NullIdException("Given an null value for ingredient's id.");
+        }
+
+        if (!stockMovements.isEmpty()) {
+            stockMovementDAO.addAll(
+                    stockMovementMapper.toEntities(ingredientId, stockMovements)
             );
         }
 

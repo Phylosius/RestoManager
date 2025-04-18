@@ -55,8 +55,14 @@ public class IngredientRestController {
             @PathVariable Integer id,
             @RequestBody List<StockMovementRest> stockMovements
     ) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        try {
+            return ResponseEntity.ok(ingredientService.addStockMovements(id, stockMovements));
+        } catch (NullIdException e) {
+            return ResponseEntity.status(403).body(new ErrorResponseRest(e));
+        } catch (IngredientNotFoundException e) {
+            return ResponseEntity.status(404).body(new ErrorResponseRest(e));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(new ErrorResponseRest(e));
+        }
     }
-
-
 }
