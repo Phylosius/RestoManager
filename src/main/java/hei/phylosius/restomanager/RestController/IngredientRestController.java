@@ -64,5 +64,7 @@ public class IngredientRestController {
         } catch (Exception e) {
             return ResponseEntity.status(500).body(new ErrorResponseRest(e));
         }
+        // Also return a 406 code if receive a non StockMovementRest object(s)
+        // because of jackson conversion
     }
 }
