@@ -4,7 +4,6 @@ import hei.phylosius.restomanager.Repository.IngredientNotFoundException;
 import hei.phylosius.restomanager.Service.IngredientService;
 import hei.phylosius.restomanager.Service.NullIdException;
 import hei.phylosius.restomanager.dto.ErrorResponseRest;
-import hei.phylosius.restomanager.dto.IngredientRest;
 import hei.phylosius.restomanager.dto.PriceRest;
 import hei.phylosius.restomanager.dto.StockMovementRest;
 import org.springframework.http.ResponseEntity;

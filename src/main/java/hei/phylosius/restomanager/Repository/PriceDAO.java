@@ -3,8 +3,6 @@ package hei.phylosius.restomanager.Repository;
 import io.github.cdimascio.dotenv.Dotenv;
 import hei.phylosius.restomanager.model.Criteria;
 import hei.phylosius.restomanager.model.Price;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
