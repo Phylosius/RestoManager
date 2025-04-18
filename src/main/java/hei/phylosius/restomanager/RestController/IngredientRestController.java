@@ -21,8 +21,8 @@ public class IngredientRestController {
 
     @GetMapping("")
     public ResponseEntity<?> getIngredients(
-            @RequestParam(required = false) int page,
-            @RequestParam(required = false) int pageSize
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer pageSize
     ) {
         try {
             return ResponseEntity.ok(ingredientService.getAllIngredients(page, pageSize));
