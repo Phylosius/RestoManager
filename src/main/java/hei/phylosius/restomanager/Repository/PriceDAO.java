@@ -66,9 +66,10 @@ public class PriceDAO {
         Price price = new Price();
 
         String sql = """
-                SELECT ingredient_id, unit_price, date FROM ingredient_price
+                SELECT ingredient_id, unit_price, date
+                FROM ingredient_price
                 WHERE ingredient_id = ?
-                ORDER BY ABS(EXTRACT(DAY FROM (date - ?::TIMESTAMP)))
+                ORDER BY ABS(EXTRACT(EPOCH FROM (date - ?::TIMESTAMP)))
                 ASC
                 LIMIT 1;
                 """;
