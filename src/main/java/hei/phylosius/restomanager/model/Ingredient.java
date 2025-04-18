@@ -19,7 +19,7 @@ public class Ingredient {
     private Price price;
     private Unit unit;
 
-    public Price getRecentPrice() {
+    public Price getActualPrice() {
         return getRecentPrice(LocalDateTime.now());
     }
 

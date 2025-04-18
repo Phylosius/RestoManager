@@ -1,7 +1,10 @@
 package hei.phylosius.restomanager.RestController;
 
+import hei.phylosius.restomanager.Repository.IngredientNotFoundException;
 import hei.phylosius.restomanager.Service.IngredientService;
+import hei.phylosius.restomanager.Service.NullIdException;
 import hei.phylosius.restomanager.dto.ErrorResponseRest;
+import hei.phylosius.restomanager.dto.IngredientRest;
 import hei.phylosius.restomanager.dto.PriceRest;
 import hei.phylosius.restomanager.dto.StockMovementRest;
 import org.springframework.http.ResponseEntity;
@@ -32,11 +35,19 @@ public class IngredientRestController {
     }
 
     @PutMapping("/{id}/prices")
-    public ResponseEntity<?> updatePrices(
+    public ResponseEntity<?> addPrices(
             @PathVariable Integer id,
             @RequestBody List<PriceRest> prices
     ){
-        throw new UnsupportedOperationException("Not supported yet.");
+        try {
+            return ResponseEntity.ok(ingredientService.addPrices(id, prices));
+        } catch (NullIdException e) {
+            return ResponseEntity.status(403).body(new ErrorResponseRest(e));
+        } catch (IngredientNotFoundException e) {
+            return ResponseEntity.status(404).body(new ErrorResponseRest(e));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(new ErrorResponseRest(e));
+        }
     }
 
     @PutMapping("/{id}/stockMovements")
