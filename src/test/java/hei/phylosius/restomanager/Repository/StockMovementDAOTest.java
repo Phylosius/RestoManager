@@ -65,7 +65,7 @@ public class StockMovementDAOTest {
         StockMovement selMovement = new StockMovement(ingredient1, MovementType.IN, 10000d, now);
         StockMovement rizMovement = new StockMovement(ingredient2, MovementType.IN, 20000d, now);
 
-        subject.saveAll(List.of(selMovement, rizMovement));
+        subject.addAll(List.of(selMovement, rizMovement));
         Criteria dateCriteria = new Criteria(LogicalOperator.AND, "date", CriteriaOperator.NEAR, now, 100d);
         List<StockMovement> retrieved = subject.getAllByCriteria(List.of(dateCriteria), 1, 5);
 
@@ -81,7 +81,7 @@ public class StockMovementDAOTest {
         StockMovement selMovement = new StockMovement(ingredient1, MovementType.OUT, 5000d, then);
         StockMovement rizMovement = new StockMovement(ingredient2, MovementType.OUT, 15000d, then);
 
-        subject.saveAll(List.of(selMovement, rizMovement));
+        subject.addAll(List.of(selMovement, rizMovement));
         Criteria criteria = new Criteria(LogicalOperator.AND, "type", CriteriaOperator.EQUAL, MovementType.OUT);
         Criteria dateCriteria = new Criteria(LogicalOperator.AND, "date", CriteriaOperator.NEAR, then, 2000d);
         List<StockMovement> retrieved = subject.getAllByCriteria(List.of(criteria, dateCriteria), 1, 5);

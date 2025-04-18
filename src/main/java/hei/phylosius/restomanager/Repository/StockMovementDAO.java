@@ -66,12 +66,12 @@ public class StockMovementDAO{
         return getAllByCriteria(dataSource.getConnection(), criteria, page, pageSize);
     }
 
-    public int save(StockMovement stockMovement){
-        return save(dataSource.getConnection(), stockMovement);
+    public int add(StockMovement stockMovement){
+        return add(dataSource.getConnection(), stockMovement);
     }
 
-    public void saveAll(List<StockMovement> stockMovements){
-        saveAll(dataSource.getConnection(), stockMovements);
+    public void addAll(List<StockMovement> stockMovements){
+        addAll(dataSource.getConnection(), stockMovements);
     }
 
     public StockInfo getStockInfo(String ingredientID, LocalDateTime date){
@@ -140,11 +140,11 @@ public class StockMovementDAO{
         return stockMovements;
     }
 
-    public static int save(Connection conn, StockMovement stockMovement){
-        return saveAll(conn, List.of(stockMovement));
+    public static int add(Connection conn, StockMovement stockMovement){
+        return addAll(conn, List.of(stockMovement));
     }
 
-    public static int saveAll(Connection conn, List<StockMovement> stockMovements){
+    public static int addAll(Connection conn, List<StockMovement> stockMovements){
         int saved;
 
         String sql = "INSERT INTO stock_movement (ingredient_id, type, quantity, date) VALUES ";
