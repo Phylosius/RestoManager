@@ -28,13 +28,11 @@ public class PriceMapper {
     }
 
     public List<PriceRest> toDTOs(List<Price> prices) {
-        System.out.println("PriceRest::toDTOs called");
         return prices.stream().map(this::toDTO).toList();
     }
 
     public PriceRest toDTO(Price price) {
         PriceRest dto = new PriceRest();
-        System.out.println("Price::toDTO mapping requested");
 
 
         dto.setDateValue(
