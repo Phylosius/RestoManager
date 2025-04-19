@@ -5,6 +5,7 @@ import hei.phylosius.restomanager.Repository.PriceDAO;
 import hei.phylosius.restomanager.Service.IngredientService;
 import hei.phylosius.restomanager.dto.IngredientRest;
 import hei.phylosius.restomanager.dto.IngredientUpdateRest;
+import hei.phylosius.restomanager.dto.PriceRest;
 import hei.phylosius.restomanager.dto.StockMovementRest;
 import hei.phylosius.restomanager.mappers.IngredientMapper;
 import hei.phylosius.restomanager.mappers.StockMovementMapper;
@@ -21,10 +22,6 @@ import java.util.List;
 @RequestMapping("/ingredients")
 public class IngredientRestController {
 
-    private final IngredientMapper ingredientMapper;
-    private final IngredientDAO ingredientDAO;
-    private final PriceDAO priceDAO;
-    private final StockMovementMapper stockMovementMapper;
     private final IngredientService ingredientService;
 
     @GetMapping("/{id}")
@@ -51,41 +48,27 @@ public class IngredientRestController {
         return ResponseEntity.ok(ingredientService.getIngredients(page, pageSize));
     }
 
-    @PostMapping
-    public ResponseEntity<?> createIngredients(@RequestBody List<IngredientRest> ingredientRests) {
-        List<Ingredient> ingredients = ingredientRests.stream().map(ingredientMapper::toEntity).toList();
+    @PutMapping("/{id}/prices")
+    public ResponseEntity<?> setPrices(@PathVariable Integer id, @RequestBody List<PriceRest> prices) {
+        try {
+            ingredientService.savePrices(id, prices);
+
+            return ResponseEntity.ok(ingredientService.getOneIngredient(id));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}/stockMovements")
+    public ResponseEntity<?> setStockMovement(@PathVariable Integer id, @RequestBody List<StockMovementRest> movements) {
 
         try {
-            ingredientDAO.addAll(ingredients);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(400).body(e.getMessage());
+            ingredientService.addStockMovements(id, movements);
+
+            return ResponseEntity.ok(ingredientService.getOneIngredient(id));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(e.getMessage());
         }
 
-        return ResponseEntity.ok(ingredients);
-    }
-
-    @PutMapping
-    public ResponseEntity<?> updateIngredients(@RequestBody List<IngredientUpdateRest> ingredientDTOs) {
-        List<Ingredient> ingredients = ingredientDTOs.stream().map(ingredientMapper::toEntity).toList();
-
-        ingredientDAO.saveAll(ingredients);
-
-        return ResponseEntity.ok(ingredients);
-    }
-
-    @PutMapping("/{ingredientId}/prices")
-    public ResponseEntity<?> setPrices(@PathVariable String ingredientId, @RequestBody List<Price> prices) {
-        priceDAO.saveAllByIngredientId(ingredientId, prices);
-
-        return ResponseEntity.ok(prices);
-    }
-
-    @PutMapping("/{ingredientId}/stockMovement")
-    public ResponseEntity<?> setStockMovement(@PathVariable String ingredientId, @RequestBody List<StockMovementRest> dtos) {
-
-        Ingredient affectedIngredient = ingredientDAO.getById(ingredientId);
-        dtos.stream().map(dto -> stockMovementMapper.toEntity(affectedIngredient, dto)).toList();
-
-        return ResponseEntity.ok(dtos);
     }
 }

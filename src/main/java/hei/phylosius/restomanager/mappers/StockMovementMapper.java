@@ -43,4 +43,8 @@ public class StockMovementMapper {
 
         return dto;
     }
+
+    public List<StockMovement> toEntities(Ingredient byId, List<StockMovementRest> movements) {
+        return movements.stream().map(m -> toEntity(byId, m)).toList();
+    }
 }
