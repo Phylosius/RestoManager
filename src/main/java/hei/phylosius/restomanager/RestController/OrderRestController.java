@@ -3,13 +3,12 @@ package hei.phylosius.restomanager.RestController;
 import hei.phylosius.restomanager.Repository.DishNotFoundException;
 import hei.phylosius.restomanager.Repository.OrderNotFoundException;
 import hei.phylosius.restomanager.Service.OrderService;
-import hei.phylosius.restomanager.dto.DishOrderRestUpdate;
+import hei.phylosius.restomanager.dto.ObjectWithStatus;
 import hei.phylosius.restomanager.dto.UpdateOrderRest;
+import hei.phylosius.restomanager.model.OrderStatus;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @AllArgsConstructor
 @RestController
@@ -53,10 +52,10 @@ public class OrderRestController {
     @PutMapping("/{reference}/dishes")
     public ResponseEntity<?> updateDishes(
             @PathVariable String reference,
-            @RequestBody List<UpdateOrderRest> dishes
+            @RequestBody UpdateOrderRest update
     ) {
         try {
-            orderService.updateDishes(reference, dishes);
+            orderService.updateOrder(reference, update);
 
             return ResponseEntity.ok(orderService.getOrderInfoByReference(reference));
         } catch (OrderNotFoundException e) {
@@ -71,9 +70,18 @@ public class OrderRestController {
     @PutMapping("/{reference}/dishes/{dishId}")
     public ResponseEntity<?> updateDishStatus(
             @PathVariable String reference,
-            @PathVariable String dishId,
-            @RequestBody DishOrderRestUpdate update
+            @PathVariable Integer dishId,
+            @RequestBody ObjectWithStatus statusO
     ) {
-        return ResponseEntity.status(403).body("Not implemented yet.");
+        OrderStatus status = statusO.getStatus();
+        String orderId = orderService.getOrderId(reference);
+        OrderStatus lastStatus = orderService.getLastOrderStatus(orderId, dishId.toString());
+
+        if (status.isAfter(lastStatus)) {
+            orderService.addDishOrderStatus(orderId, dishId.toString(), status);
+            return ResponseEntity.ok(orderService.getOrderInfoByReference(reference));
+        } else {
+            return ResponseEntity.status(400).body(String.format("An dish's Order can't switch from %s to %s.", lastStatus, status));
+        }
     }
 }

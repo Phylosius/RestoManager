@@ -1,17 +1,16 @@
 package hei.phylosius.restomanager.Repository;
 
+import hei.phylosius.restomanager.model.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import hei.phylosius.restomanager.model.Criteria;
-import hei.phylosius.restomanager.model.CriteriaOperator;
-import hei.phylosius.restomanager.model.LogicalOperator;
-import hei.phylosius.restomanager.model.OrderStatusRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -25,13 +24,45 @@ public class OrderStatusRecordDAO{
 
     @Autowired
     private DataSource dataSource;
+    @Autowired
+    private DishOrderDAO dishOrderDAO;
 
     public List<OrderStatusRecord> getAllByCriteria(List<Criteria> criteria, int page, int pageSize) {
         return getAllByCriteria(dataSource.getConnection(), criteria, page, pageSize);
     }
 
+    public OrderStatusRecord getLatestByDishOrderId(String dishOrderId) {
+        OrderStatusRecord record = new OrderStatusRecord();
+
+        String sql = """
+                SELECT date, status_id
+                FROM dish_order_status_history
+                WHERE dish_order_id = ?
+                ORDER BY date DESC
+                LIMIT 1
+                """;
+        List<Object> params = List.of(dishOrderId);
+
+        BaseDAO.executeQuery(dataSource.getConnection(), sql, params, res -> {
+            if (res.next()) {
+                record.setDishOrderId(dishOrderId);
+                record.setStatus(OrderStatus.valueOf(res.getString("status_id")));
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                LocalDateTime dateTime = LocalDateTime.parse(res.getString("date"), formatter);
+                record.setDate(dateTime);
+            }
+        });
+
+        return record;
+    }
+
     public void save(OrderStatusRecord statusRecord){
         save(dataSource.getConnection(), statusRecord);
+    }
+
+    public void add(OrderStatusRecord statusRecord){
+        add(dataSource.getConnection(), statusRecord);
     }
 
     public List<OrderStatusRecord> getAllByDishOrderId(String dishOrderId) {

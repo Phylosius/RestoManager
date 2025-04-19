@@ -3,12 +3,15 @@ package hei.phylosius.restomanager.Service;
 import hei.phylosius.restomanager.Repository.DishOrderDAO;
 import hei.phylosius.restomanager.Repository.OrderDAO;
 import hei.phylosius.restomanager.Repository.OrderStatusRecordDAO;
+import hei.phylosius.restomanager.dto.DishOrderRest;
 import hei.phylosius.restomanager.dto.OrderRest;
 import hei.phylosius.restomanager.dto.UpdateOrderRest;
 import hei.phylosius.restomanager.mappers.DishOrderMapper;
 import hei.phylosius.restomanager.mappers.OrderMapper;
+import hei.phylosius.restomanager.model.DishOrder;
 import hei.phylosius.restomanager.model.Order;
 import hei.phylosius.restomanager.model.OrderStatus;
+import hei.phylosius.restomanager.model.OrderStatusRecord;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -47,11 +50,27 @@ public class OrderService {
         return order.getId() != null;
     }
 
-    public Boolean updateDishStatus(String orderId, String dishId, OrderStatus status) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void addDishOrderStatus(String orderId, String dishId, OrderStatus status) {
+        orderStatusRecordDAO.add(new OrderStatusRecord(getDishOrderId(orderId, dishId), LocalDateTime.now(), status));
     }
 
-    public void updateDishes(String reference, List<UpdateOrderRest> dishes) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public OrderStatus getLastOrderStatus(String orderId, String dishId) {
+        return orderStatusRecordDAO.getLatestByDishOrderId(getDishOrderId(orderId, dishId)).getStatus();
+    }
+
+    public String getOrderId(String orderReference) {
+        return orderDAO.getId(orderReference);
+    }
+
+    public String getDishOrderId(String orderId, String dishId) {
+        return dishOrderDAO.getId(orderId, dishId);
+    }
+
+    public void updateOrder(String reference, UpdateOrderRest update) {
+        String orderId = getOrderId(reference);
+        List<DishOrder> dishOrders = dishOrderMapper.toEntitiesByCreate(orderId, update.getDishes());
+        dishOrderDAO.saveAll(
+                dishOrders
+        );
     }
 }

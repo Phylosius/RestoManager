@@ -52,6 +52,22 @@ public class OrderDAO {
         return getById(dataSource.getConnection(), id);
     }
 
+    public String getId(String reference){
+        AtomicReference<String> id = new AtomicReference<>();
+
+        String sql = """
+                SELECT id FROM "order" WHERE reference = ?
+                """;
+        List<Object> params = List.of(reference);
+        BaseDAO.executeQuery(dataSource.getConnection(), sql, params, resultSet -> {
+            if (resultSet.next()) {
+                id.set(resultSet.getString("id"));
+            }
+        });
+
+        return id.get();
+    }
+
     public void save(Order order){
         save(dataSource.getConnection(), order);
     }

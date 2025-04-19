@@ -1,9 +1,12 @@
 package hei.phylosius.restomanager.mappers;
 
+import hei.phylosius.restomanager.Repository.DishDAO;
 import hei.phylosius.restomanager.Repository.DishOrderDAO;
 import hei.phylosius.restomanager.Repository.OrderStatusRecordDAO;
+import hei.phylosius.restomanager.dto.CreateDishOrderRest;
 import hei.phylosius.restomanager.dto.DishOrderRest;
 import hei.phylosius.restomanager.dto.DishOrderRestUpdate;
+import hei.phylosius.restomanager.dto.UpdateOrderRest;
 import hei.phylosius.restomanager.model.Dish;
 import hei.phylosius.restomanager.model.DishOrder;
 import hei.phylosius.restomanager.model.OrderStatusHistory;
@@ -18,11 +21,36 @@ import java.util.UUID;
 @Component
 public class DishOrderMapper {
 
+    private final DishDAO dishDAO;
     private DishOrderDAO dishOrderDAO;
     private OrderStatusRecordDAO orderStatusRecordDAO;
 
     public List<DishOrder> toEntities(String orderId, List<DishOrderRest> DTOs) {
         return DTOs.stream().map(u -> toEntity(orderId, u)).toList();
+    }
+
+    public List<DishOrder> toEntitiesByCreate(String orderId, List<CreateDishOrderRest> DTOs) {
+        return DTOs.stream().map(u -> toEntity(orderId, u)).toList();
+    }
+
+    public DishOrder toEntity(String orderId, CreateDishOrderRest createDTO) {
+        DishOrder dishOrder = new DishOrder();
+
+        String dishOrderId = String.format("%s.%s", orderId.hashCode(), createDTO.getDishIdentifier());
+
+        dishOrder.setOrderId(orderId);
+        dishOrder.setQuantity(createDTO.getQuantityOrdered());
+        dishOrder.setId(dishOrderId);
+        dishOrder.setDish(
+                dishDAO.getById(createDTO.getDishIdentifier().toString())
+        );
+        dishOrder.setStatusHistory(
+                new OrderStatusHistory(
+                        orderStatusRecordDAO.getAllByDishOrderId(dishOrderId)
+                )
+        );
+
+        return dishOrder;
     }
 
     public DishOrder toEntity(String orderId, DishOrderRest dto) {
@@ -73,4 +101,5 @@ public class DishOrderMapper {
 
         return dto;
     }
+
 }

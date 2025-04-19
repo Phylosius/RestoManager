@@ -15,7 +15,7 @@ public class OrderStatusRecord {
     private LocalDateTime date;
     private OrderStatus status;
 
-    public  OrderStatusRecord(LocalDateTime date, OrderStatus status){
+    public OrderStatusRecord(LocalDateTime date, OrderStatus status){
         this.date = date;
         this.status = status;
     }

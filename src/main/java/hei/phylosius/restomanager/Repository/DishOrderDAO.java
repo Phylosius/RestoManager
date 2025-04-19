@@ -151,9 +151,9 @@ public class DishOrderDAO {
             throw new DishNotFoundException(String.format("Dish of id %s not found", dishOrder.getDish().getId()));
         }
 
-        String  sql = "UPDATE dish_order SET quantity = ?, order_id = ?, dish_id = ? WHERE id = ?";
+        String  sql = "UPDATE dish_order SET quantity = ?, order_id = ?, dish_id = ? WHERE dish_id = ? AND order_id = ?";
 
-        List<Object> params = List.of(dishOrder.getQuantity(), dishOrder.getOrderId(), dishOrder.getDish().getId(), id);
+        List<Object> params = List.of(dishOrder.getQuantity(), dishOrder.getOrderId(), dishOrder.getDish().getId(), dishOrder.getDish().getId(), dishOrder.getOrderId());
         BaseDAO.executeUpdate(conn, sql, params);
         if (dishOrder.getStatusHistory() != null) {
             OrderStatusRecordDAO.saveAll(conn, dishOrder.getStatusHistory().getRecords());
