@@ -35,9 +35,9 @@ public class DishService {
 
     public DishRest updateIngredients(Integer dishId, List<CreateDishIngredientRest> ingredients) {
 
-        if (dishId == null) {
-            throw new NullIdException("Dish id cannot be null");
-        }
+//        if (dishId == null) {
+//            throw new NullIdException("Dish id cannot be null");
+//        }
 
         if (ingredients != null && !ingredients.isEmpty()) {
             makeUpDAO.addAll(dishId.toString(), makeUpMapper.toEntities(ingredients));

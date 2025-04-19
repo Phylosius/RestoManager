@@ -41,9 +41,9 @@ public class StockMovementMapper {
 
     public StockMovement toEntity(Integer ingredientId, StockMovementRest dto) {
 
-        if (ingredientId == null) {
-            throw new NullIdException("Can't convert dto without ingredient's id");
-        }
+//        if (ingredientId == null) {
+//            throw new NullIdException("Can't convert dto without ingredient's id");
+//        }
         StockMovement movement = new StockMovement();
 
         movement.setType(dto.getType());

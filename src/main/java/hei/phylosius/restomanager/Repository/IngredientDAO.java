@@ -132,11 +132,7 @@ public class IngredientDAO implements DataProvider<Ingredient, String> {
     }
 
     public void add(Ingredient entity) {
-        if (isExist(dataSource.getConnection(), entity.getId())) {
-            throw new IllegalArgumentException(String.format("Ingredient of id=%s already exists", entity.getId()));
-        } else {
-            add(dataSource.getConnection(), entity);
-        }
+        add(dataSource.getConnection(), entity);
     }
 
     @Override
@@ -168,14 +164,14 @@ public class IngredientDAO implements DataProvider<Ingredient, String> {
 
     public static List<Ingredient> getAllByCriteria(Connection conn, List<Criteria> criteria, int page, int pageSize) {
         List<Ingredient> ingredients = new ArrayList<>();
-
-        if (page < 1) {
-            throw new IllegalPageValueException("The value of the parameter page should be greater than 0.");
-        }
-
-        if (pageSize < 1) {
-            throw new IllegalPageSizeValueException("The value of the parameter pageSize should be greater than 0.");
-        }
+//
+//        if (page < 1) {
+//            throw new IllegalPageValueException("The value of the parameter page should be greater than 0.");
+//        }
+//
+//        if (pageSize < 1) {
+//            throw new IllegalPageSizeValueException("The value of the parameter pageSize should be greater than 0.");
+//        }
 
         String sql = """
                 SELECT i.id, i.name, i.unit, p.unit_price, i.modification_date

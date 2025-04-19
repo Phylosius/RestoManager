@@ -42,9 +42,9 @@ public class OrderDAO {
 
         List<Order> retrieved = getAllByCriteria(conn, List.of(criteria), 1, 1);
 
-        if(retrieved.isEmpty()){
-            throw new OrderNotFoundException(String.format("Order with id %s not found", id));
-        }
+//        if(retrieved.isEmpty()){
+//            throw new OrderNotFoundException(String.format("Order with id %s not found", id));
+//        }
 
         return retrieved.getFirst();
     }

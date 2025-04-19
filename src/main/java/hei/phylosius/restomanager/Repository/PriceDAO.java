@@ -46,9 +46,9 @@ public class PriceDAO {
     }
 
     public List<Price> getAllByIngredientID(String ingredientID) {
-        if (!IngredientDAO.isExist(dataSource.getConnection(), ingredientID)) {
-            throw new IngredientNotFoundException("Ingredient with id " + ingredientID + " not found.");
-        }
+//        if (!IngredientDAO.isExist(dataSource.getConnection(), ingredientID)) {
+//            throw new IngredientNotFoundException("Ingredient with id " + ingredientID + " not found.");
+//        }
 
         String sql = "select unit_price, date from ingredient_price where ingredient_id = ?";
         List<Object> params = List.of(ingredientID);
@@ -208,10 +208,10 @@ public class PriceDAO {
     }
 
     public static void createByIngredientID(Connection conn, String ingredientID, Price price) {
-
-        if (!IngredientDAO.isExist(conn, ingredientID)){
-            throw new IngredientNotFoundException(String.format("Ingredient of id = %s does not exist", ingredientID));
-        }
+//
+//        if (!IngredientDAO.isExist(conn, ingredientID)){
+//            throw new IngredientNotFoundException(String.format("Ingredient of id = %s does not exist", ingredientID));
+//        }
 
         String sql = """
                 INSERT INTO ingredient_price (ingredient_id, unit_price, date) VALUES (?, ?, ?::TIMESTAMP)

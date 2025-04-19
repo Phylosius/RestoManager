@@ -42,23 +42,19 @@ public class IngredientService {
     public IngredientRest getIngredientById(Integer id) {
         Ingredient ingredient;
 
-        if (id == null) {
-            throw new NullIdException("Can not found Ingredient while id is null");
-        } else {
-             ingredient = ingredientDAO.getById(id.toString());
-        }
+        ingredient = ingredientDAO.getById(id.toString());
 
-        if (ingredient == null) {
-            throw new IngredientNotFoundException(String.format("Ingredient of id = %s not found", id));
-        }
+//        if (ingredient == null) {
+//            throw new IngredientNotFoundException(String.format("Ingredient of id = %s not found", id));
+//        }
 
         return ingredientMapper.toDTO(ingredient);
     }
 
     public IngredientRest addPrices(Integer ingredientId, List<PriceRest> prices) {
-        if (ingredientId == null) {
-            throw new NullIdException("Given an null value for ingredient's id.");
-        }
+//        if (ingredientId == null) {
+//            throw new NullIdException("Given an null value for ingredient's id.");
+//        }
 
         if (!prices.isEmpty()) {
             priceDAO.addAllByIngredientId(
@@ -72,9 +68,9 @@ public class IngredientService {
 
     public IngredientRest addStockMovements(Integer ingredientId, List<StockMovementRest> stockMovements) {
 
-        if (ingredientId == null) {
-            throw new NullIdException("Given an null value for ingredient's id.");
-        }
+//        if (ingredientId == null) {
+//            throw new NullIdException("Given an null value for ingredient's id.");
+//        }
 
         if (!stockMovements.isEmpty()) {
             stockMovementDAO.addAll(
