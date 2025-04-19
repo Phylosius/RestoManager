@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Repository
 public class MakeUpDAO{
@@ -25,8 +26,20 @@ public class MakeUpDAO{
         return getAllByCriteria(dataSource.getConnection(), criteria, page, pageSize);
     }
 
-    public int saveAll(String dishID, List<MakeUp> makeUpList){
-        return saveAll(dataSource.getConnection(),dishID, makeUpList);
+    public void saveAll(String dishID, List<MakeUp> makeUpList) {
+        makeUpList.forEach(m -> save(dishID, m));
+    }
+
+    public void save(String dishID, MakeUp makeUp) {
+        if (isExist(dataSource.getConnection(), dishID, makeUp.getIngredient().getName())) {
+            update(dataSource.getConnection(), dishID, makeUp.getIngredient().getId(), makeUp.getQuantity());
+        } else {
+            add(dataSource.getConnection(), dishID, makeUp);
+        }
+    }
+
+    public int addAll(String dishID, List<MakeUp> makeUpList){
+        return addAll(dataSource.getConnection(),dishID, makeUpList);
     }
 
     public int deleteByDishID(String dishID){
@@ -76,7 +89,22 @@ public class MakeUpDAO{
         return makeUps;
     }
 
-    public static int saveAll(Connection conn, String dishID, List<MakeUp> makeUps){
+    public static int update(Connection conn, String dishId, String ingredientId, Double ingredientQuantity){
+
+        String sql = "UPDATE make_up SET ingredient_quantity = ? WHERE ingredient_id = ? AND dish_id = ?";
+        List<Object> params = List.of(ingredientQuantity, ingredientId, dishId);
+
+        return BaseDAO.executeUpdate(conn, sql, params);
+    }
+
+    public static void add(Connection conn, String dishId, MakeUp makeUp){
+        String sql = "INSERT INTO make_up (dish_id, ingredient_id, ingredient_quantity) VALUES (?, ?, ?)";
+        List<Object> params = List.of(dishId, makeUp.getIngredient().getId(), makeUp.getQuantity());
+
+        BaseDAO.executeUpdate(conn, sql, params);
+    }
+
+    public static int addAll(Connection conn, String dishID, List<MakeUp> makeUps){
         int saved;
 
         if (!DishDAO.isExist(conn, dishID)) {
@@ -115,6 +143,27 @@ public class MakeUpDAO{
         deleted = BaseDAO.executeUpdate(conn, sql, params);
 
         return deleted;
+    }
+
+    public static Boolean isExist(Connection conn, String dishID, String ingredientName){
+        String sql = """
+                SELECT m.ingredient_quantity
+                FROM make_up m
+                JOIN ingredient i
+                    ON m.ingredient_id = i.id
+                WHERE m.dish_id = ?
+                    AND i.name = ?
+                """;
+        List<Object> params = List.of(dishID, ingredientName);
+
+        AtomicReference<Boolean> isExist = new AtomicReference<>(false);
+        BaseDAO.executeQuery(conn, sql, params, (res) -> {
+            if (res.next()) {
+                isExist.set(true);
+            }
+        });
+
+        return isExist.get();
     }
 
 }

@@ -4,8 +4,7 @@ import hei.phylosius.restomanager.Repository.DishNotFoundException;
 import hei.phylosius.restomanager.Repository.IngredientNotFoundException;
 import hei.phylosius.restomanager.Service.DishService;
 import hei.phylosius.restomanager.Service.IngredientService;
-import hei.phylosius.restomanager.dto.MakeUpRestCreation;
-import hei.phylosius.restomanager.dto.DishRest;
+import hei.phylosius.restomanager.dto.CreateMakeUpRest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,12 +38,13 @@ public class DishController {
 
     @PutMapping("/{id}/ingredients")
     public ResponseEntity<?> addIngredients(
-            @PathVariable String id,
-            @RequestBody List<MakeUpRestCreation> ingredientCreations
+            @PathVariable Integer id,
+            @RequestBody List<CreateMakeUpRest> ingredientCreations
     ) {
         try {
-            dishService.addIngredients(id, ingredientCreations);
-            return ResponseEntity.ok(ingredientCreations);
+            dishService.saveIngredients(id, ingredientCreations);
+
+            return ResponseEntity.ok(dishService.getOneDishRest(id));
         } catch (IngredientNotFoundException e) {
             return ResponseEntity.status(401).body(e.getMessage());
         } catch (DishNotFoundException e) {

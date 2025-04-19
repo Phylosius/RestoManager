@@ -10,7 +10,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MakeUpRestCreation {
-    private String ingredientId;
-    private Double quantity;
+public class CreateMakeUpRest {
+    private String id;
+    private String name;
+    private Double requiredQuantity;
 }

@@ -3,7 +3,7 @@ package hei.phylosius.restomanager.Service;
 import hei.phylosius.restomanager.Repository.DishDAO;
 import hei.phylosius.restomanager.Repository.MakeUpDAO;
 import hei.phylosius.restomanager.dto.DishRest;
-import hei.phylosius.restomanager.dto.MakeUpRestCreation;
+import hei.phylosius.restomanager.dto.CreateMakeUpRest;
 import hei.phylosius.restomanager.mappers.DishMapper;
 import hei.phylosius.restomanager.mappers.MakeUpMapper;
 import hei.phylosius.restomanager.model.Dish;
@@ -34,11 +34,13 @@ public class DishService {
         return dishMapper.toDTOs(dishes);
     }
 
-    public List<MakeUpRestCreation> addIngredients(String dishId, List<MakeUpRestCreation> makeUpRests) {
+    public DishRest getOneDishRest(Integer id) {
+        return dishMapper.toDTO(dishDAO.getById(id.toString()));
+    }
+
+    public void saveIngredients(Integer dishId, List<CreateMakeUpRest> makeUpRests) {
         List<MakeUp> makeUps = makeUpMapper.toEntitiesWithIdOnly(makeUpRests);
 
-        makeUpDAO.saveAll(dishId, makeUps);
-
-        return makeUpRests;
+        makeUpDAO.saveAll(dishId.toString(), makeUps);
     }
 }
