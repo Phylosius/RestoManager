@@ -4,6 +4,7 @@ import hei.phylosius.restomanager.Repository.DishNotFoundException;
 import hei.phylosius.restomanager.Repository.OrderNotFoundException;
 import hei.phylosius.restomanager.Service.OrderService;
 import hei.phylosius.restomanager.dto.DishOrderRestUpdate;
+import hei.phylosius.restomanager.dto.UpdateOrderRest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,13 +31,34 @@ public class OrderRestController {
         }
     }
 
+    @PostMapping("/{reference}")
+    public ResponseEntity<?> addOrder(
+            @PathVariable String reference
+    ) {
+        if (orderService.isReferenceInUse(reference)) {
+            return ResponseEntity.status(400).body(String.format("reference %s is already in use", reference));
+        }
+
+        try {
+            orderService.createEmptyOrder(reference);
+
+            return ResponseEntity.status(200).body(orderService.getOrderInfoByReference(reference));
+        } catch (OrderNotFoundException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+
     @PutMapping("/{reference}/dishes")
     public ResponseEntity<?> updateDishes(
             @PathVariable String reference,
-            @RequestBody List<DishOrderRestUpdate> dishes
+            @RequestBody List<UpdateOrderRest> dishes
     ) {
         try {
-            return ResponseEntity.ok(orderService.updateDishes(reference, dishes));
+            orderService.updateDishes(reference, dishes);
+
+            return ResponseEntity.ok(orderService.getOrderInfoByReference(reference));
         } catch (OrderNotFoundException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         } catch (DishNotFoundException e) {

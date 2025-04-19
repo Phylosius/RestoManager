@@ -10,6 +10,7 @@ import hei.phylosius.restomanager.model.OrderStatusHistory;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,8 +21,21 @@ public class DishOrderMapper {
     private DishOrderDAO dishOrderDAO;
     private OrderStatusRecordDAO orderStatusRecordDAO;
 
-    public List<DishOrder> toEntities(String orderId, List<DishOrderRestUpdate> dishUpdates) {
-        return dishUpdates.stream().map(u -> toEntity(orderId, u)).toList();
+    public List<DishOrder> toEntities(String orderId, List<DishOrderRest> DTOs) {
+        return DTOs.stream().map(u -> toEntity(orderId, u)).toList();
+    }
+
+    public DishOrder toEntity(String orderId, DishOrderRest dto) {
+        DishOrder dishOrder = new DishOrder();
+
+        dishOrder.setId(String.valueOf((int) (Instant.now().toEpochMilli())));
+        dishOrder.setOrderId(orderId);
+        dishOrder.setQuantity(dto.getQuantityOrdered());
+        dishOrder.setStatusHistory(
+                new OrderStatusHistory(orderStatusRecordDAO.getAllByDishOrderId(orderId))
+        );
+
+        return dishOrder;
     }
 
     public DishOrder toEntity(String orderId, DishOrderRestUpdate dishUpdate) {

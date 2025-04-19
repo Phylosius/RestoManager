@@ -5,6 +5,8 @@ import hei.phylosius.restomanager.model.Order;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @AllArgsConstructor
 @Component
 public class OrderMapper {
@@ -22,5 +24,18 @@ public class OrderMapper {
         orderRest.setActualStatus(order.getActualStatus());
 
         return orderRest;
+    }
+
+    public Order toEntity(String reference, OrderRest dto) {
+        Order order = new Order();
+
+        order.setId(dto.getId().toString());
+        order.setReference(reference);
+        order.setCreationDate(LocalDateTime.now());
+        order.setDishOrders(
+                dishOrderMapper.toEntities(dto.getId().toString(), dto.getDishes())
+        );
+
+        return order;
     }
 }
