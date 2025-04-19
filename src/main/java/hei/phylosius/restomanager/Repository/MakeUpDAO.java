@@ -79,7 +79,7 @@ public class MakeUpDAO{
 
     public static int addAll(
             Connection conn, String dishID, List<MakeUp> makeUps
-    ) throws IllegalArgumentException, DishNotFoundException, IngredientNotFoundException
+    ) 
     {
         int saved;
 //
