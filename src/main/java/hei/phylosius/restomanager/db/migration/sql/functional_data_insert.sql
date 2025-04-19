@@ -2,6 +2,6 @@
 INSERT INTO order_status (id, "order", name) VALUES
     ('CREATED', 1, 'CREATED'),
     ('CONFIRMED', 2, 'CONFIRMED'),
-    ('IN_PREPARATION', 3, 'IN_PREPARATION'),
+    ('IN_PROGRESS', 3, 'IN_PROGRESS'),
     ('FINISHED', 4, 'FINISHED'),
-    ('SERVED', 5, 'SERVED');
+    ('DELIVERED', 5, 'DELIVERED');

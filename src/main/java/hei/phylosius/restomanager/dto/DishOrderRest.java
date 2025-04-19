@@ -13,6 +13,6 @@ import lombok.Setter;
 public class DishOrderRest {
     private String name;
     private Double unitPrice;
-    private int quantity;
-    private OrderStatus status;
+    private Integer quantityOrdered;
+    private OrderStatus actualOrderStatus;
 }

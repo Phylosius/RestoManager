@@ -53,8 +53,8 @@ public class DishOrderMapper {
         DishOrderRest dto = new DishOrderRest();
 
         dto.setName(order.getDish().getName());
-        dto.setQuantity(order.getQuantity());
-        dto.setStatus(order.getStatus());
+        dto.setQuantityOrdered(order.getQuantity());
+        dto.setActualOrderStatus(order.getStatus());
         dto.setUnitPrice(order.getDish().getUnitPrice());
 
         return dto;

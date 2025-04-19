@@ -27,10 +27,10 @@ public class OrderStatusHistory {
 
             return switch (latestStatus) {
                 case CREATED -> OrderStatus.CONFIRMED;
-                case CONFIRMED -> OrderStatus.IN_PREPARATION;
-                case IN_PREPARATION -> OrderStatus.FINISHED;
-                case FINISHED -> OrderStatus.SERVED;
-                case SERVED -> null;
+                case CONFIRMED -> OrderStatus.IN_PROGRESS;
+                case IN_PROGRESS -> OrderStatus.FINISHED;
+                case FINISHED -> OrderStatus.DELIVERED;
+                case DELIVERED -> null;
             };
         }
     }
