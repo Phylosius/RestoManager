@@ -6,6 +6,8 @@ import hei.phylosius.restomanager.model.StockMovement;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @AllArgsConstructor
@@ -17,7 +19,7 @@ public class StockMovementMapper {
 
         stockMovement.setAffectedIngredient(affectedIngredient);
         stockMovement.setQuantity(dto.getQuantity());
-        stockMovement.setDate(dto.getDate());
+        stockMovement.setDate(LocalDateTime.parse(dto.getCreationDateTime()));
         stockMovement.setType(dto.getType());
 
         return stockMovement;
@@ -31,8 +33,13 @@ public class StockMovementMapper {
         StockMovementRest dto = new StockMovementRest();
 
         dto.setQuantity(stockMovement.getQuantity());
-        dto.setDate(stockMovement.getDate());
+        dto.setCreationDateTime(stockMovement.getDate().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
         dto.setType(stockMovement.getType());
+        dto.setUnit(stockMovement.getUnit());
+        dto.setId(
+                String.format("%s.%s", stockMovement.getDate().toString(), stockMovement.getAffectedIngredient().getId())
+                        .hashCode()
+        );
 
         return dto;
     }

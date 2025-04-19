@@ -2,8 +2,8 @@ package hei.phylosius.restomanager.RestController;
 
 import hei.phylosius.restomanager.Repository.IngredientDAO;
 import hei.phylosius.restomanager.Repository.PriceDAO;
+import hei.phylosius.restomanager.Service.IngredientService;
 import hei.phylosius.restomanager.dto.IngredientRest;
-import hei.phylosius.restomanager.dto.IngredientRestDetailled;
 import hei.phylosius.restomanager.dto.IngredientUpdateRest;
 import hei.phylosius.restomanager.dto.StockMovementRest;
 import hei.phylosius.restomanager.mappers.IngredientMapper;
@@ -25,63 +25,30 @@ public class IngredientRestController {
     private final IngredientDAO ingredientDAO;
     private final PriceDAO priceDAO;
     private final StockMovementMapper stockMovementMapper;
+    private final IngredientService ingredientService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getOneIngredient(@PathVariable String id) {
-        Ingredient ingredient = ingredientDAO.getById(id);
-        if (ingredient == null) {
-            return ResponseEntity.status(404).body(String.format("Ingredient=%s is not found", id));
+    public ResponseEntity<?> getOneIngredient(@PathVariable Integer id) {
+        if (ingredientService.isExist(id)) {
+            return ResponseEntity.ok(ingredientService.getOneIngredient(id));
+        } else {
+            return ResponseEntity.status(500).body(String.format("Ingredient with id %s not found", id));
         }
-
-        return ResponseEntity.ok(ingredientMapper.toDTODetailled(ingredient));
     }
 
-    @GetMapping
+    @GetMapping("")
     public ResponseEntity<?> getIngredients(@RequestParam(required = false) Integer page,
-                                            @RequestParam(required = false) Integer pageSize,
-                                            @RequestParam(required = false) Double priceMinFilter,
-                                            @RequestParam(required = false) Double priceMaxFilter) {
-        List<IngredientRestDetailled> ingredientDTOSsDetailled;
-        List<Ingredient> ingredients;
-        List<Criteria> criteria = new ArrayList<>();
-
-        if (priceMinFilter != null && priceMaxFilter != null) {
-            if (priceMinFilter > priceMaxFilter) {
-                return ResponseEntity.status(400).body("?priceMinFilter should be less or equal to ?priceMaxFilter");
-            }
-        }
-
-        if (priceMinFilter != null) {
-            if (priceMinFilter > -1d) {
-                Criteria minPriceCriteria = new Criteria(LogicalOperator.AND, "p.unit_price", CriteriaOperator.GREATER_OR_EQUAL, priceMinFilter);
-                criteria.add(minPriceCriteria);
-            } else {
-                return ResponseEntity.status(400).body("?priceMinFilter should be greater or equal to 0");
-            }
-        }
-
-        if (priceMaxFilter != null) {
-            if (priceMaxFilter > -1d) {
-                Criteria minPriceCriteria = new Criteria(LogicalOperator.AND, "p.unit_price", CriteriaOperator.LESS_OR_EQUAL, priceMaxFilter);
-                criteria.add(minPriceCriteria);
-            } else {
-                return ResponseEntity.status(400).body("?priceMaxFilter should be greater or equal to 0");
-            }
-        }
+                                            @RequestParam(required = false) Integer pageSize){
 
         if (page != null) {
-            if (pageSize != null) {
-                ingredients = ingredientDAO.getAllByCriteria(criteria, page, pageSize);
-            } else {
+            if (pageSize == null){
                 return ResponseEntity.status(400).body("?page should be given with ?pageSize");
+            } else if (page < 1 || pageSize < 1) {
+                return ResponseEntity.status(400).body("?page and ?pageSize should be greater than 0");
             }
-        } else {
-            ingredients = ingredientDAO.getAllByCriteria(criteria);
         }
 
-        ingredientDTOSsDetailled = ingredients.stream().map(ingredientMapper::toDTODetailled).toList();
-
-        return ResponseEntity.ok(ingredientDTOSsDetailled);
+        return ResponseEntity.ok(ingredientService.getIngredients(page, pageSize));
     }
 
     @PostMapping

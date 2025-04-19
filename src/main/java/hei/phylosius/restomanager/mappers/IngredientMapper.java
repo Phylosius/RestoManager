@@ -21,35 +21,26 @@ import java.util.UUID;
 public class IngredientMapper {
 
     private final StockMovementMapper stockMovementMapper;
+    private final PriceMapper priceMapper;
     private PriceDAO priceDAO;
     private StockMovementDAO stockMovementDAO;
 
-    public IngredientRestDetailled toDTODetailled(Ingredient ingredient) {
-        IngredientRestDetailled dto = new IngredientRestDetailled();
-        String id = ingredient.getId();
+    public IngredientRest toDTO(Ingredient ingredient) {
+        IngredientRest dto = new IngredientRest();
+        Integer id = Integer.valueOf(ingredient.getId());
 
         dto.setId(id);
         dto.setName(ingredient.getName());
-        dto.setAvalaibleQuantity(ingredient.getAvailableQuantity());
-        dto.setCurrentPrice(ingredient.getRecentPrice().getValue());
-        dto.setPriceHistory(priceDAO.getAllByIngredientID(id));
-        dto.setMovementHistory(
-                stockMovementMapper.toDTOs(stockMovementDAO.getAllByIngredientID(id))
+        dto.setAvailableQuantity(ingredient.getAvailableQuantity());
+        dto.setActualPrice(ingredient.getRecentPrice().getValue());
+        dto.setPrices(
+                priceMapper.toDTOs(id, priceDAO.getAllByIngredientID(id.toString()))
+        );
+        dto.setStockMovements(
+                stockMovementMapper.toDTOs(stockMovementDAO.getAllByIngredientID(id.toString()))
         );
 
         return dto;
-    }
-
-    public IngredientRestWithStock toDTOWithStock(Ingredient ingredient) {
-        return new IngredientRestWithStock(toDTO(ingredient), ingredient.getAvailableQuantity());
-    }
-
-    public IngredientRest toDTO(Ingredient ingredient) {
-        return new IngredientRest(
-                ingredient.getId(),
-                ingredient.getName(),
-                ingredient.getPrice().getValue(),
-                ingredient.getModificationDate());
     }
 
     public List<IngredientRest> toDTOs(List<Ingredient> ingredients) {
@@ -75,9 +66,9 @@ public class IngredientMapper {
     public Ingredient toEntity(IngredientRest ingredientRest) {
         Ingredient ingredient = new Ingredient();
 
-        ingredient.setId(ingredientRest.getId() != null ? ingredientRest.getId() : UUID.randomUUID().toString());
+        ingredient.setId(ingredientRest.getId() != null ? ingredientRest.getId().toString() : UUID.randomUUID().toString());
         ingredient.setName(ingredientRest.getName());
-        ingredient.setPrice(new Price(ingredientRest.getUnitPrice(), LocalDateTime.now()));
+        ingredient.setPrice(new Price(ingredientRest.getActualPrice(), LocalDateTime.now()));
         ingredient.setUnit(Unit.U);
         ingredient.setModificationDate(LocalDateTime.now());
 

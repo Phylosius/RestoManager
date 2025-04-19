@@ -30,6 +30,10 @@ public class IngredientDAO implements DataProvider<Ingredient, String> {
         );
     }
 
+    public Boolean isExist(String id) {
+        return isExist(dataSource.getConnection(), id);
+    }
+
     public List<Ingredient> getAllByCriteria(List<Criteria> criteria, int page, int pageSize) {
         return getAllByCriteria(dataSource.getConnection(), criteria, page, pageSize);
     }
