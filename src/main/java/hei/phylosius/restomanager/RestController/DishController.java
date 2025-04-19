@@ -3,6 +3,7 @@ package hei.phylosius.restomanager.RestController;
 import hei.phylosius.restomanager.Repository.DishNotFoundException;
 import hei.phylosius.restomanager.Repository.IngredientNotFoundException;
 import hei.phylosius.restomanager.Service.DishService;
+import hei.phylosius.restomanager.Service.IngredientService;
 import hei.phylosius.restomanager.dto.MakeUpRestCreation;
 import hei.phylosius.restomanager.dto.DishRest;
 import lombok.AllArgsConstructor;
@@ -16,13 +17,24 @@ import java.util.List;
 @RequestMapping("/dishes")
 public class DishController {
 
+    private final IngredientService ingredientService;
     private DishService dishService;
 
     @GetMapping
-    public ResponseEntity<?> getDishes() {
-        List<DishRest> dishes = dishService.getDishRests();
+    public ResponseEntity<?> getDishes(
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer pageSize
+    ) {
+        if (page != null) {
+            if (pageSize == null) {
+                return ResponseEntity.status(400).body("?page should be given with ?pageSize");
+            } else if (page < 1 || pageSize < 1) {
+                return ResponseEntity.status(400).body("?page and ?pageSize should be greater than 0");
+            }
+            return ResponseEntity.ok(dishService.getDishRests(page, pageSize));
+        }
 
-        return ResponseEntity.ok(dishes);
+        return ResponseEntity.ok(dishService.getDishRests());
     }
 
     @PutMapping("/{id}/ingredients")

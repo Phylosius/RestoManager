@@ -101,4 +101,13 @@ public class IngredientMapper {
 
         return ingredient;
     }
+
+    public IngredientBasicPropertyRest toBasicPropertyDTO(Ingredient ingredient) {
+        IngredientBasicPropertyRest dto = new IngredientBasicPropertyRest();
+
+        dto.setName(ingredient.getName());
+        dto.setId(Integer.parseInt(ingredient.getId()));
+
+        return dto;
+    }
 }

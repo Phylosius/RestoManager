@@ -44,6 +44,8 @@ public class DishMapper {
             makeUpMapper.toDTOs(dish.getMakeUps())
         );
         dishRest.setAvailableQuantity(dish.getAvailableQuantity());
+        dishRest.setActualPrice(dish.getUnitPrice());
+        dishRest.setName(dish.getName());
 
         return dishRest;
     }

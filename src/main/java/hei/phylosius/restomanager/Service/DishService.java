@@ -22,6 +22,12 @@ public class DishService {
     private MakeUpDAO makeUpDAO;
     private MakeUpMapper makeUpMapper;
 
+    public List<DishRest> getDishRests(Integer page, Integer pageSize) {
+        List<Dish> dishes = dishDAO.getAll(page, pageSize);
+
+        return dishMapper.toDTOs(dishes);
+    }
+
     public List<DishRest> getDishRests() {
         List<Dish> dishes = dishDAO.getAll();
 

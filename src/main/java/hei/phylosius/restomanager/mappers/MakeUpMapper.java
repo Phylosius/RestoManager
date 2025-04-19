@@ -33,9 +33,10 @@ public class MakeUpMapper {
         MakeUpRest dto = new MakeUpRest();
 
         dto.setIngredient(
-                ingredientMapper.toDTO(makeUp.getIngredient())
+                ingredientMapper.toBasicPropertyDTO(makeUp.getIngredient())
         );
-        dto.setQuantity(makeUp.getQuantity());
+        dto.setRequiredQuantity(makeUp.getQuantity());
+        dto.setUnit(makeUp.getUnit());
 
         return dto;
     }
