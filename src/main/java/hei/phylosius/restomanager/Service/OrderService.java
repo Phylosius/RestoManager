@@ -23,8 +23,8 @@ public class OrderService {
     private OrderDAO orderDAO;
     private OrderMapper orderMapper;
 
-    public OrderRest getOrderInfo(String orderId) {
-        Order order = orderDAO.getById(orderId);
+    public OrderRest getOrderInfoByReference(String reference) {
+        Order order = orderDAO.getByReference(reference);
 
         return orderMapper.toDTO(order);
     }

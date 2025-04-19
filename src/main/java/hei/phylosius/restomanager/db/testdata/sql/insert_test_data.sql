@@ -41,43 +41,43 @@ INSERT INTO stock_movement(ingredient_id, type, quantity, date) VALUES
     ('4', 'OUT', 20.0, '2025-02-04 16:00');
 
 -- ORDER
-INSERT INTO "order"(id, created_at) VALUES
-    ('-1o', '2025-01-02 19:32'),
-    ('-2o', '2025-01-02 19:38');
+INSERT INTO "order"(id, reference, created_at) VALUES
+    ('-1', 'ORDER-1',  '2025-01-02 19:32'),
+    ('-2', 'ORDER-2','2025-01-02 19:38');
 
 -- DISH_ORDER
 INSERT INTO dish_order(id, dish_id, order_id, quantity) VALUES
     -- FOR '-1' order
-    ('-1o.1d', '1', '-1o', 4),
-    ('-1o.-1d', '-1', '-1o', 2),
+    ('-11', '1', '-1', 4),
+    ('-101', '-1', '-1', 2),
     -- FOR '-2' order
-    ('-2o.1d', '1', '-2o', 1),
-    ('-2o.-1d', '-1', '-2o', 2);
+    ('-21', '1', '-2', 1),
+    ('-201', '-1', '-2', 2);
 
 -- DISH_ORDER_STATUS_HISTORY
 INSERT INTO dish_order_status_history(dish_order_id, date, status_id) VALUES
     -- FOR '-1' order
-    ('-1o.1d', '2025-01-02 19:33', 'CREATED'),
-    ('-1o.1d', '2025-01-02 19:35', 'CONFIRMED'),
-    ('-1o.1d', '2025-01-02 19:37', 'IN_PREPARATION'),
-    ('-1o.1d', '2025-01-02 19:40', 'FINISHED'),
-    ('-1o.1d', '2025-01-02 19:42', 'SERVED'),
+    ('-11', '2025-01-02 19:35', 'CONFIRMED'),
+    ('-11', '2025-01-02 19:33', 'CREATED'),
+    ('-11', '2025-01-02 19:37', 'IN_PREPARATION'),
+    ('-11', '2025-01-02 19:40', 'FINISHED'),
+    ('-11', '2025-01-02 19:42', 'SERVED'),
 
-    ('-1o.-1d', '2025-01-02 19:34', 'CREATED'),
-    ('-1o.-1d', '2025-01-02 19:35', 'CONFIRMED'),
-    ('-1o.-1d', '2025-01-02 19:38', 'IN_PREPARATION'),
-    ('-1o.-1d', '2025-01-02 19:40', 'FINISHED'),
-    ('-1o.-1d', '2025-01-02 19:42', 'SERVED'),
+    ('-101', '2025-01-02 19:34', 'CREATED'),
+    ('-101', '2025-01-02 19:35', 'CONFIRMED'),
+    ('-101', '2025-01-02 19:38', 'IN_PREPARATION'),
+    ('-101', '2025-01-02 19:40', 'FINISHED'),
+    ('-101', '2025-01-02 19:42', 'SERVED'),
 
     -- FOR '-2' order
-    ('-2o.1d', '2025-01-02 19:39', 'CREATED'),
-    ('-2o.1d', '2025-01-02 19:40', 'CONFIRMED'),
-    ('-2o.1d', '2025-01-02 19:41', 'IN_PREPARATION'),
-    ('-2o.1d', '2025-01-02 19:45', 'FINISHED'),
-    ('-2o.1d', '2025-01-02 19:47', 'SERVED'),
+    ('-21', '2025-01-02 19:39', 'CREATED'),
+    ('-21', '2025-01-02 19:40', 'CONFIRMED'),
+    ('-21', '2025-01-02 19:41', 'IN_PREPARATION'),
+    ('-21', '2025-01-02 19:45', 'FINISHED'),
+    ('-21', '2025-01-02 19:47', 'SERVED'),
 
-    ('-2o.-1d', '2025-01-02 19:39', 'CREATED'),
-    ('-2o.-1d', '2025-01-02 19:40', 'CONFIRMED'),
-    ('-2o.-1d', '2025-01-02 19:41', 'IN_PREPARATION'),
-    ('-2o.-1d', '2025-01-02 19:43', 'FINISHED'),
-    ('-2o.-1d', '2025-01-02 19:45', 'SERVED');
+    ('-201', '2025-01-02 19:39', 'CREATED'),
+    ('-201', '2025-01-02 19:40', 'CONFIRMED'),
+    ('-201', '2025-01-02 19:41', 'IN_PREPARATION'),
+    ('-201', '2025-01-02 19:43', 'FINISHED'),
+    ('-201', '2025-01-02 19:45', 'SERVED');

@@ -47,6 +47,10 @@ public class DishOrderDAO {
         update(dataSource.getConnection(), dishOrder.getId(), dishOrder);
     }
 
+    public List<DishOrder> getAllByOrderId(String orderId) {
+        return getAllByOrderId(dataSource.getConnection(), orderId);
+    }
+
     public static List<DishOrder> getAllByOrderId(Connection conn, String orderId) {
         List<DishOrder> dishOrders = new ArrayList<>();
 

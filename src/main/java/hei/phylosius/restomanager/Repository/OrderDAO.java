@@ -15,6 +15,7 @@ import java.util.concurrent.atomic.AtomicReference;
 @AllArgsConstructor
 @Repository
 public class OrderDAO {
+    private final DishOrderDAO dishOrderDAO;
     private DataSource dataSource;
 
     public List<Order> getAll(int page, int pageSize){
@@ -23,6 +24,28 @@ public class OrderDAO {
 
     public List<Order> getAllByCriteria(List<Criteria> criteria, int page, int pageSize){
         return getAllByCriteria(dataSource.getConnection(), criteria, page, pageSize);
+    }
+
+    public Order getByReference(String reference) {
+        Order order = new Order();
+
+        String sql = """
+                SELECT id, reference, created_at FROM "order" WHERE reference = ?
+                """;
+        List<Object> params = List.of(reference);
+
+        BaseDAO.executeQuery(dataSource.getConnection(), sql, params, resultSet -> {
+            if (resultSet.next()) {
+                order.setId(resultSet.getString("id"));
+                order.setReference(resultSet.getString("reference"));
+                order.setDishOrders(
+                        dishOrderDAO.getAllByOrderId(resultSet.getString("id"))
+                );
+                order.setCreationDate(resultSet.getTimestamp("created_at").toLocalDateTime());
+            }
+        });
+
+        return order;
     }
 
     public Order getById(String id){
@@ -53,7 +76,7 @@ public class OrderDAO {
         List <Order> dishOrders = new ArrayList<>();
 
         String sql = """
-                SELECT id, created_at FROM "order" WHERE 1=1
+                SELECT id, reference, created_at FROM "order" WHERE 1=1
                 """;
         BaseDAO.getAllByCriteria(conn, criteria, page, pageSize, sql, resultSet -> {
             while(resultSet.next()){
@@ -61,6 +84,7 @@ public class OrderDAO {
                 String id =  resultSet.getString("id");
 
                 order.setId(id);
+                order.setReference(resultSet.getString("reference"));
                 order.setCreationDate(resultSet.getTimestamp("created_at").toLocalDateTime());
                 order.setDishOrders(
                         DishOrderDAO.getAllByOrderId(conn, id)
@@ -87,10 +111,10 @@ public class OrderDAO {
 
     public static void add(Connection conn, Order order){
         String sql = """
-                INSERT INTO "order"(id,  created_at) VALUES (?, ?)
+                INSERT INTO "order"(id, reference, created_at) VALUES (?, ?, ?)
                 """;
 
-        List<Object> params = List.of(order.getId(), order.getCreationDate());
+        List<Object> params = List.of(order.getId(), order.getReference(), order.getCreationDate());
         BaseDAO.executeUpdate(conn, sql, params);
 
         DishOrderDAO.deleteByOrderId(conn, order.getId());

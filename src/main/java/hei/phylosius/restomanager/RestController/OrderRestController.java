@@ -22,7 +22,7 @@ public class OrderRestController {
             @PathVariable String reference
     ) {
         try {
-            return ResponseEntity.ok(orderService.getOrderInfo(reference));
+            return ResponseEntity.ok(orderService.getOrderInfoByReference(reference));
         } catch (OrderNotFoundException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         } catch (Exception e) {

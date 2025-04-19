@@ -13,7 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderRest {
-    private String id;
-    private OrderStatus status;
+    private Integer id;
+    private Double totalAmount;
+    private OrderStatus actualStatus;
     private List<DishOrderRest> dishes;
 }

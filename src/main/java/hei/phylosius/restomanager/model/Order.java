@@ -13,6 +13,7 @@ import java.util.*;
 @AllArgsConstructor
 public class Order {
     private String id;
+    private String reference;
     private List<DishOrder> dishOrders;
     private LocalDateTime creationDate;
 

@@ -14,11 +14,12 @@ public class OrderMapper {
     public OrderRest toDTO(Order order) {
         OrderRest orderRest = new OrderRest();
 
-        orderRest.setId(order.getId());
+        orderRest.setId(Integer.parseInt(order.getId()));
+        orderRest.setTotalAmount(order.getTotalAmount());
         orderRest.setDishes(
                 dishOrderMapper.toDTOs(order.getDishOrders())
         );
-        orderRest.setStatus(order.getActualStatus());
+        orderRest.setActualStatus(order.getActualStatus());
 
         return orderRest;
     }
