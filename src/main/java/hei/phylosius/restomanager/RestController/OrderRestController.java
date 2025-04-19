@@ -81,7 +81,7 @@ public class OrderRestController {
             orderService.addDishOrderStatus(orderId, dishId.toString(), status);
             return ResponseEntity.ok(orderService.getOrderInfoByReference(reference));
         } else {
-            return ResponseEntity.status(400).body(String.format("An dish's Order can't switch from %s to %s.", lastStatus, status));
+            return ResponseEntity.status(400).body(String.format("A dish's Order can't switch from %s to %s.", lastStatus, status));
         }
     }
 }
