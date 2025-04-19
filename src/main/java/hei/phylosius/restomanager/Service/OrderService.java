@@ -3,7 +3,6 @@ package hei.phylosius.restomanager.Service;
 import hei.phylosius.restomanager.Repository.DishOrderDAO;
 import hei.phylosius.restomanager.Repository.OrderDAO;
 import hei.phylosius.restomanager.Repository.OrderStatusRecordDAO;
-import hei.phylosius.restomanager.dto.DishOrderRest;
 import hei.phylosius.restomanager.dto.OrderRest;
 import hei.phylosius.restomanager.dto.UpdateOrderRest;
 import hei.phylosius.restomanager.mappers.DishOrderMapper;

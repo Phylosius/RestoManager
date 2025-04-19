@@ -6,7 +6,6 @@ import hei.phylosius.restomanager.Repository.OrderStatusRecordDAO;
 import hei.phylosius.restomanager.dto.CreateDishOrderRest;
 import hei.phylosius.restomanager.dto.DishOrderRest;
 import hei.phylosius.restomanager.dto.DishOrderRestUpdate;
-import hei.phylosius.restomanager.dto.UpdateOrderRest;
 import hei.phylosius.restomanager.model.Dish;
 import hei.phylosius.restomanager.model.DishOrder;
 import hei.phylosius.restomanager.model.OrderStatusHistory;

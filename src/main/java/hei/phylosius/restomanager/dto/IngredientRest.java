@@ -1,6 +1,5 @@
 package hei.phylosius.restomanager.dto;
 
-import hei.phylosius.restomanager.model.Price;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

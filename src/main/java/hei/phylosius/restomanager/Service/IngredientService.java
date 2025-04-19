@@ -10,7 +10,6 @@ import hei.phylosius.restomanager.mappers.IngredientMapper;
 import hei.phylosius.restomanager.mappers.PriceMapper;
 import hei.phylosius.restomanager.mappers.StockMovementMapper;
 import hei.phylosius.restomanager.model.Ingredient;
-import hei.phylosius.restomanager.model.Price;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

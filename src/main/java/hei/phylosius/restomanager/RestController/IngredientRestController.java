@@ -1,20 +1,12 @@
 package hei.phylosius.restomanager.RestController;
 
-import hei.phylosius.restomanager.Repository.IngredientDAO;
-import hei.phylosius.restomanager.Repository.PriceDAO;
 import hei.phylosius.restomanager.Service.IngredientService;
-import hei.phylosius.restomanager.dto.IngredientRest;
-import hei.phylosius.restomanager.dto.IngredientUpdateRest;
 import hei.phylosius.restomanager.dto.PriceRest;
 import hei.phylosius.restomanager.dto.StockMovementRest;
-import hei.phylosius.restomanager.mappers.IngredientMapper;
-import hei.phylosius.restomanager.mappers.StockMovementMapper;
-import hei.phylosius.restomanager.model.*;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
