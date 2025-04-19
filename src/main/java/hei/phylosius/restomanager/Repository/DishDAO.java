@@ -152,7 +152,7 @@ public class DishDAO implements DataProvider<Dish, String> {
         );
 
         BaseDAO.executeUpdate(conn, sql, params);
-        MakeUpDAO.saveAll(conn, entity.getId(), entity.getMakeUps());
+        MakeUpDAO.addAll(conn, entity.getId(), entity.getMakeUps());
 
     }
 
@@ -167,7 +167,7 @@ public class DishDAO implements DataProvider<Dish, String> {
 
         BaseDAO.executeUpdate(conn, sql, params);
         MakeUpDAO.deleteByDishID(conn, id);
-        MakeUpDAO.saveAll(conn, entity.getId(), entity.getMakeUps());
+        MakeUpDAO.addAll(conn, entity.getId(), entity.getMakeUps());
 
     }
 

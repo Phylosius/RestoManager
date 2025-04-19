@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Repository
 public class MakeUpDAO{
@@ -25,8 +26,8 @@ public class MakeUpDAO{
         return getAllByCriteria(dataSource.getConnection(), criteria, page, pageSize);
     }
 
-    public int saveAll(String dishID, List<MakeUp> makeUpList){
-        return saveAll(dataSource.getConnection(),dishID, makeUpList);
+    public int addAll(String dishID, List<MakeUp> makeUpList){
+        return addAll(dataSource.getConnection(),dishID, makeUpList);
     }
 
     public int deleteByDishID(String dishID){
@@ -76,7 +77,10 @@ public class MakeUpDAO{
         return makeUps;
     }
 
-    public static int saveAll(Connection conn, String dishID, List<MakeUp> makeUps){
+    public static int addAll(
+            Connection conn, String dishID, List<MakeUp> makeUps
+    ) throws IllegalArgumentException, DishNotFoundException, IngredientNotFoundException
+    {
         int saved;
 
         if (!DishDAO.isExist(conn, dishID)) {
@@ -86,6 +90,13 @@ public class MakeUpDAO{
         makeUps.forEach(makeUp -> {
             if (!IngredientDAO.isExist(conn, makeUp.getIngredient().getId())) {
                 throw new IngredientNotFoundException(String.format("Ingredient of id %s not found", makeUp.getIngredient().getId()));
+            }
+
+            if (isExist(conn, dishID, makeUp.getIngredient().getId())) {
+                System.out.println("error____");
+                throw new IllegalArgumentException(
+                        String.format("Make-up of Dish %s with Ingredient %s already exist", dishID,
+                                makeUp.getIngredient().getId()));
             }
         });
 
@@ -115,6 +126,21 @@ public class MakeUpDAO{
         deleted = BaseDAO.executeUpdate(conn, sql, params);
 
         return deleted;
+    }
+
+    public static Boolean isExist(Connection conn, String dishId, String ingredientId){
+        AtomicReference<Boolean> isExist = new AtomicReference<>(false);
+
+        String sql = "SELECT dish_id FROM make_up WHERE dish_id = ? AND ingredient_id = ?";
+        List<Object> params = List.of(dishId, ingredientId);
+
+        BaseDAO.executeQuery(conn, sql, params, (res) -> {
+            if (res.next()) {
+                isExist.set(true);
+            }
+        });
+
+        return isExist.get();
     }
 
 }

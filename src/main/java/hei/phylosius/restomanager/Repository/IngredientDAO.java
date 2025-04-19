@@ -30,6 +30,11 @@ public class IngredientDAO implements DataProvider<Ingredient, String> {
         );
     }
 
+    public Ingredient getByName(String name) {
+        Criteria nameCriteria = new Criteria(LogicalOperator.AND, "i.name", CriteriaOperator.EQUAL, name);
+        return getAllByCriteria(List.of(nameCriteria)).getFirst();
+    }
+
     public List<Ingredient> getAllByCriteria(List<Criteria> criteria, int page, int pageSize) {
         return getAllByCriteria(dataSource.getConnection(), criteria, page, pageSize);
     }
