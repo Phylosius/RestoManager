@@ -1,10 +1,10 @@
 package hei.phylosius.restomanager.Repository;
 
 import hei.phylosius.restomanager.dto.DishProcessingTimeRest;
-import hei.phylosius.restomanager.dto.DishSaleRest;
+import hei.phylosius.restomanager.dto.DishSoldRest;
 import hei.phylosius.restomanager.dto.ProcessingTimeType;
 import hei.phylosius.restomanager.mappers.DishProcessingTimeMapper;
-import hei.phylosius.restomanager.mappers.DishSaleMapper;
+import hei.phylosius.restomanager.mappers.DishSoldMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class DashBoardDAO {
 
     private DataSource dataSource;
-    private DishSaleMapper dishSaleMapper;
+    private DishSoldMapper dishSoldMapper;
     private DishProcessingTimeMapper dishProcessingTimeMapper;
 
     public DishProcessingTimeRest getProcessingTime(String dishId, ProcessingTimeType processingTimeType, String processingTimeFormat, LocalDateTime startDate, LocalDateTime endDate) {
@@ -98,8 +98,8 @@ public class DashBoardDAO {
         return dishProcessingTimeRest.get();
     }
 
-    public List<DishSaleRest> getBestSales(Integer limit, LocalDateTime startDate, LocalDateTime endDate) {
-        List<DishSaleRest> dishSaleRestList = new ArrayList<>();
+    public List<DishSoldRest> getBestSales(Integer limit, LocalDateTime startDate, LocalDateTime endDate) {
+        List<DishSoldRest> dishSoldRestList = new ArrayList<>();
 
         String dateCondition = "";
         String limitCondition = "";
@@ -139,8 +139,9 @@ public class DashBoardDAO {
 
         String sql = String.format("""
                 SELECT
+                    di.id as dish_id,
                     di.name as dish_name,
-                    SUM(di_o.quantity) as sailed_quantity,
+                    SUM(di_o.quantity) as sold_quantity,
                     SUM(di.unit_price * di_o.quantity) as total_gain
                 
                 FROM
@@ -155,19 +156,19 @@ public class DashBoardDAO {
                 
                 %s
                 
-                GROUP BY di.name
+                GROUP BY di.name, di.id
                 
-                ORDER BY sailed_quantity DESC
+                ORDER BY sold_quantity DESC
                 
                 %s
                 """, dateCondition, limitCondition);
 
         BaseDAO.executeQuery(dataSource.getConnection(), sql, params, resultSet -> {
             while (resultSet.next()) {
-                dishSaleRestList.add(dishSaleMapper.toDTO(resultSet));
+                dishSoldRestList.add(dishSoldMapper.toDTO(resultSet));
             }
         });
 
-        return dishSaleRestList;
+        return dishSoldRestList;
     }
 }
