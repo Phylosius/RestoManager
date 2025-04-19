@@ -30,7 +30,7 @@ ALTER TABLE public.dish_order ADD CONSTRAINT dish_command_pk PRIMARY KEY (id);
 
 -- object: order_pk | type: CONSTRAINT --
 -- ALTER TABLE public."order" DROP CONSTRAINT IF EXISTS order_pk CASCADE;
-ALTER TABLE public."order" ADD CONSTRAINT order_pk PRIMARY KEY (id);
+ALTER TABLE public."order" ADD CONSTRAINT order_pk PRIMARY KEY (id,reference);
 -- ddl-end --
 
 -- object: order_status_pk | type: CONSTRAINT --

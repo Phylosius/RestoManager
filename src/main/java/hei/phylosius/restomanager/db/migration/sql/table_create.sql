@@ -77,7 +77,8 @@ ALTER TABLE public.dish_order OWNER TO resto_db_user;
 -- DROP TABLE IF EXISTS public."order" CASCADE;
 CREATE TABLE public."order" (
 	id character varying(100) NOT NULL,
-	created_at timestamp DEFAULT (CURRENT_DATE)::timestamp without time zone
+	created_at timestamp DEFAULT (CURRENT_DATE)::timestamp without time zone,
+	reference varchar NOT NULL
 
 );
 -- ddl-end --

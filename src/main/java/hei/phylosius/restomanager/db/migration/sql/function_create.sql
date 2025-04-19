@@ -8,7 +8,8 @@ CREATE OR REPLACE FUNCTION public.generate_simple_varchar_id (table_name text)
 	SECURITY INVOKER
 	PARALLEL UNSAFE
 	COST 100
-	AS $$
+	AS 
+$function$
 DECLARE
     sequence_name TEXT;
     new_id INT;
@@ -33,7 +34,7 @@ BEGIN
     -- Return the ID as a string format "n"
     RETURN new_id::TEXT;
 END;
-$$;
+$function$;
 -- ddl-end --
 ALTER FUNCTION public.generate_simple_varchar_id(text) OWNER TO resto_db_user;
 -- ddl-end --
