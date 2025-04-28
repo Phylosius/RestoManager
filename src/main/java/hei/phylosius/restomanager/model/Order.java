@@ -1,5 +1,6 @@
 package hei.phylosius.restomanager.model;
 
+import hei.phylosius.restomanager.Repository.StockMovementDAO;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -43,8 +44,8 @@ public class Order {
     }
 
     // don't work properly
-    public void addDishOrder(DishOrder dishOrder){
-        List<MakeUp> missingMakeUps = dishOrder.getMissingIngredients(LocalDateTime.now());
+    public void addDishOrder(DishOrder dishOrder, StockMovementDAO stockMovementDAO){
+        List<MakeUp> missingMakeUps = dishOrder.getMissingIngredients(LocalDateTime.now(), stockMovementDAO);
 
         if (!missingMakeUps.isEmpty()){
             StringBuilder message = new StringBuilder("Missing Ingredients for " +  dishOrder.getDish().getName() + "\n");

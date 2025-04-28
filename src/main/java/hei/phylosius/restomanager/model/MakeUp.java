@@ -1,5 +1,6 @@
 package hei.phylosius.restomanager.model;
 
+import hei.phylosius.restomanager.Repository.StockMovementDAO;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -18,11 +19,11 @@ public class MakeUp {
         return ingredient.getUnit();
     }
 
-    public Boolean isMakeable(LocalDateTime date) {
-        return ingredient.getMakeableDishQuantity(quantity, date) >= 1;
+    public Boolean isMakeable(LocalDateTime date, StockMovementDAO stockMovementDAO) {
+        return ingredient.getMakeableDishQuantity(quantity, date, stockMovementDAO) >= 1;
     }
 
-    public Double getMissingIngredientQuantity(LocalDateTime date) {
-        return ingredient.getMissingQuantityForDish(quantity, date);
+    public Double getMissingIngredientQuantity(LocalDateTime date, StockMovementDAO stockMovementDAO) {
+        return ingredient.getMissingQuantityForDish(quantity, date, stockMovementDAO);
     }
 }

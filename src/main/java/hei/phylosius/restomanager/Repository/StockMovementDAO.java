@@ -1,6 +1,5 @@
 package hei.phylosius.restomanager.Repository;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import hei.phylosius.restomanager.model.*;
 import org.springframework.stereotype.Repository;
 
@@ -15,15 +14,6 @@ public class StockMovementDAO{
 
     public StockMovementDAO(DataSource dataSource){
         this.dataSource = dataSource;
-    }
-
-    public StockMovementDAO() {
-        Dotenv dotenv = Dotenv.load();
-        dataSource = new DataSource(
-                dotenv.get("DB_USERNAME"),
-                dotenv.get("DB_PASSWORD"),
-                dotenv.get("DB_URL")
-        );
     }
 
     public List<StockMovement> getAllByIngredientID(String ingredientID) {

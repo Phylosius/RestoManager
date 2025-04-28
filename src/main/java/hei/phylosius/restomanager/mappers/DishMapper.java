@@ -1,6 +1,7 @@
 package hei.phylosius.restomanager.mappers;
 
 import hei.phylosius.restomanager.Repository.MakeUpDAO;
+import hei.phylosius.restomanager.Repository.StockMovementDAO;
 import hei.phylosius.restomanager.dto.DishRest;
 import hei.phylosius.restomanager.model.Dish;
 import lombok.AllArgsConstructor;
@@ -14,6 +15,7 @@ import java.util.List;
 @Component
 public class DishMapper {
 
+    private final StockMovementDAO stockMovementDAO;
     private MakeUpDAO makeUpDAO;
     private MakeUpMapper makeUpMapper;
 
@@ -43,7 +45,7 @@ public class DishMapper {
         dishRest.setIngredients(
             makeUpMapper.toDTOs(dish.getMakeUps())
         );
-        dishRest.setAvailableQuantity(dish.getAvailableQuantity());
+        dishRest.setAvailableQuantity(dish.getAvailableQuantity(stockMovementDAO));
         dishRest.setActualPrice(dish.getUnitPrice());
         dishRest.setName(dish.getName());
 

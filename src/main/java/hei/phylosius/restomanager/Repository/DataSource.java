@@ -20,9 +20,9 @@ public class DataSource {
     private final String password;
 
     @Autowired
-    public DataSource(@Value("${datasource.username}") String username,
-                      @Value("${datasource.password}") String password,
-                      @Value("${datasource.url}") String url) {
+    public DataSource(@Value("${spring.datasource.username}") String username,
+                      @Value("${spring.datasource.password}") String password,
+                      @Value("${spring.datasource.url}") String url) {
         this.username = username;
         this.password = password;
         this.url = url;

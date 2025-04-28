@@ -1,6 +1,5 @@
 package hei.phylosius.restomanager.Repository;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import hei.phylosius.restomanager.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -19,15 +18,6 @@ public class IngredientDAO implements DataProvider<Ingredient, String> {
     @Autowired
     public IngredientDAO(DataSource dataSource) {
         this.dataSource = dataSource;
-    }
-
-    public IngredientDAO() {
-        Dotenv dotenv = Dotenv.load();
-        dataSource = new DataSource(
-                dotenv.get("DB_USERNAME"),
-                dotenv.get("DB_PASSWORD"),
-                dotenv.get("DB_URL")
-        );
     }
 
     public Boolean isExist(String id) {

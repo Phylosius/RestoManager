@@ -1,5 +1,6 @@
 package hei.phylosius.restomanager.model;
 
+import hei.phylosius.restomanager.Repository.StockMovementDAO;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -35,10 +36,10 @@ public class DishOrder {
         this.statusHistory = new OrderStatusHistory();
     }
 
-    public List<MakeUp> getMissingIngredients(LocalDateTime date) {
+    public List<MakeUp> getMissingIngredients(LocalDateTime date, StockMovementDAO stockMovementDAO) {
         List<MakeUp> missingMakeUps = new ArrayList<>();
 
-        List<MakeUp> additionalMissingMakeUps = dish.getMissingIngredients(date);
+        List<MakeUp> additionalMissingMakeUps = dish.getMissingIngredients(date, stockMovementDAO);
 
         if (!additionalMissingMakeUps.isEmpty()){
             missingMakeUps.addAll(additionalMissingMakeUps);

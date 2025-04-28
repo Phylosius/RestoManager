@@ -31,8 +31,8 @@ public class IngredientMapper {
 
         dto.setId(id);
         dto.setName(ingredient.getName());
-        dto.setAvailableQuantity(ingredient.getAvailableQuantity());
-        dto.setActualPrice(ingredient.getRecentPrice().getValue());
+        dto.setAvailableQuantity(ingredient.getAvailableQuantity(stockMovementDAO));
+        dto.setActualPrice(ingredient.getRecentPrice(priceDAO).getValue());
         dto.setPrices(
                 priceMapper.toDTOs(id, priceDAO.getAllByIngredientID(id.toString()))
         );

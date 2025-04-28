@@ -1,6 +1,5 @@
 package hei.phylosius.restomanager.Repository;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import hei.phylosius.restomanager.model.Criteria;
 import hei.phylosius.restomanager.model.Price;
 import org.springframework.stereotype.Repository;
@@ -15,14 +14,6 @@ import java.util.concurrent.atomic.AtomicReference;
 public class PriceDAO {
 
     private final DataSource dataSource;
-
-    public PriceDAO() {
-        Dotenv dotenv = Dotenv.load();
-        dataSource = new DataSource(
-                dotenv.get("DB_USERNAME"),
-                dotenv.get("DB_PASSWORD"),
-                dotenv.get("DB_URL"));
-    }
 
     public PriceDAO(DataSource dataSource) {
         this.dataSource = dataSource;
