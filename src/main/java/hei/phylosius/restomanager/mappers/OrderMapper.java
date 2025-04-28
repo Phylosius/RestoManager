@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @AllArgsConstructor
 @Component
@@ -37,5 +38,9 @@ public class OrderMapper {
         );
 
         return order;
+    }
+
+    public List<OrderRest> toDTOs(List<Order> all) {
+        return all.stream().map(this::toDTO).toList();
     }
 }

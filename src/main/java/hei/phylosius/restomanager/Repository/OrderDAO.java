@@ -18,11 +18,11 @@ public class OrderDAO {
     private final DishOrderDAO dishOrderDAO;
     private DataSource dataSource;
 
-    public List<Order> getAll(int page, int pageSize){
+    public List<Order> getAll(Integer page, Integer pageSize){
         return getAllByCriteria(List.of(), page, pageSize);
     }
 
-    public List<Order> getAllByCriteria(List<Criteria> criteria, int page, int pageSize){
+    public List<Order> getAllByCriteria(List<Criteria> criteria, Integer page, Integer pageSize){
         return getAllByCriteria(dataSource.getConnection(), criteria, page, pageSize);
     }
 
@@ -88,7 +88,7 @@ public class OrderDAO {
         return retrieved.getFirst();
     }
 
-    public static List<Order> getAllByCriteria(Connection conn, List<Criteria> criteria, int page, int pageSize){
+    public static List<Order> getAllByCriteria(Connection conn, List<Criteria> criteria, Integer page, Integer pageSize){
         List <Order> dishOrders = new ArrayList<>();
 
         String sql = """

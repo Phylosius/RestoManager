@@ -27,7 +27,11 @@ public class OrderStatusRecordDAO{
     @Autowired
     private DishOrderDAO dishOrderDAO;
 
-    public List<OrderStatusRecord> getAllByCriteria(List<Criteria> criteria, int page, int pageSize) {
+    public List<OrderStatusRecord> getAll(Integer page, Integer pageSize) {
+        return getAllByCriteria(List.of(), page, pageSize);
+    }
+
+    public List<OrderStatusRecord> getAllByCriteria(List<Criteria> criteria, Integer page, Integer pageSize) {
         return getAllByCriteria(dataSource.getConnection(), criteria, page, pageSize);
     }
 
@@ -74,7 +78,7 @@ public class OrderStatusRecordDAO{
         return getAllByCriteria(conn, List.of(criteria), 1, 5);
     }
 
-    public static List<OrderStatusRecord> getAllByCriteria(Connection conn, List<Criteria> criteria, int page, int pageSize) {
+    public static List<OrderStatusRecord> getAllByCriteria(Connection conn, List<Criteria> criteria, Integer page, Integer pageSize) {
         List<OrderStatusRecord> statusRecords = new ArrayList<>();
 
         String sql =  "SELECT dish_order_id, date, status_id FROM dish_order_status_history WHERE 1=1";
@@ -143,4 +147,5 @@ public class OrderStatusRecordDAO{
 
         return BaseDAO.executeUpdate(conn, sql, params);
     }
+
 }

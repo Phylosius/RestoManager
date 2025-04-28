@@ -28,6 +28,10 @@ public class OrderService {
     private OrderDAO orderDAO;
     private OrderMapper orderMapper;
 
+    public List<OrderRest> getAll(Integer page, Integer pageSize) {
+        return orderMapper.toDTOs(orderDAO.getAll(page, pageSize));
+    }
+
     public OrderRest getOrderInfoByReference(String reference) {
         Order order = orderDAO.getByReference(reference);
 

@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BaseDAO {
@@ -38,19 +39,20 @@ public class BaseDAO {
         executeQuery(connection, sql, params, resultSetHandler);
     }
 
-    public static void getAllByCriteria(Connection connection, List<Criteria> criteria, int page, int pageSize, String sql, ResultSetHandler resultSetHandler) {
+    public static void getAllByCriteria(Connection connection, List<Criteria> criteria, Integer page, Integer pageSize, String sql, ResultSetHandler resultSetHandler) {
         StringBuilder sqlBuilder = new StringBuilder(sql);
 
         for (Criteria c : criteria) {
             sqlBuilder.append(c.getSqlValue());
         }
 
-        sqlBuilder.append(" LIMIT ? OFFSET ?");
+        List<Object> params = new ArrayList<>();
 
-        sql = sqlBuilder.toString();
-        //System.out.println("Generated SQL: " + sql);
-
-        List<Object> params = List.of(pageSize, pageSize * (page - 1));
+        if (page != null && pageSize != null) {
+            sqlBuilder.append(" LIMIT ? OFFSET ?");
+            sql = sqlBuilder.toString();
+            params.addAll(List.of(pageSize, pageSize * (page - 1)));
+        }
 
         executeQuery(connection, sql, params, resultSetHandler);
     }

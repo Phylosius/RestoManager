@@ -10,12 +10,25 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("/orders")
 public class OrderRestController {
 
     private OrderService orderService;
+
+    @GetMapping("")
+    public ResponseEntity<?> getAll(
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer pageSize
+    ) {
+        try {
+            return ResponseEntity.ok(orderService.getAll(page, pageSize));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
 
     @GetMapping("/{reference}")
     public ResponseEntity<?> getOrderInfo(
