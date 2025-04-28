@@ -31,7 +31,11 @@ public class DishOrderDAO {
         return id.get();
     }
 
-    public List<DishOrder> getAllByCriteria(List<Criteria> criteria, int page, int pageSize) {
+    public List<DishOrder> getAll(Integer page, Integer pageSize) {
+        return getAllByCriteria(List.of(), page, pageSize);
+    }
+
+    public List<DishOrder> getAllByCriteria(List<Criteria> criteria, Integer page, Integer pageSize) {
         return getAllByCriteria(dataSource.getConnection(), criteria, page, pageSize);
     }
 
@@ -80,7 +84,7 @@ public class DishOrderDAO {
         return dishOrders;
     }
 
-    public static List<DishOrder> getAllByCriteria(Connection conn, List<Criteria> criteria, int page, int pageSize) {
+    public static List<DishOrder> getAllByCriteria(Connection conn, List<Criteria> criteria, Integer page, Integer pageSize) {
         List <DishOrder> dishOrders = new ArrayList<>();
 
         String sql = "SELECT id, dish_id, order_id, quantity FROM dish_order WHERE 1=1";

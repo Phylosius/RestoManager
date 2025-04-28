@@ -1,6 +1,6 @@
 package hei.phylosius.restomanager.RestController;
 
-import hei.phylosius.restomanager.Service.OrderStatusRecordService;
+import hei.phylosius.restomanager.Service.DishOrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/dishOrders")
 public class DishOrderRestController {
 
-    private final OrderStatusRecordService orderStatusRecordService;
+
+    private final DishOrderService dishOrderService;
 
     @GetMapping
     public ResponseEntity<?> getAll(
@@ -21,9 +22,10 @@ public class DishOrderRestController {
             @RequestParam(required = false) Integer pageSize
     ) {
         try {
-            return ResponseEntity.ok(orderStatusRecordService.getAll(page, pageSize));
+            return ResponseEntity.ok(dishOrderService.getAll(page, pageSize));
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(e.getMessage());
+//            return ResponseEntity.status(500).body(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 }
