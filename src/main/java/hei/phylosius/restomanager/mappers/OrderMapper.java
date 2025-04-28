@@ -1,6 +1,7 @@
 package hei.phylosius.restomanager.mappers;
 
 import hei.phylosius.restomanager.dto.OrderRest;
+import hei.phylosius.restomanager.dto.OrderRestGet;
 import hei.phylosius.restomanager.model.Order;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -27,6 +28,16 @@ public class OrderMapper {
         return orderRest;
     }
 
+    public OrderRestGet toDTOGet(Order order) {
+        OrderRestGet orderRestGet = new OrderRestGet();
+
+        orderRestGet.setId(order.getId());
+        orderRestGet.setCreationDate(order.getCreationDate());
+        orderRestGet.setReference(order.getReference());
+
+        return orderRestGet;
+    }
+
     public Order toEntity(String reference, OrderRest dto) {
         Order order = new Order();
 
@@ -42,5 +53,9 @@ public class OrderMapper {
 
     public List<OrderRest> toDTOs(List<Order> all) {
         return all.stream().map(this::toDTO).toList();
+    }
+
+    public List<OrderRestGet> toDTOsGet(List<Order> all) {
+        return all.stream().map(this::toDTOGet).toList();
     }
 }

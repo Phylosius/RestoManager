@@ -4,6 +4,7 @@ import hei.phylosius.restomanager.Repository.DishOrderDAO;
 import hei.phylosius.restomanager.Repository.OrderDAO;
 import hei.phylosius.restomanager.Repository.OrderStatusRecordDAO;
 import hei.phylosius.restomanager.dto.OrderRest;
+import hei.phylosius.restomanager.dto.OrderRestGet;
 import hei.phylosius.restomanager.dto.UpdateOrderRest;
 import hei.phylosius.restomanager.mappers.DishOrderMapper;
 import hei.phylosius.restomanager.mappers.OrderMapper;
@@ -28,8 +29,8 @@ public class OrderService {
     private OrderDAO orderDAO;
     private OrderMapper orderMapper;
 
-    public List<Order> getAll(Integer page, Integer pageSize) {
-        return orderDAO.getAll(page, pageSize);
+    public List<OrderRestGet> getAll(Integer page, Integer pageSize) {
+        return orderMapper.toDTOsGet(orderDAO.getAll(page, pageSize));
     }
 
     public OrderRest getOrderInfoByReference(String reference) {
